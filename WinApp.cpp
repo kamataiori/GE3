@@ -73,3 +73,9 @@ void WinApp::Initialize()
 void WinApp::UpDate()
 {
 }
+
+void WinApp::Finalize()
+{
+	CloseWindow(hwnd);
+	CoUninitialize();
+}

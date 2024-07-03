@@ -1240,7 +1240,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	Input* input = nullptr;
 	//入力の初期化
 	input = new Input();
-	input->Initialize(winApp->GetInstance(), winApp->GetHwnd());
+	input->Initialize(winApp);
 
 
 	//////=========Imguiの初期化=========////
@@ -1562,16 +1562,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
+
 	delete input;
-	delete winApp;
 
 	CloseHandle(fenceEvent);
 
-	CloseWindow(winApp->GetHwnd());
 
 	////=========COMの終了処理=========////
 
-	CoUninitialize();
+	//WinAppの終了処理
+	winApp->Finalize();
+
+	//WindowsAPI解放
+	delete winApp;
 
 	return 0;
 

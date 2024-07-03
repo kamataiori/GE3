@@ -4,6 +4,7 @@
 #include <cassert>
 #include <dinput.h>
 #include <Windows.h>
+#include "WinApp.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -23,7 +24,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(HINSTANCE hInstance, HWND hwnd);
+	void Initialize(WinApp* winApp);
 
 	/// <summary>
 	/// 更新
@@ -60,6 +61,11 @@ private:
 	BYTE key[256] = {};
 	//前回の全キーの状態
 	BYTE keyPre[256] = {};
+
+	HRESULT result = {};
+
+	//WindowsAPI
+	WinApp* winApp_ = nullptr;
 
 };
 

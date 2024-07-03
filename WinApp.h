@@ -52,6 +52,11 @@ public:
 
 	HINSTANCE GetInstance() const { return wc.hInstance; }
 
+	/// <summary>
+	/// 終了
+	/// </summary>
+	void Finalize();
+
 private:
 
 	///===========================
