@@ -3,6 +3,7 @@
 #include <wrl.h>
 #include <cassert>
 #include <dinput.h>
+#include <Windows.h>
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -19,12 +20,14 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(HINSTANCE hInstance, HWND hwnd);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update();
 
+private:
+	
 };
 
