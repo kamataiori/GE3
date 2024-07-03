@@ -20,6 +20,16 @@ public:
 
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
+
+	///===========================
+	// 定数
+	///===========================
+
+	//クライアント領域のサイズ
+	static const int32_t kClientWidth = 1280;
+	static const int32_t kClientHeight = 720;
+
+
 	///===========================
 	// メンバ関数
 	///===========================
@@ -33,5 +43,26 @@ public:
 	/// 更新
 	/// </summary>
 	void UpDate();
+
+	/// <summary>
+	/// ゲッター
+	/// </summary>
+	/// <returns>hwnd</returns>
+	HWND GetHwnd() const { return hwnd; }
+
+	HINSTANCE GetInstance() const { return wc.hInstance; }
+
+private:
+
+	///===========================
+	// メンバ変数
+	///===========================
+
+	//ウィンドウハンドル
+	HWND hwnd = nullptr;
+
+	//ウィンドウクラスの設定
+	WNDCLASS wc{};
+
 };
 
