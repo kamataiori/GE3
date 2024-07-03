@@ -12,6 +12,9 @@
 class Input
 {
 public:
+
+	//namespace省略
+	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
 	
 	///========================
 	// メンバ関数
@@ -29,5 +32,14 @@ public:
 
 private:
 	
+	///========================
+	// メンバ変数
+	///========================
+
+	/// <summary>
+	/// キーボードのデバイス
+	/// </summary>
+	Microsoft::WRL::ComPtr<IDirectInputDevice8> keyboard;
+
 };
 

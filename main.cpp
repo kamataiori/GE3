@@ -1322,6 +1322,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 
+			//////=========入力の更新=========////
+
+			input->Update();
+
 
 			//ゲームの処理
 
