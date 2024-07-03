@@ -1316,14 +1316,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	//メインループ
 	//ウィンドウの×ボタンが押されるまでループ
-	while (msg.message != WM_QUIT) {
+	while (true) {
 
 		//Windowsにメッセージが来てたら最優先で処理させる
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		/*if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+		}*/
+		if (winApp->ProcessMesage())
+		{
+			//ゲームループを抜ける
+			break;
 		}
-		else {
 
 
 			////=========Imguiに、ここからフレームが始まる旨を告げる=========////
@@ -1550,7 +1554,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			hr = commandList->Reset(commandAllocator.Get(), nullptr);
 			assert(SUCCEEDED(hr));
 
-		}
+		
 	}
 
 	////=========解放処理=========////

@@ -57,6 +57,12 @@ public:
 	/// </summary>
 	void Finalize();
 
+	/// <summary>
+	/// メッセージの終了処理
+	/// </summary>
+	/// <returns></returns>
+	bool ProcessMesage();
+
 private:
 
 	///===========================
