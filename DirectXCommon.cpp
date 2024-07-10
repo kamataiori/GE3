@@ -204,7 +204,6 @@ void DirectXCommon::SwapChain()
 	assert(SUCCEEDED(hr));
 
 	
-
 }
 
 void DirectXCommon::DepthBuffer()
