@@ -41,8 +41,8 @@ void WinApp::Initialize()
 	RegisterClass(&wc);
 
 	////クライアント領域のサイズ
-	//const int32_t kClientWidth = 1280;
-	//const int32_t kClientHeight = 720;
+	kClientWidth;
+	kClientHeight;
 
 	//ウィンドウサイズを表す構造体にクライアント領域を入れる
 	RECT wrc = { 0,0,kClientWidth,kClientHeight };
