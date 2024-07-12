@@ -210,10 +210,6 @@ private:
 
 
 
-
-
-
-
 	//リソースバリアで書き込み可能に変更
 	D3D12_RESOURCE_BARRIER barrier{};
 
