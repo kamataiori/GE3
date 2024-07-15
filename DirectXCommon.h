@@ -9,6 +9,7 @@
 #include "externals/imgui/imgui.h"
 #include "externals/imgui/imgui_impl_dx12.h"
 #include "externals/imgui/imgui_impl_win32.h"
+#include "externals/DirectXTex/DirectXTex.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -97,7 +98,7 @@ public:
 	/// <summary>
 	/// 指定番号のCPUディスクリプタハンドルを取得する
 	/// </summary>
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize,uint32_t index);
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index);
 
 	/// <summary>
 	/// 指定番号のGPUディスクリプタハンドルを取得する
@@ -106,6 +107,46 @@ public:
 
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateDepthStencilTextureResorce(Microsoft::WRL::ComPtr<ID3D12Device> device, int32_t width, int32_t height);
+
+
+	/// <summary>
+	/// シェーダーのコンパイル関数
+	/// </summary>
+	Microsoft::WRL::ComPtr<IDxcBlob> CompileShader(
+		const std::wstring& filePath, const wchar_t* profile);
+
+
+
+	////====================リソース生成関数====================////
+
+	/// <summary>
+	/// バッファリソースの生成関数
+	/// </summary>
+	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes);
+
+
+	//====テクスチャを読む====//
+
+	/// <summary>
+	/// テクスチャファイルの読み込み
+	/// </summary>
+	static DirectX::ScratchImage LoadTexture(const std::string& filePath);
+
+	/// <summary>
+	/// テクスチャリソースの生成
+	/// </summary>
+	Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
+
+	/// <summary>
+	/// テクスチャデータの転送
+	/// </summary>
+	[[nodiscard]]
+	Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(const Microsoft::WRL::ComPtr<ID3D12Resource>& texture,
+		const DirectX::ScratchImage& mipImages);
+
+
+
+
 
 	////===============描画系===============////
 
@@ -121,8 +162,42 @@ public:
 
 
 
+
+
+
+
+	////====================ゲッター====================////
+
+	//==========device==========//
+
+	Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() const { return device; }
+
+
+
+	//==========dxcCompiler==========//
+
+	/// <summary>
+	/// dxcUtilsのゲッター
+	/// </summary>
+	IDxcUtils* GetDxcUtils() const { return dxcUtils; }
+
+	/// <summary>
+	/// dxcCompilerのゲッター
+	/// </summary>
+	IDxcCompiler3* GetDxcCompiler() const { return dxcCompiler; }
+
+	/// <summary>
+	/// includeHandlerのゲッター
+	/// </summary>
+	IDxcIncludeHandler* GetIncludeHandler() const {return includeHandler;}
+
+
+
+
+
+
 private:
-	
+
 	//DXGI1ファクトリーの生成
 	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory;
 	//DirectX12デバイス
