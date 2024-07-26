@@ -1575,6 +1575,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	//WindowsAPI解放
 	delete winApp;
+	winApp = nullptr;
 
 	return 0;
 
