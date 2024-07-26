@@ -2,11 +2,11 @@
 #include <cassert>
 #include <format>
 //#include "./Log/Logger.h"
-#include "StringUtility.h"
+//#include "StringUtility.h"
 #include "Logger.h"
 
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxguid.lib")
+//#pragma comment(lib,"d3d12.lib")
+//#pragma comment(lib,"dxguid.lib")
 
 using namespace Microsoft::WRL;
 
@@ -297,7 +297,7 @@ void DirectXCommon::RenderTargetView()
 
 void DirectXCommon::DepthStencilView()
 {
-	depthStencilResource = CreateDepthStencilTextureResorce(device.Get(), WinApp::kClientWidth, WinApp::kClientHeight);
+	depthStencilResource = CreateDepthStencilTextureResource(device.Get(), WinApp::kClientWidth, WinApp::kClientHeight);
 
 	////=========DSVの設定=========////
 
@@ -497,7 +497,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE DirectXCommon::GetGPUDescriptorHandle(ID3D12Descript
 	return handleGPU;
 }
 
-Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResorce(Microsoft::WRL::ComPtr<ID3D12Device> device, int32_t width, int32_t height)
+Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, int32_t width, int32_t height)
 {
 	//生成するResourceの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
@@ -541,7 +541,7 @@ Microsoft::WRL::ComPtr<IDxcBlob> DirectXCommon::CompileShader(const std::wstring
 
 	Logger::Log(StringUtility::ConvertString(std::format(L"Begin CompileShader,path:{},profile:{}\n", filePath, profile)));
 	IDxcBlobEncoding* shaderSource = nullptr;
-	HRESULT hr = this->dxcUtils->LoadFile(filePath.c_str(), nullptr, &shaderSource);
+	HRESULT hr = dxcUtils->LoadFile(filePath.c_str(), nullptr, &shaderSource);
 	assert(SUCCEEDED(hr));
 	DxcBuffer shaderSorceBuffer;
 	shaderSorceBuffer.Ptr = shaderSource->GetBufferPointer();
@@ -559,7 +559,7 @@ Microsoft::WRL::ComPtr<IDxcBlob> DirectXCommon::CompileShader(const std::wstring
 		L"-Zpr",
 	};
 	IDxcResult* shaderResult = nullptr;
-	hr = this->dxcCompiler->Compile(
+	hr = dxcCompiler->Compile(
 		&shaderSorceBuffer,
 		arguments,
 		_countof(arguments),
