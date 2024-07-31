@@ -150,8 +150,6 @@ public:
 
 
 
-
-
 	////===============描画系===============////
 
 	/// <summary>
@@ -165,12 +163,7 @@ public:
 	void PostDraw();
 
 
-
-
-
-
-
-	////====================ゲッター====================////
+	////====================ゲッター関数====================////
 
 	//==========device==========//
 
@@ -274,7 +267,9 @@ public:
 
 
 
-	////====================セッター====================////
+
+
+	////====================セッター関数====================////
 
 
 	/// <summary>
@@ -284,19 +279,24 @@ public:
 	void SetFenceValue(uint64_t value) { fenceValue = value; }
 
 
-
 private:
+
+	//VertexResource生成関数
+	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
+	D3D12_RESOURCE_DESC vertexResourceDesc{};
+	Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource = nullptr;
+
 
 	//DXGI1ファクトリーの生成
 	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory;
 	//DirectX12デバイス
-	Microsoft::WRL::ComPtr<ID3D12Device> device;
+	Microsoft::WRL::ComPtr<ID3D12Device> device = nullptr;
 	//コマンドアロケータの生成
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator{};
 	//コマンドリストの生成
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList{};
 	//コマンドキューの生成
-	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue{};
 
 	//WindowsAPI
 	WinApp* winApp = nullptr;
@@ -306,25 +306,14 @@ private:
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 
-	//DiscriptorSizeの取得
-	uint32_t descriptorSizeSRV{};
-	uint32_t descriptorSizeRTV{};
-	uint32_t descriptorSizeDSV{};
-
-
-
-
-
+	//DescriptorSizeの取得
+	uint32_t descriptorSizeSRV = 0;
+	uint32_t descriptorSizeRTV = 0;
+	uint32_t descriptorSizeDSV = 0;
 
 
 	//RTVを2つ作るのでディスクリプタを2つ用意
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2]{};
-
-
-
-
-
-
 
 	//RTV用のヒープディスクリプタの数は2。RTVはShader内で触るものではないので、ShaderVisibleはfalse
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap = nullptr;
@@ -335,19 +324,31 @@ private:
 	//DSV用のヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = nullptr;
 
+	//描画先のRTVとDSVを指定
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle{};
+	//SRV用のディスクリプタヒープを指定
+	ID3D12DescriptorHeap* descriptorHeaps[1];
+
 
 	//ディスクリプタの先頭を取得する
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvStarHandle;
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvStarHandle{};
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> swapChainResources[2] = { nullptr };
 
+	//DescriptorHeapの作成
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap = nullptr;
+	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
+
+
+	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU{};
+	D3D12_GPU_DESCRIPTOR_HANDLE handleGPU{};
 
 
 
 	//RTV
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource;
+	Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource{};
 
 
 
@@ -366,12 +367,9 @@ private:
 
 
 	//dxcCompiler
-	IDxcUtils* dxcUtils;
-	IDxcCompiler3* dxcCompiler;
-	IDxcIncludeHandler* includeHandler;
-
-
-
+	IDxcUtils* dxcUtils{};
+	IDxcCompiler3* dxcCompiler{};
+	IDxcIncludeHandler* includeHandler{};
 
 
 	//リソースバリアで書き込み可能に変更
