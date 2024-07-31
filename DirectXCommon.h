@@ -7,6 +7,7 @@
 #include <dxcapi.h>
 #include "StringUtility.h"
 #include "WinApp.h"
+#include <chrono>
 #include "externals/imgui/imgui.h"
 #include "externals/imgui/imgui_impl_dx12.h"
 #include "externals/imgui/imgui_impl_win32.h"
@@ -280,6 +281,22 @@ public:
 
 
 private:
+
+	///===========================
+	// メンバ関数
+	///===========================
+
+	//FPS固定初期化
+	void InitializeFixFPS();
+	//FPS固定更新
+	void UpdateFixFPS();
+	//記録時間(FPS固定用)
+	std::chrono::steady_clock::time_point reference_;
+
+
+	///===========================
+	// メンバ変数
+	///===========================
 
 	//VertexResource生成関数
 	D3D12_HEAP_PROPERTIES uploadHeapProperties{};

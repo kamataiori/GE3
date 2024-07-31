@@ -1,5 +1,7 @@
 #include "WinApp.h"
 
+#pragma comment(lib,"winmm.lib")
+
 LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
@@ -24,6 +26,9 @@ LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 void WinApp::Initialize()
 {
 	////=========COMの初期化=========////
+
+	//システムタイマーの分解能を上げる
+	//timeBeginPeriod(1);
 
 	CoInitializeEx(0, COINITBASE_MULTITHREADED);
 
