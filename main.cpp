@@ -19,6 +19,8 @@
 #include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
+#include "Sprite.h"
+#include "SpriteCommon.h"
 
 #include "Transform.h"
 #include "MathFunctions.h"
@@ -533,7 +535,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	dxCommon = new DirectXCommon();
 	dxCommon->Initialize(winApp);
 
+	//Spriteの初期化
+	Sprite* sprite = new Sprite();
+	sprite->Initialize();
 
+	//Sprite共通部の初期化
+	SpriteCommon* spriteCommon = nullptr;
+	spriteCommon = new SpriteCommon();
+	spriteCommon->Initialize();
 
 
 
@@ -541,7 +550,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	//////=========VertexResourceを生成する=========////
 
-	int  SphreVertex = 32 * 32 * 6;
+	int  SphereVertex = 32 * 32 * 6;
 
 	//モデル読み込み
 	ModelData modelData = LoadObjFile("Resources", "plane.obj");
@@ -824,7 +833,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//三角形
 	//ID3D12Resource* WorldViewProjectionMatrixResource = CreateBufferResource(device, sizeof(Matrix4x4));
 	//球
-	Microsoft::WRL::ComPtr<ID3D12Resource> WorldViewProjectionMatrixResource = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(Matrix4x4) * SphreVertex);
+	Microsoft::WRL::ComPtr<ID3D12Resource> WorldViewProjectionMatrixResource = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(Matrix4x4) * SphereVertex);
 	//データを書き込む
 	Matrix4x4* WorldViewProjectionMatrixData = nullptr;
 	//書き込むためのアドレスを取得
@@ -1193,7 +1202,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		dxCommon->GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite);//IBVを設定
 		//描画！（DrawCall/ドローコール）
 		////dxCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
-		//dxCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
+		dxCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
 
 
@@ -1240,6 +1249,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	delete winApp;
 	//DirectX解放
 	delete dxCommon;
+	//Sprite解放
+	delete sprite;
+	delete spriteCommon;
 
 	return 0;
 
