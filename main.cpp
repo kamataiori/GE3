@@ -542,7 +542,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//Sprite共通部の初期化
 	SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon();
-	spriteCommon->Initialize();
+	spriteCommon->Initialize(dxCommon);
 
 
 
@@ -1149,9 +1149,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		
 
 
-        //描画前処理
+        //DirectXの描画前処理。全ての描画に共通のグラフィックスコマンドを積む
 		dxCommon->PreDraw();
 
+
+		//Spriteの描画前処理。Spriteの描画設定に共通のグラフィックスコマンドを積む
+		spriteCommon->CommonSetting();
 
 
 
