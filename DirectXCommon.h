@@ -171,6 +171,10 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() const { return device; }
 
 
+	// CreateBufferResource 関数
+	Microsoft::WRL::ComPtr<ID3D12Resource> GetCreateBufferResource(size_t sizeInBytes);
+
+
 
 	//==========dxcCompiler==========//
 

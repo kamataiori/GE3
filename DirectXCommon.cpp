@@ -469,6 +469,42 @@ void DirectXCommon::PostDraw()
 
 }
 
+Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::GetCreateBufferResource(size_t sizeInBytes)
+{
+	//=========VertexResourceを生成する=========//
+
+	//deviceがnullかどうかの確認
+	//assert(this->device != nullptr);
+	
+   // ヒーププロパティ
+	//D3D12_HEAP_PROPERTIES uploadHeapProperties{};
+	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+	// リソースディスクリプション
+	//D3D12_RESOURCE_DESC vertexResourceDesc{};
+	vertexResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	vertexResourceDesc.Width = sizeInBytes;
+	vertexResourceDesc.Height = 1;
+	vertexResourceDesc.DepthOrArraySize = 1;
+	vertexResourceDesc.MipLevels = 1;
+	vertexResourceDesc.SampleDesc.Count = 1;
+	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	//Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource = nullptr;
+	// リソースを生成
+	HRESULT hr = this->device->CreateCommittedResource(
+		&uploadHeapProperties,
+		D3D12_HEAP_FLAG_NONE,
+		&vertexResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&vertexResource)
+	);
+	assert(SUCCEEDED(hr));
+
+	return vertexResource;
+}
+
 
 ////==============FPS関連==============////
 
@@ -700,7 +736,29 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateTextureResource(cons
 }
 
 // テクスチャデータの転送
-Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(const Microsoft::WRL::ComPtr<ID3D12Resource>& texture, const DirectX::ScratchImage& mipImages)
+//Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(const Microsoft::WRL::ComPtr<ID3D12Resource>& texture, const DirectX::ScratchImage& mipImages)
+//{
+//	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
+//	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; ++mipLevel)
+//	{
+//		const DirectX::Image* img = mipImages.GetImage(mipLevel, 0, 0);
+//		HRESULT hr = texture->WriteToSubresource(
+//			UINT(mipLevel),
+//			nullptr,
+//			img->pixels,
+//			UINT(img->rowPitch),
+//			UINT(img->slicePitch)
+//		);
+//		assert(SUCCEEDED(hr));
+//	}
+//
+//	return texture;
+//
+//}
+
+Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(
+	const Microsoft::WRL::ComPtr<ID3D12Resource>& texture,
+	const DirectX::ScratchImage& mipImages)
 {
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; ++mipLevel)
@@ -717,10 +775,6 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(const Mi
 	}
 
 	return texture;
-
 }
-
-
-
 
 
