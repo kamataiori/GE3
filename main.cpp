@@ -811,17 +811,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//////=========CBVを設定する=========////
 
 		//マテリアルCBufferの場所を設定
-		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, sprite->GetMaterialResource()->GetGPUVirtualAddress());
+		//dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, sprite->GetMaterialResource()->GetGPUVirtualAddress());
 		//wvp用のCBufferの場所を設定
-		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
+		//dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 
 
 		////=========DescriptorTableを設定する=========////
 
-		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, useMonsterBall ? sprite->GetTexture2SrvHandleGPU() : sprite->GetTextureSrvHandleGPU());
+		//dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, useMonsterBall ? sprite->GetTexture2SrvHandleGPU() : sprite->GetTextureSrvHandleGPU());
 
 
-		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, shaderResource->GetGPUVirtualAddress());
+		//dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, shaderResource->GetGPUVirtualAddress());
 
 
 		//モデル
@@ -842,12 +842,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//////dxCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 		//dxCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
+
 		sprite->Draw();
+
 
 		////////=========実際commandListのImGuiの描画コマンドを積む=========////
 
-		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->GetCommandList().Get());
-
+		//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->GetCommandList().Get());
 
 		//描画後処理
 		dxCommon->PostDraw();

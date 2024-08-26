@@ -21,17 +21,17 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	////////=========組み合わせて使う=========////
 
 	//Textureを読んで転送する
-	DirectX::ScratchImage mipImages = directXCommon->LoadTexture("./Resources/uvChecker.png");
+	DirectX::ScratchImage mipImages = spriteCommon->GetDxCommon()->LoadTexture("./Resources/uvChecker.png");
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	Microsoft::WRL::ComPtr<ID3D12Resource> textureResource = directXCommon->CreateTextureResource(metadata);
-	directXCommon->UploadTextureData(textureResource, mipImages);
+	Microsoft::WRL::ComPtr<ID3D12Resource> textureResource = spriteCommon->GetDxCommon()->CreateTextureResource(metadata);
+	spriteCommon->GetDxCommon()->UploadTextureData(textureResource, mipImages);
 
 	// Textureを読んで転送する2
-	DirectX::ScratchImage mipImages2 = directXCommon->LoadTexture("./Resources/monsterBall.png");
-	//DirectX::ScratchImage mipImages2 = directXCommon->LoadTexture(modelData.material.textureFilePath);
+	DirectX::ScratchImage mipImages2 = spriteCommon->GetDxCommon()->LoadTexture("./Resources/monsterBall.png");
+	//DirectX::ScratchImage mipImages2 = spriteCommon->GetDxCommon()->LoadTexture(modelData.material.textureFilePath);
 	const DirectX::TexMetadata& metadata2 = mipImages2.GetMetadata();
-	Microsoft::WRL::ComPtr<ID3D12Resource> textureResource2 = directXCommon->CreateTextureResource(metadata2);
-	directXCommon->UploadTextureData(textureResource2, mipImages2);
+	Microsoft::WRL::ComPtr<ID3D12Resource> textureResource2 = spriteCommon->GetDxCommon()->CreateTextureResource(metadata2);
+	spriteCommon->GetDxCommon()->UploadTextureData(textureResource2, mipImages2);
 
 	//metaDataを基にSRVの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
@@ -48,16 +48,16 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	srvDesc2.Texture2D.MipLevels = UINT(metadata2.mipLevels);
 
 	////SRVを作成するDescriptorHeapの場所を決める
-	textureSrvHandleCPU = GetCPUDescriptorHandle(directXCommon->GetSrvDescriptorHeap().Get(), directXCommon->GetDescriptorSizeSRV(), 1);//srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-	textureSrvHandleGPU = GetGPUDescriptorHandle(directXCommon->GetSrvDescriptorHeap().Get(), directXCommon->GetDescriptorSizeSRV(), 1);//srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
+	textureSrvHandleCPU = GetCPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 1);//srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+	textureSrvHandleGPU = GetGPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 1);//srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
 	//SRVを作成するDescriptorHeapの場所を決める
-	textureSrvHandleCPU2 = GetCPUDescriptorHandle(directXCommon->GetSrvDescriptorHeap().Get(), directXCommon->GetDescriptorSizeSRV(), 2);
-	textureSrvHandleGPU2 = GetGPUDescriptorHandle(directXCommon->GetSrvDescriptorHeap().Get(), directXCommon->GetDescriptorSizeSRV(), 2);
+	textureSrvHandleCPU2 = GetCPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 2);
+	textureSrvHandleGPU2 = GetGPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 2);
 
 
 	////SRVの生成
-	directXCommon->GetDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, textureSrvHandleCPU);
-	directXCommon->GetDevice()->CreateShaderResourceView(textureResource2.Get(), &srvDesc2, textureSrvHandleCPU2);
+	spriteCommon->GetDxCommon()->GetDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, textureSrvHandleCPU);
+	spriteCommon->GetDxCommon()->GetDevice()->CreateShaderResourceView(textureResource2.Get(), &srvDesc2, textureSrvHandleCPU2);
 }
 
 void Sprite::Update()
@@ -81,25 +81,25 @@ void Sprite::Update()
 void Sprite::Draw()
 {
 	//Spriteの描画。変更が必要なものだけ変更する
-	directXCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferViewSprite);
-	directXCommon->GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite);//IBVを設定
+	spriteCommon->GetDxCommon()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferViewSprite);
+	spriteCommon->GetDxCommon()->GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite);//IBVを設定
 
 	//マテリアルCBufferの場所を設定
-	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResourceSprite->GetGPUVirtualAddress());
+	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResourceSprite->GetGPUVirtualAddress());
 	//TransformationMatrixCBufferの場所を設定
-	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResourceSprite->GetGPUVirtualAddress());
+	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResourceSprite->GetGPUVirtualAddress());
 
 	//SRVのDescriptorTableの先頭
-	directXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
+	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
 	//描画！（DrawCall/ドローコール）
 	////dxCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
-	directXCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
+	spriteCommon->GetDxCommon()->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
 void Sprite::CreateVertexData()
 {
 	// 頂点リソースを作成
-	vertexResourceSprite = directXCommon->GetCreateBufferResource(sizeof(VertexData) * 6);
+	vertexResourceSprite = spriteCommon->GetDxCommon()->CreateBufferResource(sizeof(VertexData) * 6);
 
 	//リソースの先頭のアドレスから使う
 	vertexBufferViewSprite.BufferLocation = vertexResourceSprite->GetGPUVirtualAddress();
@@ -134,7 +134,7 @@ void Sprite::CreateVertexData()
 void Sprite::CreateIndexData()
 {
 	//Resourceを作成
-	indexResourceSprite = directXCommon->CreateBufferResource(sizeof(uint32_t) * 6);
+	indexResourceSprite = spriteCommon->GetDxCommon()->CreateBufferResource(sizeof(uint32_t) * 6);
 
 	//リソースの先頭アドレスから使う
 	indexBufferViewSprite.BufferLocation = indexResourceSprite->GetGPUVirtualAddress();
@@ -159,7 +159,7 @@ void Sprite::CreateIndexData()
 void Sprite::CreateMaterialData()
 {
 	// マテリアル用のリソースを作成
-	materialResourceSprite = directXCommon->CreateBufferResource(sizeof(Material));
+	materialResourceSprite = spriteCommon->GetDxCommon()->CreateBufferResource(sizeof(Material));
 
 	//書き込むためのアドレスを取得
 	materialResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&materialDataSprite));
@@ -172,7 +172,7 @@ void Sprite::CreateMaterialData()
 void Sprite::CreateTransformationMatrixData()
 {
 	// 座標変換行列用のリソースを作成
-	transformationMatrixResourceSprite = directXCommon->CreateBufferResource(sizeof(TransformationMatrix));
+	transformationMatrixResourceSprite = spriteCommon->GetDxCommon()->CreateBufferResource(sizeof(TransformationMatrix));
 
 	//書き込むためのアドレスを取得
 	transformationMatrixResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixDataSprite));

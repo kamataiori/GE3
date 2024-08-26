@@ -3,7 +3,6 @@
 #include "Vector4.h"
 #include "Vector2.h"
 #include "Vector3.h"
-#include"DirectXCommon.h"
 #include "Matrix4x4.h"
 #include "Transform.h"
 
@@ -125,8 +124,6 @@ private:
 
 	//SpriteCommon
 	SpriteCommon* spriteCommon = nullptr;
-
-	DirectXCommon* directXCommon;
 
 	//頂点データ
 	// バッファリソース
