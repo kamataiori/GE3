@@ -90,7 +90,7 @@ void Sprite::Draw()
 	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResourceSprite->GetGPUVirtualAddress());
 
 	//SRVのDescriptorTableの先頭
-	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, spriteCommon->GetDxCommon()->GetGPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 3));
+	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, spriteCommon->GetDxCommon()->GetGPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 2));
 	//描画！（DrawCall/ドローコール）
 	////dxCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	spriteCommon->GetDxCommon()->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
