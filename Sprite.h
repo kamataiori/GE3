@@ -107,7 +107,7 @@ public:
 		return materialResourceSprite;
 	}
 
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureSrvHandleGPU() 
+	/*D3D12_GPU_DESCRIPTOR_HANDLE GetTextureSrvHandleGPU() 
 	{
 		return textureSrvHandleGPU;
 	}
@@ -115,7 +115,7 @@ public:
 	D3D12_GPU_DESCRIPTOR_HANDLE GetTexture2SrvHandleGPU()
 	{
 		return textureSrvHandleGPU2;
-	}
+	}*/
 
 
 
@@ -160,11 +160,11 @@ private:
 	};
 
 
-	////SRVを作成するDescriptorHeapの場所を決める
-	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU;
-	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU;
-	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU2;
-	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU2;
+	//////SRVを作成するDescriptorHeapの場所を決める
+	//D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU;
+	//D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU;
+	//D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU2;
+	//D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU2;
 	
 };
 
