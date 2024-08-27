@@ -107,17 +107,9 @@ public:
 		return materialResourceSprite;
 	}
 
-	/*D3D12_GPU_DESCRIPTOR_HANDLE GetTextureSrvHandleGPU() 
-	{
-		return textureSrvHandleGPU;
-	}
-
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTexture2SrvHandleGPU()
-	{
-		return textureSrvHandleGPU2;
-	}*/
-
-
+	//座標
+	const Vector2& GetPosition() const { return position; }
+	void SetPosition(const Vector2& position) { this->position = position; }
 
 
 private:
@@ -150,10 +142,10 @@ private:
 	//////=========Transformを使ってCBufferを更新する=========////
 
 	//CPUで動かす用のTransformを作る
-	Transform transformSprite{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 
 	//UVTransform用の変数を用意
-	Transform uvTransformSprite{
+	Transform uvTransform{
 		{1.0f,1.0f,1.0f},
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f},
@@ -166,5 +158,17 @@ private:
 	//D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU2;
 	//D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU2;
 	
+
+
+	////-------座標-------////
+
+	Vector2 position = { 0.0f,0.0f };
+
+
+
+
+
+
+
 };
 

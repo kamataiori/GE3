@@ -722,6 +722,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 		sprite->Update();
 
+		//現在の座標を変数で受け取る
+		Vector2 position = sprite->GetPosition();
+		//座標を変更
+		position.x += 1.1f;
+		position.y += 1.1f;
+		//変更を反映する
+		sprite->SetPosition(position);
+
 
 		/*Matrix4x4 uvTransformMatrix = MakeScaleMatrix(uvTransformSprite.scale);
 		uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(uvTransformSprite.rotate.z));
