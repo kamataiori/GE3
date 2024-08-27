@@ -745,15 +745,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//ImGui::ShowDemoWindow();
 
 		//ImGui::Begin("Window");
-		//ImGui::DragFloat3("translate", &transform.scale.x, 0.01f);
+		///*ImGui::DragFloat3("translate", &transform.scale.x, 0.01f);
 		//ImGui::DragFloat3("rotate", &transform.rotate.x, 0.01f);
 		//ImGui::DragFloat3("CameraTranslate", &cameraTransform.scale.x, 0.01f);
 		//ImGui::DragFloat3("CameraRotate", &cameraTransform.rotate.x, 0.01f);
 		//ImGui::DragFloat3("CameraTransform", &cameraTransform.translate.x, 0.01f);
 		//ImGui::DragFloat3("directionalLight", &directionalLightData->direction.x, 0.01f);
-		//directionalLightData->direction = Normalize(directionalLightData->direction);
+		//directionalLightData->direction = Normalize(directionalLightData->direction);*/
 		////ImGui::ColorEdit4("color", &materialData->color.x, 0.01f);
-		////ImGui::Checkbox("useMonsterBall", &useMonsterBall);
+		//ImGui::Checkbox("useMonsterBall", &useMonsterBall);
 		//ImGui::End();
 
 		//ImGui::Begin("BlendMode");
@@ -850,7 +850,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 		////////=========実際commandListのImGuiの描画コマンドを積む=========////
 
-		//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->GetCommandList().Get());
+		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->GetCommandList().Get());
 
 		//描画後処理
 		dxCommon->PostDraw();
