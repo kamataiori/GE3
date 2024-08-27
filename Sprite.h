@@ -111,6 +111,9 @@ public:
 	const Vector2& GetPosition() const { return position; }
 	void SetPosition(const Vector2& position) { this->position = position; }
 
+	float GetRotation() const { return rotation; }
+	void SetRotation(float rotation) { this->rotation = rotation; }
+
 
 private:
 
@@ -164,7 +167,7 @@ private:
 
 	Vector2 position = { 0.0f,0.0f };
 
-
+	float rotation = 0.0f;
 
 
 

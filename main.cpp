@@ -719,7 +719,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//wvpData->WVP = worldviewProjectionMatrix;
 
 
-
+		////-----Spriteの更新処理-----////
 		sprite->Update();
 
 		//現在の座標を変数で受け取る
@@ -729,6 +729,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		position.y += 1.1f;
 		//変更を反映する
 		sprite->SetPosition(position);
+
+		//角度を変化させる
+		float rotation = sprite->GetRotation();
+		rotation += 0.008f;
+		sprite->SetRotation(rotation);
+
+
 
 
 		/*Matrix4x4 uvTransformMatrix = MakeScaleMatrix(uvTransformSprite.scale);

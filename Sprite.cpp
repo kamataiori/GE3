@@ -78,6 +78,7 @@ void Sprite::Update()
 	transformationMatrixDataSprite->World = worldMatrixSprite;
 
 	transform.translate = { position.x,position.y,0.0f };
+	transform.rotate = { 0.0f,0.0f,rotation };
 
 }
 
