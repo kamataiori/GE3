@@ -114,6 +114,9 @@ public:
 	float GetRotation() const { return rotation; }
 	void SetRotation(float rotation) { this->rotation = rotation; }
 
+	const Vector4& GetColor() const { return materialDataSprite->color; }
+	void SetColor(const Vector4& color) { materialDataSprite->color = color; }
+
 
 private:
 

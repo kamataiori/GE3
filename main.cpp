@@ -735,6 +735,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		rotation += 0.008f;
 		sprite->SetRotation(rotation);
 
+		//色を変化させる
+		Vector4 color = sprite->GetColor();
+		color.x += 0.01f;
+		if (color.x > 1.0f)
+		{
+			color.x -= 1.0f;
+		}
+		sprite->SetColor(color);
+
+
 
 
 
