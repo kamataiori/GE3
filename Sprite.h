@@ -110,12 +110,15 @@ public:
 	//座標
 	const Vector2& GetPosition() const { return position; }
 	void SetPosition(const Vector2& position) { this->position = position; }
-
+	//回転
 	float GetRotation() const { return rotation; }
 	void SetRotation(float rotation) { this->rotation = rotation; }
-
+	//色
 	const Vector4& GetColor() const { return materialDataSprite->color; }
 	void SetColor(const Vector4& color) { materialDataSprite->color = color; }
+	//サイズ
+	const Vector2& GetSize() const { return size; }
+	void SetSize(const Vector2& size) { this->size = size; }
 
 
 private:
@@ -171,6 +174,8 @@ private:
 	Vector2 position = { 0.0f,0.0f };
 
 	float rotation = 0.0f;
+
+	Vector2 size = { 640.0f,360.0f };
 
 
 
