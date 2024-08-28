@@ -316,16 +316,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	winApp = new WinApp();
 	winApp->Initialize();
 
-		////ウィンドウを表示する
-		//ShowWindow(hwnd, SW_SHOW);
+	////ウィンドウを表示する
+	//ShowWindow(hwnd, SW_SHOW);
 
-		//出力ウィンドウへの文字出力
-		//OutputDebugStringA("Hello,DirectX!\n");
+	//出力ウィンドウへの文字出力
+	//OutputDebugStringA("Hello,DirectX!\n");
 
 
-		/*MSG msg{};*/
+	/*MSG msg{};*/
 
-	//ポインタ
+//ポインタ
 	DirectXCommon* dxCommon = nullptr;
 
 	//DirectXの初期化
@@ -338,9 +338,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	spriteCommon->Initialize(dxCommon);
 
 	//Spriteの初期化
-	Sprite* sprite = nullptr;
+	/*Sprite* sprite = nullptr;
 	sprite = new Sprite();
-	sprite->Initialize(spriteCommon);
+	sprite->Initialize(spriteCommon);*/
+
+	////-----Spriteの更新処理と描画処理-----////
+	float offsetX = 100.0f;  // 各スプライトのX座標をずらすオフセット値
+	float initialX = 100.0f; // 初期X座標
+	// 小さく描画するための初期スケールを設定
+	Vector2 initialSize(80.0f, 80.0f);  // 例として50x50のサイズに設定
+	std::vector<Sprite*> sprites;
+	for (uint32_t i = 0; i < 5; ++i)
+	{
+		Sprite* sprite = new Sprite();
+		sprite->Initialize(spriteCommon);
+		//// 現在の座標を変数で受け取る
+		//Vector2 position = sprite->GetPosition();
+		//position.x = initialX + i * offsetX;  // X座標をずらす
+
+		//// 変更を反映する
+		//sprite->SetPosition(position);
+		//sprite->SetSize(initialSize);
+		sprites.push_back(sprite);
+	}
+
+
 
 
 
@@ -679,6 +701,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	Vector4 color = { 1,1,1,1 };
 
 
+
+
+	//////-----Spriteの更新処理と描画処理-----////
+	//float offsetX = 100.0f;  // 各スプライトのX座標をずらすオフセット値
+	//float initialX = 100.0f; // 初期X座標
+	//// 小さく描画するための初期スケールを設定
+	//Vector2 initialSize(80.0f, 80.0f);  // 例として50x50のサイズに設定
+
+
+
 	//メインループ
 	//ウィンドウの×ボタンが押されるまでループ
 	while (true) {
@@ -720,38 +752,79 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 
 		////-----Spriteの更新処理-----////
-		sprite->Update();
+		//sprite->Update();
 
-		//現在の座標を変数で受け取る
-		Vector2 position = sprite->GetPosition();
-		//座標を変更
-		position.x += 1.1f;
-		position.y += 1.1f;
-		//変更を反映する
-		sprite->SetPosition(position);
+		////現在の座標を変数で受け取る
+		//Vector2 position = sprite->GetPosition();
+		////座標を変更
+		//position.x += 1.1f;
+		//position.y += 1.1f;
+		////変更を反映する
+		//sprite->SetPosition(position);
 
-		//角度を変化させる
-		float rotation = sprite->GetRotation();
-		rotation += 0.008f;
-		sprite->SetRotation(rotation);
+		////角度を変化させる
+		//float rotation = sprite->GetRotation();
+		//rotation += 0.008f;
+		//sprite->SetRotation(rotation);
 
-		//色を変化させる
-		Vector4 color = sprite->GetColor();
-		color.x += 0.01f;
-		if (color.x > 1.0f)
-		{
-			color.x -= 1.0f;
+		////色を変化させる
+		//Vector4 color = sprite->GetColor();
+		//color.x += 0.01f;
+		//if (color.x > 1.0f)
+		//{
+		//	color.x -= 1.0f;
+		//}
+		//sprite->SetColor(color);
+
+		////スケールを変化させる
+		//Vector2 size = sprite->GetSize();
+		//size.x += 0.6f;
+		//size.y += 0.6f;
+		//sprite->SetSize(size);
+
+
+		for (size_t i = 0; i < sprites.size(); ++i) {
+			Sprite* sprite = sprites[i];
+
+			// 現在の座標を変数で受け取る
+			Vector2 position = sprite->GetPosition();
+			position.x = initialX + i * offsetX;  // X座標をずらす
+
+			//// 座標を変更
+			position.x += 1.1f;
+			position.y += 1.1f;
+
+			// 変更を反映する
+			sprite->SetPosition(position);
+
+
+			////角度を変化させる
+			float rotation = sprite->GetRotation();
+			rotation += 0.08f;
+			sprite->SetRotation(rotation);
+
+			////色を変化させる
+			Vector4 color = sprite->GetColor();
+			color.x += 0.01f;
+			if (color.x > 1.0f)
+			{
+				color.x -= 1.0f;
+			}
+			sprite->SetColor(color);
+
+			//スケールを変化させる
+			/*Vector2 size = sprite->GetSize();
+			size.x -= 0.6f;
+			size.y -= 0.6f;
+			sprite->SetSize(size);*/
+			//各スプライトを初期サイズに設定
+			sprite->SetSize(initialSize);
+
+
+			// 各スプライトを更新
+			sprite->Update();
+
 		}
-		sprite->SetColor(color);
-
-		//スケールを変化させる
-		Vector2 size = sprite->GetSize();
-		size.x += 0.6f;
-		size.y += 0.6f;
-		sprite->SetSize(size);
-
-
-
 
 
 		/*Matrix4x4 uvTransformMatrix = MakeScaleMatrix(uvTransformSprite.scale);
@@ -814,10 +887,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		ImGui::Render();
 		//ImGui::DragFloat3("transform.rotate.y", &transform.rotate.y,0.01f);
 
-		
 
 
-        //DirectXの描画前処理。全ての描画に共通のグラフィックスコマンドを積む
+
+		//DirectXの描画前処理。全ての描画に共通のグラフィックスコマンドを積む
 		dxCommon->PreDraw();
 
 
@@ -835,7 +908,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//RootSignatureを設定。PSOに設定しているけど別途設定が必要
 		/*dxCommon->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());*/
 		//dxCommon->GetCommandList()->SetPipelineState(graphicsPipelineState.Get());    //PSOを設定
-		dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &sprite->GetVertexBufferView());    //VBVを設定
+		/*for (Sprite* sprite : sprites)*/
+		//{
+		//	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, GetVertexBufferView());    //VBVを設定
+		//}
 		dxCommon->GetCommandList()->IASetIndexBuffer(&startBufferViewSprite);
 		//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 		dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -876,7 +952,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//dxCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
 
-		sprite->Draw();
+		//sprite->Draw();
+		for (Sprite* sprite : sprites) {
+
+			// スプライトを描画する
+			sprite->Draw();
+		}
 
 
 		////////=========実際commandListのImGuiの描画コマンドを積む=========////
@@ -915,7 +996,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//DirectX解放
 	delete dxCommon;
 	//Sprite解放
-	delete sprite;
+	for (Sprite* sprite : sprites) {
+		delete sprite;
+	}
 	delete spriteCommon;
 
 	return 0;

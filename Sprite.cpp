@@ -62,24 +62,7 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 
 void Sprite::Update()
 {
-	Matrix4x4 uvTransformMatrix = MakeScaleMatrix(uvTransform.scale);
-	uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(uvTransform.rotate.z));
-	uvTransformMatrix = Multiply(uvTransformMatrix, MakeTranslateMatrix(uvTransform.translate));
-
-	materialDataSprite->uvTransform = uvTransformMatrix;
-
-	//Sprite用のWorldViewProjectionMatrixを作る
-	Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
-	Matrix4x4 viewMatrixSprite = MakeIdentity4x4();
-	Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(WinApp::kClientWidth), float(WinApp::kClientHeight), 0.0f, 100.0f);
-	Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
-
-	transformationMatrixDataSprite->WVP = worldViewProjectionMatrixSprite;
-	transformationMatrixDataSprite->World = worldMatrixSprite;
-
-	transform.translate = { position.x,position.y,0.0f };
-	transform.rotate = { 0.0f,0.0f,rotation };
-
+	vertexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 	//左下
 	vertexData[0].position = { 0.0f,1.0f,0.0f,1.0f };
 	vertexData[0].texcoord = { 0.0f,1.0f };
@@ -98,7 +81,33 @@ void Sprite::Update()
 	vertexData[0].normal = { 0.0f,0.0f,-1.0f };
 
 
+	indexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
+	indexData[0] = 0;
+	indexData[1] = 1;
+	indexData[2] = 2;
+	indexData[3] = 1;
+	indexData[4] = 3;
+	indexData[5] = 2;
+
+	transform.translate = { position.x,position.y,0.0f };
+	transform.rotate = { 0.0f,0.0f,rotation };
 	transform.scale = { size.x,size.y,1.0f };
+
+
+	Matrix4x4 uvTransformMatrix = MakeScaleMatrix(uvTransform.scale);
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(uvTransform.rotate.z));
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeTranslateMatrix(uvTransform.translate));
+
+	materialDataSprite->uvTransform = uvTransformMatrix;
+
+	//Sprite用のWorldViewProjectionMatrixを作る
+	Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
+	Matrix4x4 viewMatrixSprite = MakeIdentity4x4();
+	Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(WinApp::kClientWidth), float(WinApp::kClientHeight), 0.0f, 100.0f);
+	Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
+
+	transformationMatrixDataSprite->WVP = worldViewProjectionMatrixSprite;
+	transformationMatrixDataSprite->World = worldMatrixSprite;
 
 }
 
@@ -135,24 +144,24 @@ void Sprite::CreateVertexData()
 	//////=========ResourceSpriteにデータを書き込む=========////
 
 	//VertexData* vertexDataSprite = nullptr;
-	vertexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
-	//１枚目の三角形
-	//左下
-	vertexData[0].position = { 0.0f,360.0f,0.0f,1.0f };
-	vertexData[0].texcoord = { 0.0f,1.0f };
-	//左上
-	vertexData[1].position = { 0.0f,0.0f,0.0f,1.0f };
-	vertexData[1].texcoord = { 0.0f,0.0f };
-	//右下
-	vertexData[2].position = { 640.0f,360.0f,0.0f,1.0f };
-	vertexData[2].texcoord = { 1.0f,1.0f };
+	//vertexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+	//////１枚目の三角形
+	////左下
+	//vertexData[0].position = { 0.0f,360.0f,0.0f,1.0f };
+	//vertexData[0].texcoord = { 0.0f,1.0f };
+	////左上
+	//vertexData[1].position = { 0.0f,0.0f,0.0f,1.0f };
+	//vertexData[1].texcoord = { 0.0f,0.0f };
+	////右下
+	//vertexData[2].position = { 640.0f,360.0f,0.0f,1.0f };
+	//vertexData[2].texcoord = { 1.0f,1.0f };
 
-	//２枚目の三角形
-	//左上
-	vertexData[3].position = { 640.0f,0.0f,0.0f,1.0f };
-	vertexData[3].texcoord = { 1.0f,0.0f };
+	////２枚目の三角形
+	////左上
+	//vertexData[3].position = { 640.0f,0.0f,0.0f,1.0f };
+	//vertexData[3].texcoord = { 1.0f,0.0f };
 
-	vertexData[0].normal = { 0.0f,0.0f,-1.0f };
+	//vertexData[0].normal = { 0.0f,0.0f,-1.0f };
 }
 
 void Sprite::CreateIndexData()
@@ -171,13 +180,13 @@ void Sprite::CreateIndexData()
 
 	//インデックスリソースにデータを書き込む
 	//uint32_t* indexDataSprite = nullptr;
-	indexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
+	/*indexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
 	indexData[0] = 0;
 	indexData[1] = 1;
 	indexData[2] = 2;
 	indexData[3] = 1;
 	indexData[4] = 3;
-	indexData[5] = 2;
+	indexData[5] = 2;*/
 }
 
 void Sprite::CreateMaterialData()
