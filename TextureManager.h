@@ -18,6 +18,11 @@ public:
 	//終了
 	void Finalize();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
+
 private:
 	//テクスチャ1枚分のデータ
 	struct TextureData {

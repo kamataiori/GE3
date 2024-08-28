@@ -21,6 +21,7 @@
 #include "DirectXCommon.h"
 #include "Sprite.h"
 #include "SpriteCommon.h"
+#include "TextureManager.h"
 
 #include "Transform.h"
 #include "MathFunctions.h"
@@ -352,17 +353,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	{
 		Sprite* sprite = new Sprite();
 		sprite->Initialize(spriteCommon);
-		//// 現在の座標を変数で受け取る
-		//Vector2 position = sprite->GetPosition();
-		//position.x = initialX + i * offsetX;  // X座標をずらす
-
-		//// 変更を反映する
-		//sprite->SetPosition(position);
-		//sprite->SetSize(initialSize);
 		sprites.push_back(sprite);
 	}
 
-
+	//テクスチャマネージャーの初期化
+	TextureManager::GetInstance()->Initialize();
 
 
 
@@ -990,6 +985,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	//WinAppの終了処理
 	winApp->Finalize();
+	//テクスチャマネージャーの終了処理
+	TextureManager::GetInstance()->Finalize();
 
 	//WindowsAPI解放
 	delete winApp;

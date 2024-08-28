@@ -2,7 +2,6 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
-#include <dxgi1_6.h>
 #include <dxgidebug.h>
 #include <dxcapi.h>
 #include "StringUtility.h"
@@ -282,6 +281,11 @@ public:
 	/// </summary>
 	/// <param name="value"></param>
 	void SetFenceValue(uint64_t value) { fenceValue = value; }
+
+
+
+	//最大SRV数(最大テクスチャ枚数)
+	static const uint32_t kMaxSRVCount;
 
 
 private:
