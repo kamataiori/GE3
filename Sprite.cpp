@@ -46,21 +46,28 @@ void Sprite::Update()
 		bottom = -bottom;
 	}
 
+	const DirectX::TexMetadata& metadata =
+		TextureManager::GetInstance()->GetMetaData(textureIndex);
+	float tex_left = textureLeftTop.x / metadata.width;
+	float tex_right = (textureLeftTop.x + textureSize.x) / metadata.width;
+	float tex_top = textureLeftTop.y / metadata.height;
+	float text_bottom = (textureLeftTop.y + textureSize.y) / metadata.height;
+
 
 	//左下
 	vertexData[0].position = { left,bottom,0.0f,1.0f };
-	vertexData[0].texcoord = { 0.0f,1.0f };
+	vertexData[0].texcoord = { tex_left,text_bottom };
 	//左上
 	vertexData[1].position = { left,top,0.0f,1.0f };
-	vertexData[1].texcoord = { 0.0f,0.0f };
+	vertexData[1].texcoord = { tex_left,tex_top };
 	//右下
 	vertexData[2].position = { right,bottom,0.0f,1.0f };
-	vertexData[2].texcoord = { 1.0f,1.0f };
+	vertexData[2].texcoord = { tex_right,text_bottom };
 
 	//２枚目の三角形
-	//左上
+	//右上
 	vertexData[3].position = { right,top,0.0f,1.0f };
-	vertexData[3].texcoord = { 1.0f,0.0f };
+	vertexData[3].texcoord = { tex_right,tex_top };
 
 	vertexData[0].normal = { 0.0f,0.0f,-1.0f };
 

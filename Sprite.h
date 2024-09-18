@@ -121,6 +121,14 @@ public:
 	//座標
 	const Vector2& GetPosition() const { return position; }
 	void SetPosition(const Vector2& position) { this->position = position; }
+	//---テクスチャ範囲指定---//
+	//textureLeftTop
+	void SetTextureLeftTop(const Vector2& leftTop) {textureLeftTop = leftTop;}
+	Vector2 GetTextureLeftTop() const {return textureLeftTop;}
+	//textureSize
+	void SetTextureSize(const Vector2& size) {textureSize = size;}
+	Vector2 GetTextureSize() const {return textureSize;}
+
 	//回転
 	float GetRotation() const { return rotation; }
 	void SetRotation(float rotation) { this->rotation = rotation; }
@@ -175,29 +183,25 @@ private:
 	};
 
 
-	//////SRVを作成するDescriptorHeapの場所を決める
-	//D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU;
-	//D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU;
-	//D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU2;
-	//D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU2;
-	
-
-
 	////-------座標-------////
 	
 	//座標
 	Vector2 position = { 0.0f,0.0f };
+	//テクスチャ左上座標
+	Vector2 textureLeftTop = { 0.0f,0.0f };
+	//テクスチャ切り出しサイズ
+	Vector2 textureSize = { 512.0f,512.0f };
 	//回転
 	float rotation = 0.0f;
 	//サイズ
 	Vector2 size = { 640.0f,360.0f };
 	//アンカーポイント
-	Vector2 anchorPoint = { 0.5f,0.5f };
+	Vector2 anchorPoint = { 0.0f,0.0f };
 
 	//左右フリップ
-	bool isFlipX_ = true;
+	bool isFlipX_ = false;
 	//上下フリップ
-	bool isFlipY_ = true;
+	bool isFlipY_ = false;
 
 
 };

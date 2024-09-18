@@ -802,7 +802,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 			////角度を変化させる
 			float rotation = sprite->GetRotation();
-			//rotation += 0.08f;
+			rotation += 0.08f;
 			sprite->SetRotation(rotation);
 
 			////色を変化させる
@@ -821,6 +821,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			sprite->SetSize(size);*/
 			//各スプライトを初期サイズに設定
 			sprite->SetSize(initialSize);
+
+			//アンカーポイント
+			Vector2 currentAnchor = sprite->GetAnchorPoint();
+			sprite->SetAnchorPoint({ 0.5f, 0.5f });
+
+			//フリップ
+			bool flipX = sprite->GetFlipX();
+			sprite->SetFlipX(false);
+			bool flipY = sprite->GetFlipY();
+			sprite->SetFlipY(false);
+
+			//テクスチャ範囲指定
+			Vector2 leftTop = sprite->GetTextureLeftTop();
+			sprite->SetTextureLeftTop({ 00.0f, 00.0f });
+			Vector2 size = sprite->GetTextureSize();
+			sprite->SetTextureSize({ 64.0f, 64.0f });
 
 
 			// 各スプライトを更新
