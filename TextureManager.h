@@ -21,7 +21,27 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(DirectXCommon* dxCommon);
+
+	/// <summary>
+	/// テクスチャファイルの読み込み
+	/// </summary>
+	/// <param name="filePath"></param>
+	void LoadTexture(const std::string& filePath);
+
+	/// <summary>
+	/// SRVインデックスの開始番号
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <returns></returns>
+	uint32_t GetTextureIndexByFilePath(const std::string& filePath);
+
+	/// <summary>
+	/// テクスチャ番号からGPUハンドルを取得
+	/// </summary>
+	/// <param name="textureIndex"></param>
+	/// <returns></returns>
+	D3D12_GPU_DESCRIPTOR_HANDLE GetSrvHandleGPU(uint32_t textureIndex);
 
 private:
 	//テクスチャ1枚分のデータ
@@ -35,6 +55,11 @@ private:
 
 	//テクスチャデータ
 	std::vector<TextureData> textureDatas;
+
+	//SRVインデックスの開始番号
+	static uint32_t kSRVIndexTop;
+
+	DirectXCommon* dxCommon_ = nullptr;
 
 
 

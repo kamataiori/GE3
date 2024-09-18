@@ -1,7 +1,8 @@
 #include "Sprite.h"
 #include "MathFunctions.h"
+#include "TextureManager.h"
 
-void Sprite::Initialize(SpriteCommon* spriteCommon)
+void Sprite::Initialize(SpriteCommon* spriteCommon, std::string textureFilePath)
 {
 	//引数で受け取ってメンバ変数に記録する
 	this->spriteCommon = spriteCommon;
@@ -17,6 +18,10 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 
 	// 座標変換行列データの初期化
 	CreateTransformationMatrixData();
+
+	//単位行列を書き込んでおく
+	TextureManager::GetInstance()->LoadTexture(textureFilePath);
+	textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 
 	////////=========組み合わせて使う=========////
 
@@ -123,7 +128,7 @@ void Sprite::Draw()
 	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResourceSprite->GetGPUVirtualAddress());
 
 	//SRVのDescriptorTableの先頭
-	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, spriteCommon->GetDxCommon()->GetGPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 2));
+	spriteCommon->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(textureIndex));
 	//描画！（DrawCall/ドローコール）
 	////dxCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	spriteCommon->GetDxCommon()->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);

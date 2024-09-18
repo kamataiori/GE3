@@ -19,7 +19,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(SpriteCommon* spriteCommon);
+	void Initialize(SpriteCommon* spriteCommon,std::string textureFilePath);
 
 	/// <summary>
 	/// 更新
@@ -145,6 +145,9 @@ private:
 	// バッファリソースの使い道を補完するビュー
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewSprite;
 	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite;
+
+	//テクスチャ番号
+	uint32_t textureIndex = 0;
 
 
 
