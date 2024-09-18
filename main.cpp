@@ -792,16 +792,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			position.x = initialX + i * offsetX;  // X座標をずらす
 
 			//// 座標を変更
-			position.x += 1.1f;
-			position.y += 1.1f;
+			//position.x += 1.1f;
+			//position.y += 1.1f;
+			position.y = 200.0f;
 
-			// 変更を反映する
+			//// 変更を反映する
 			sprite->SetPosition(position);
 
 
 			////角度を変化させる
 			float rotation = sprite->GetRotation();
-			rotation += 0.08f;
+			//rotation += 0.08f;
 			sprite->SetRotation(rotation);
 
 			////色を変化させる

@@ -110,6 +110,13 @@ public:
 	//アンカーポイント
 	const Vector2& GetAnchorPoint() const { return anchorPoint; }
 	void SetAnchorPoint(const Vector2& anchorPoint) { this->anchorPoint = anchorPoint; }
+	//左右フリップ
+	void SetFlipX(bool flipX) {isFlipX_ = flipX;}
+	bool GetFlipX() const {return isFlipX_;}
+	//上下フリップ
+	void SetFlipY(bool flipY) {isFlipY_ = flipY;}
+	bool GetFlipY() const {return isFlipY_;}
+
 
 	//座標
 	const Vector2& GetPosition() const { return position; }
@@ -177,15 +184,20 @@ private:
 
 
 	////-------座標-------////
-
+	
+	//座標
 	Vector2 position = { 0.0f,0.0f };
-
+	//回転
 	float rotation = 0.0f;
-
+	//サイズ
 	Vector2 size = { 640.0f,360.0f };
-
+	//アンカーポイント
 	Vector2 anchorPoint = { 0.5f,0.5f };
 
+	//左右フリップ
+	bool isFlipX_ = true;
+	//上下フリップ
+	bool isFlipY_ = true;
 
 
 };
