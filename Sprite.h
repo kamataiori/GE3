@@ -107,6 +107,10 @@ public:
 		return materialResourceSprite;
 	}
 
+	//アンカーポイント
+	const Vector2& GetAnchorPoint() const { return anchorPoint; }
+	void SetAnchorPoint(const Vector2& anchorPoint) { this->anchorPoint = anchorPoint; }
+
 	//座標
 	const Vector2& GetPosition() const { return position; }
 	void SetPosition(const Vector2& position) { this->position = position; }
@@ -180,7 +184,7 @@ private:
 
 	Vector2 size = { 640.0f,360.0f };
 
-
+	Vector2 anchorPoint = { 0.5f,0.5f };
 
 
 

@@ -23,64 +23,32 @@ void Sprite::Initialize(SpriteCommon* spriteCommon, std::string textureFilePath)
 	TextureManager::GetInstance()->LoadTexture(textureFilePath);
 	textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 
-	////////=========組み合わせて使う=========////
-
-	////Textureを読んで転送する
-	//DirectX::ScratchImage mipImages = spriteCommon->GetDxCommon()->LoadTexture("./Resources/uvChecker.png");
-	//const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	//Microsoft::WRL::ComPtr<ID3D12Resource> textureResource = spriteCommon->GetDxCommon()->CreateTextureResource(metadata);
-	//spriteCommon->GetDxCommon()->UploadTextureData(textureResource, mipImages);
-
-	//// Textureを読んで転送する2
-	//DirectX::ScratchImage mipImages2 = spriteCommon->GetDxCommon()->LoadTexture("./Resources/monsterBall.png");
-	////DirectX::ScratchImage mipImages2 = spriteCommon->GetDxCommon()->LoadTexture(modelData.material.textureFilePath);
-	//const DirectX::TexMetadata& metadata2 = mipImages2.GetMetadata();
-	//Microsoft::WRL::ComPtr<ID3D12Resource> textureResource2 = spriteCommon->GetDxCommon()->CreateTextureResource(metadata2);
-	//spriteCommon->GetDxCommon()->UploadTextureData(textureResource2, mipImages2);
-
-	////metaDataを基にSRVの設定
-	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	//srvDesc.Format = metadata.format;
-	//srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;  //2Dテクスチャ
-	//srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
-
-	////metaDataを基にSRVの設定
-	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc2{};
-	//srvDesc2.Format = metadata2.format;
-	//srvDesc2.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDesc2.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;  //2Dテクスチャ
-	//srvDesc2.Texture2D.MipLevels = UINT(metadata2.mipLevels);
-
-	//////SRVを作成するDescriptorHeapの場所を決める
-	//textureSrvHandleCPU = GetCPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 1);//srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-	//textureSrvHandleGPU = GetGPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 1);//srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
-	////SRVを作成するDescriptorHeapの場所を決める
-	//textureSrvHandleCPU2 = GetCPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 2);
-	//textureSrvHandleGPU2 = GetGPUDescriptorHandle(spriteCommon->GetDxCommon()->GetSrvDescriptorHeap().Get(), spriteCommon->GetDxCommon()->GetDescriptorSizeSRV(), 2);
-
-
-	//////SRVの生成
-	//spriteCommon->GetDxCommon()->GetDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, textureSrvHandleCPU);
-	//spriteCommon->GetDxCommon()->GetDevice()->CreateShaderResourceView(textureResource2.Get(), &srvDesc2, textureSrvHandleCPU2);
 }
 
 void Sprite::Update()
 {
 	vertexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+
+	//アンカーポイント
+	float left = 0.0f - anchorPoint.x;
+	float right = 1.0f - anchorPoint.x;
+	float top = 0.0f - anchorPoint.y;
+	float bottom = 1.0f - anchorPoint.y;
+
+
 	//左下
-	vertexData[0].position = { 0.0f,1.0f,0.0f,1.0f };
+	vertexData[0].position = { left,bottom,0.0f,1.0f };
 	vertexData[0].texcoord = { 0.0f,1.0f };
 	//左上
-	vertexData[1].position = { 0.0f,0.0f,0.0f,1.0f };
+	vertexData[1].position = { left,top,0.0f,1.0f };
 	vertexData[1].texcoord = { 0.0f,0.0f };
 	//右下
-	vertexData[2].position = { 1.0f,1.0f,0.0f,1.0f };
+	vertexData[2].position = { right,bottom,0.0f,1.0f };
 	vertexData[2].texcoord = { 1.0f,1.0f };
 
 	//２枚目の三角形
 	//左上
-	vertexData[3].position = { 1.0f,0.0f,0.0f,1.0f };
+	vertexData[3].position = { right,top,0.0f,1.0f };
 	vertexData[3].texcoord = { 1.0f,0.0f };
 
 	vertexData[0].normal = { 0.0f,0.0f,-1.0f };
