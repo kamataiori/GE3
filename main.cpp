@@ -794,7 +794,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			//// 座標を変更
 			//position.x += 1.1f;
 			//position.y += 1.1f;
-			position.y = 200.0f;
+			position.y = 100.0f;
 
 			//// 変更を反映する
 			sprite->SetPosition(position);
@@ -836,7 +836,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			Vector2 leftTop = sprite->GetTextureLeftTop();
 			sprite->SetTextureLeftTop({ 00.0f, 00.0f });
 			Vector2 size = sprite->GetTextureSize();
-			sprite->SetTextureSize({ 64.0f, 64.0f });
+			if (i % 2 == 0)
+			{
+				sprite->SetTextureSize({ 64.0f, 64.0f });
+			}
+			else
+			{
+				sprite->SetTextureSize({ 1200.0f, 600.0f });
+			}
+			
 
 
 			// 各スプライトを更新
