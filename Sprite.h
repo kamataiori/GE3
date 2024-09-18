@@ -190,7 +190,7 @@ private:
 	//テクスチャ左上座標
 	Vector2 textureLeftTop = { 0.0f,0.0f };
 	//テクスチャ切り出しサイズ
-	Vector2 textureSize = { 512.0f,512.0f };
+	Vector2 textureSize = { 0.0f,0.0f };
 	//回転
 	float rotation = 0.0f;
 	//サイズ
@@ -202,6 +202,10 @@ private:
 	bool isFlipX_ = false;
 	//上下フリップ
 	bool isFlipY_ = false;
+
+
+	//テクスチャサイズイメージ合わせ
+	void AdjustTextureSize();
 
 
 };
