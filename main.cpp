@@ -82,12 +82,12 @@ struct DirectionalLight {
 	float intensity;  //!<輝度
 };
 
-//MaterialData構造体
-struct MaterialData {
-	std::string textureFilePath;
-};
+////MaterialData構造体
+//struct MaterialData {
+//	std::string textureFilePath;
+//};
 
-//ModelData構造体
+////ModelData構造体
 //struct ModelData {
 //	std::vector<VertexData>vertices;
 //	MaterialData material;
@@ -175,36 +175,36 @@ D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(ID3D12DescriptorHeap* descrip
 
 ////////=========mtlファイルを読む関数=========////
 
-MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
-{
-	//1,中で必要となる変数の宣言
-	MaterialData materialData;  //構築するMaterialData
-	std::string line;  //ファイルから読んだ1行を格納するもの
-
-	//2,ファイルを開く
-	std::ifstream file(directoryPath + "/" + filename);  //ファイルを開く
-	assert(file.is_open());  //とりあえず開けなかったら止める
-
-	//3,実際にファイルを読み、ModelDataを構築していく
-	while (std::getline(file, line))
-	{
-		std::string identifier;
-		std::istringstream s(line);
-		s >> identifier;  //先頭の識別子を読む
-
-		//identifireに応じた処理
-		if (identifier == "map_Kd")
-		{
-			std::string textureFilename;
-			s >> textureFilename;
-			//連結してファイルパスにする
-			materialData.textureFilePath = directoryPath + "/" + textureFilename;
-		}
-	}
-
-	//4,MaterialDataを返す
-	return materialData;
-}
+//MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
+//{
+//	//1,中で必要となる変数の宣言
+//	MaterialData materialData;  //構築するMaterialData
+//	std::string line;  //ファイルから読んだ1行を格納するもの
+//
+//	//2,ファイルを開く
+//	std::ifstream file(directoryPath + "/" + filename);  //ファイルを開く
+//	assert(file.is_open());  //とりあえず開けなかったら止める
+//
+//	//3,実際にファイルを読み、ModelDataを構築していく
+//	while (std::getline(file, line))
+//	{
+//		std::string identifier;
+//		std::istringstream s(line);
+//		s >> identifier;  //先頭の識別子を読む
+//
+//		//identifireに応じた処理
+//		if (identifier == "map_Kd")
+//		{
+//			std::string textureFilename;
+//			s >> textureFilename;
+//			//連結してファイルパスにする
+//			materialData.textureFilePath = directoryPath + "/" + textureFilename;
+//		}
+//	}
+//
+//	//4,MaterialDataを返す
+//	return materialData;
+//}
 
 
 ////////=========Objファイルを読む関数=========////
@@ -374,7 +374,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	//3Dオブジェクトの初期化
 	Object3d* object3d = new Object3d();
-	object3d->Initialize();
+	object3d->Initialize(object3dCommon);
 
 
 
@@ -446,16 +446,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	////=========平行光源用のResourceを作成=========////
 
-	//平行光源用のリソースを作る
-	Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(DirectionalLight));
-	//データを書き込む
-	DirectionalLight* directionalLightData = nullptr;
-	//書き込むためのアドレスを取得
-	shaderResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-	//デフォルト値はとりあえず以下のようにしておく
-	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData->intensity = 1.0f;
+	////平行光源用のリソースを作る
+	//Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(DirectionalLight));
+	////データを書き込む
+	//DirectionalLight* directionalLightData = nullptr;
+	////書き込むためのアドレスを取得
+	//shaderResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
+	////デフォルト値はとりあえず以下のようにしておく
+	//directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
+	//directionalLightData->direction = { 0.0f,-1.0f,0.0f };
+	//directionalLightData->intensity = 1.0f;
 
 
 	////=========Index用のあれやこれやを作成する=========////
