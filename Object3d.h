@@ -1,5 +1,6 @@
 #pragma once
 #include "Object3dCommon.h"
+#include "Model.h"
 #include <fstream>
 #include "Vector4.h"
 #include "Vector2.h"
@@ -18,33 +19,6 @@ public:
 	static const int kWindowHeight = 720;
 
 	//--------構造体--------//
-
-	//頂点データの拡張
-	struct VertexData {
-		Vector4 position;
-		Vector2 texcoord;
-		Vector3 normal;
-	};
-
-	//マテリアルを拡張する
-	struct Material {
-		Vector4 color;
-		int32_t enableLighting;
-		float padding[3];
-		Matrix4x4 uvTransform;
-	};
-
-	//MaterialData構造体
-	struct MaterialData {
-		std::string textureFilePath;
-		uint32_t textureIndex = 0;
-	};
-
-	//ModelData構造体
-	struct ModelData {
-		std::vector<VertexData>vertices;
-		MaterialData material;
-	};
 
 	//TransformationMatrixを拡張する
 	struct TransformationMatrix {
@@ -76,16 +50,6 @@ public:
 	void Draw();
 
 	/// <summary>
-	/// 頂点データを作成
-	/// </summary>
-	void CreateVertexData();
-
-	/// <summary>
-	/// マテリアルデータの初期化
-	/// </summary>
-	void  CreateMaterialData();
-
-	/// <summary>
 	/// 座標変換行列データの初期化
 	/// </summary>
 	void CreateTransformationMatrixData();
@@ -96,37 +60,33 @@ public:
 	void CreateDirectionalLightData();
 
 
-	/// <summary>
-	/// .mtlファイルの読み取り
-	/// </summary>
-	static MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
+	//--------Setter--------//
+	//ModelのSetter
+	void SetModel(Model* model) { this->model_ = model; }
 
-	/// <summary>
-	/// .objファイルの読み取り
-	/// </summary>
-	static ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
+	//--------setter--------//
+	void SetScale(const Vector3& scale) { this->transform.scale = scale; }
+	void SetRotate(const Vector3& rotate) { this->transform.rotate = rotate; }
+	void SetTranslate(const Vector3& translate) { this->transform.translate = translate; }
 
+	//--------getter--------//
+	const Vector3& GetScale() const { return transform.scale; }
+	const Vector3& GetRotate() const { return transform.rotate; }
+	const Vector3& GetTranslate() const { return transform.translate; }
 
 
 private:
 	//Object3dCommonの初期化
 	Object3dCommon* object3dCommon_ = nullptr;
-
-	//モデル読み込み
-	ModelData modelData;
+	//Modelの初期化
+	Model* model_ = nullptr;
 
 	// バッファリソース
-	Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource;  // 頂点バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> materialResource;  //// マテリアル用の定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  //TransformMatrix用Matrix4x4 1つ分のサイズを用意する
 	Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource;  //平行光源用
 	// バッファリソース内のデータを指すポインタ
-	VertexData* vertexData = nullptr;
-	Material* materialData = nullptr;
 	TransformationMatrix* transformationMatrixData = nullptr;
 	DirectionalLight* directionalLightData = nullptr;
-	// バッファリソースの使い道を補完するビュー
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
 
 
 	//-------Transform--------//

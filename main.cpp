@@ -373,8 +373,41 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	object3dCommon->Initialize(dxCommon);
 
 	//3Dオブジェクトの初期化
-	Object3d* object3d = new Object3d();
-	object3d->Initialize(object3dCommon);
+	/*Object3d* object3d = new Object3d();
+	object3d->Initialize(object3dCommon);*/
+
+	//モデル共通部の初期化
+	ModelCommon* modelCommon = nullptr;
+	modelCommon = new ModelCommon();
+	modelCommon->Initialize(dxCommon);
+
+	// Modelの初期化
+	Model* model = new Model();
+	model->Initialize(modelCommon);
+
+	// Object3dにModelをセット
+	//object3d->SetModel(model);
+
+	// オブジェクトを格納するベクター
+	std::vector<Object3d*> object3dList;
+	// 各オブジェクトの初期化
+	for (int i = 0; i < 2; ++i) {
+		// 新しいオブジェクトを作成して初期化
+		Object3d* object3d = new Object3d();
+		object3d->Initialize(object3dCommon);
+		object3d->SetModel(model);  // Modelをセット
+
+		// 各オブジェクトに異なる位置や回転、スケールを設定
+		object3d->SetScale({ 1.0f, 1.0f, 1.0f });
+		object3d->SetRotate({ 0.0f, static_cast<float>(i * 45.0f), 0.0f });
+		object3d->SetTranslate({ static_cast<float>(i * 3.0f), 0.0f, 0.0f });
+
+		// オブジェクトをリストに追加
+		object3dList.push_back(object3d);
+	}
+
+
+
 
 
 
@@ -419,15 +452,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	////////=========Material用のResourceを作る=========////
 
-	//WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	Microsoft::WRL::ComPtr<ID3D12Resource> wvpResource = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(Sprite::TransformationMatrix));
-	//データを書き込む
-	Sprite::TransformationMatrix* wvpData = nullptr;
-	//書き込むためのアドレスを取得
-	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
-	//単位行列を書き込んでおく
-	wvpData->WVP = MakeIdentity4x4();
-	wvpData->World = MakeIdentity4x4();
+	////WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
+	//Microsoft::WRL::ComPtr<ID3D12Resource> wvpResource = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(Sprite::TransformationMatrix));
+	////データを書き込む
+	//Sprite::TransformationMatrix* wvpData = nullptr;
+	////書き込むためのアドレスを取得
+	//wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
+	////単位行列を書き込んでおく
+	//wvpData->WVP = MakeIdentity4x4();
+	//wvpData->World = MakeIdentity4x4();
 
 
 	//////=========Material用のResourceを作る=========////
@@ -791,9 +824,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//size.y += 0.6f;
 		//sprite->SetSize(size);
 
-		object3d->Update();
+		// 各オブジェクトの更新
+		for (auto object3d : object3dList) {
+			object3d->Update();  // 更新
+		}
 
-
+		//各スプライトの更新
 		for (size_t i = 0; i < sprites.size(); ++i) {
 			Sprite* sprite = sprites[i];
 
@@ -938,7 +974,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//ここから3Dオブジェクト個々の描画
 		//================================
 
-		object3d->Draw();
+		  // 各オブジェクトの更新と描画
+		for (auto object3d : object3dList) {
+			object3d->Draw();    // 描画
+		}
 
 
 		//================================
@@ -1056,18 +1095,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//テクスチャマネージャーの終了処理
 	TextureManager::GetInstance()->Finalize();
 
-	//WindowsAPI解放
-	delete winApp;
-	//DirectX解放
-	delete dxCommon;
-	//Sprite解放
+	// 3D オブジェクト解放
+	for (auto object3d : object3dList) {
+		delete object3d;
+	}
+
+	// Sprite の解放
 	for (Sprite* sprite : sprites) {
 		delete sprite;
 	}
+
+	// 各クラスの解放
 	delete spriteCommon;
-	//3Dオブジェクト解放
 	delete object3dCommon;
-	delete object3d;
+	delete model;
+	delete modelCommon;
+	delete dxCommon;
+	delete winApp;
 
 	return 0;
 
