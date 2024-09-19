@@ -456,7 +456,6 @@ void DirectXCommon::PostDraw()
 	{
 		fence->SetEventOnCompletion(fenceValue, fenceEvent);
 		WaitForSingleObject(fenceEvent, INFINITE);
-		CloseHandle(fenceEvent);
 	}
 
 	//FPS固定化

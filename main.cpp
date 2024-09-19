@@ -612,9 +612,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//////=========Transformを使ってCBufferを更新する=========////
 
 	//Transform変数を作る
-	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	/*Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };*/
 
-	Transform cameraTransform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-10.0f} };
+	/*Transform cameraTransform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-10.0f} };*/
 
 	////CPUで動かす用のTransformを作る
 	//Transform transformSprite{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
@@ -791,6 +791,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//size.y += 0.6f;
 		//sprite->SetSize(size);
 
+		object3d->Update();
+
 
 		for (size_t i = 0; i < sprites.size(); ++i) {
 			Sprite* sprite = sprites[i];
@@ -936,7 +938,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//ここから3Dオブジェクト個々の描画
 		//================================
 
-
+		object3d->Draw();
 
 
 		//================================
@@ -968,7 +970,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//}
 		dxCommon->GetCommandList()->IASetIndexBuffer(&startBufferViewSprite);
 		//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-		dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		/*dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);*/
 
 
 		//////=========CBVを設定する=========////
@@ -1004,6 +1006,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		////描画！（DrawCall/ドローコール）
 		//////dxCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 		//dxCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
+
 
 
 		//sprite->Draw();
@@ -1043,7 +1046,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	delete input;
 
-	//CloseHandle(fenceEvent);
+	CloseHandle(dxCommon->GetFenceEvent());
 
 
 	////=========COMの終了処理=========////

@@ -235,4 +235,5 @@ void SpriteCommon::CommonSetting()
 	dxCommon_->GetCommandList()->SetPipelineState(graphicsPipelineState.Get());    //PSOを設定
 
 	//プリミティブトポロジーをセットするコマンド
+	dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }

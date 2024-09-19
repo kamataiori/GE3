@@ -5,6 +5,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include "Transform.h"
 
 //---前方宣言---//
 class Object3dCommon;
@@ -12,6 +13,10 @@ class Object3dCommon;
 class Object3d
 {
 public:
+
+	static const int kWindowWidth = 1280;
+	static const int kWindowHeight = 720;
+
 	//--------構造体--------//
 
 	//頂点データの拡張
@@ -59,6 +64,16 @@ public:
 	/// 初期化
 	/// </summary>
 	void Initialize(Object3dCommon* object3dCommon);
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw();
 
 	/// <summary>
 	/// 頂点データを作成
@@ -112,5 +127,12 @@ private:
 	DirectionalLight* directionalLightData = nullptr;
 	// バッファリソースの使い道を補完するビュー
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
+
+
+	//-------Transform--------//
+
+	Transform transform;
+	Transform cameraTransform;
+
 };
 
