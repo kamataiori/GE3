@@ -22,7 +22,8 @@
 #include "Sprite.h"
 #include "SpriteCommon.h"
 #include "TextureManager.h"
-
+#include "Object3dCommon.h"
+#include "Object3d.h"
 #include "Transform.h"
 #include "MathFunctions.h"
 #include "externals/DirectXTex/DirectXTex.h"
@@ -366,7 +367,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		sprites.push_back(sprite);
 	}
 	
+	//3Dオブジェクト共通部の初期化
+	Object3dCommon* object3dCommon = nullptr;
+	object3dCommon = new Object3dCommon();
+	object3dCommon->Initialize();
 
+	//3Dオブジェクトの初期化
+	Object3d* object3d = new Object3d();
+	object3d->Initialize();
 
 
 
@@ -834,15 +842,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 			//テクスチャ範囲指定
 			Vector2 leftTop = sprite->GetTextureLeftTop();
-			sprite->SetTextureLeftTop({ 00.0f, 00.0f });
 			Vector2 size = sprite->GetTextureSize();
 			if (i % 2 == 0)
 			{
+				sprite->SetTextureLeftTop({ 0.0f, 0.0f });
 				sprite->SetTextureSize({ 64.0f, 64.0f });
 			}
 			else
 			{
-				sprite->SetTextureSize({ 1200.0f, 600.0f });
+				sprite->SetTextureLeftTop({ 600.0f, 280.0f });
+				sprite->SetTextureSize({ 200.0f, 200.0f });
 			}
 			
 
@@ -1028,6 +1037,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		delete sprite;
 	}
 	delete spriteCommon;
+	//3Dオブジェクト解放
+	delete object3dCommon;
+	delete object3d;
 
 	return 0;
 
