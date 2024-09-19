@@ -370,7 +370,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//3Dオブジェクト共通部の初期化
 	Object3dCommon* object3dCommon = nullptr;
 	object3dCommon = new Object3dCommon();
-	object3dCommon->Initialize();
+	object3dCommon->Initialize(dxCommon);
 
 	//3Dオブジェクトの初期化
 	Object3d* object3d = new Object3d();
@@ -929,8 +929,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		dxCommon->PreDraw();
 
 
+		//3Dオブジェクトの描画前処理。3Dオブジェクトの描画設定に共通のグラフィックスコマンドを積む
+		object3dCommon->CommonSetting();
+
+		//================================
+		//ここから3Dオブジェクト個々の描画
+		//================================
+
+
+
+
+		//================================
+		//ここまで3Dオブジェクト個々の描画
+		//================================
+
+
 		//Spriteの描画前処理。Spriteの描画設定に共通のグラフィックスコマンドを積む
 		spriteCommon->CommonSetting();
+
+		//================================
+		//ここからSprite個々の描画
+		//================================
 
 
 
@@ -993,6 +1012,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			// スプライトを描画する
 			sprite->Draw();
 		}
+
+
+		//================================
+		//ここまでSprite個々の描画
+		//================================
 
 
 		////////=========実際commandListのImGuiの描画コマンドを積む=========////
