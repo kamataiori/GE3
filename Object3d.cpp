@@ -49,6 +49,8 @@ void Object3d::Update()
 	transformationMatrixData->WVP = worldviewProjectionMatrix;
 	transformationMatrixData->World = worldMatrix;
 
+	transform.rotate.y += 0.04f;
+
 
 	ImGui::Begin("obj");
 	ImGui::DragFloat3("translate", &transform.translate.x);
