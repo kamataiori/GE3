@@ -7,6 +7,7 @@
 #include "Vector3.h"
 #include "Matrix4x4.h"
 #include "Transform.h"
+#include "ModelManager.h"
 
 //---前方宣言---//
 class Object3dCommon;
@@ -62,7 +63,8 @@ public:
 
 	//--------Setter--------//
 	//ModelのSetter
-	void SetModel(Model* model) { this->model_ = model; }
+	//void SetModel(Model* model) { this->model_ = model; }
+	void SetModel(const std::string& filePath) { model_ = ModelManager::GetInstance()->FindModel(filePath); }
 
 	//--------setter--------//
 	void SetScale(const Vector3& scale) { this->transform.scale = scale; }

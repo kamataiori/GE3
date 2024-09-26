@@ -33,6 +33,7 @@
 #include "externals/imgui/imgui_impl_win32.h"
 #include "Logger.h"
 #include "D3DResourceLeakChecker.h"
+#include "ModelManager.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -381,9 +382,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	modelCommon = new ModelCommon();
 	modelCommon->Initialize(dxCommon);
 
+	//3Dモデルマネージャーの初期化
+	ModelManager::GetInstance()->Initialize(dxCommon);
+
+	// モデルとテクスチャの読み込み
+	ModelManager::GetInstance()->LoadModel("Resources", "plane.obj");
+
 	// Modelの初期化
 	Model* model = new Model();
 	model->Initialize(modelCommon);
+
+
+
 
 	// Object3dにModelをセット
 	//object3d->SetModel(model);
@@ -392,17 +402,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	std::vector<Object3d*> object3dList;
 	// 各オブジェクトの初期化
 	for (int i = 0; i < 2; ++i) {
-		// 新しいオブジェクトを作成して初期化
 		Object3d* object3d = new Object3d();
 		object3d->Initialize(object3dCommon);
-		object3d->SetModel(model);  // Modelをセット
+		object3d->SetModel("plane.obj");  // モデルマネージャーでロードされたモデルを設定
 
-		// 各オブジェクトに異なる位置や回転、スケールを設定
 		object3d->SetScale({ 1.0f, 1.0f, 1.0f });
 		object3d->SetRotate({ 0.0f, static_cast<float>(i * 45.0f), 0.0f });
-		object3d->SetTranslate({ static_cast<float>(i * 3.0f), 0.0f, 0.0f });
+		object3d->SetTranslate({ static_cast<float>(i * 2.0f), i * -0.5f, 0.0f });
 
-		// オブジェクトをリストに追加
 		object3dList.push_back(object3d);
 	}
 
@@ -1110,6 +1117,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	delete object3dCommon;
 	delete model;
 	delete modelCommon;
+	ModelManager::GetInstance()->Finalize();
 	delete dxCommon;
 	delete winApp;
 

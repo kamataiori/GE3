@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "MathFunctions.h"
 #include "TextureManager.h"
+#include "ModelManager.h"
 
 void Model::Initialize(ModelCommon* modelCommon)
 {
@@ -8,7 +9,7 @@ void Model::Initialize(ModelCommon* modelCommon)
 	this->modelCommon_ = modelCommon;
 
 	//モデル読み込み
-	modelData = LoadObjFile("Resources", "plane.obj");
+	modelData = ModelManager::GetInstance()
 
 	// 頂点データを作成
 	CreateVertexData();

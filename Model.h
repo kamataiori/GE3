@@ -1,6 +1,5 @@
 #pragma once
 #include <fstream>
-
 #include "ModelCommon.h"
 #include "Vector4.h"
 #include "Vector2.h"
@@ -9,6 +8,7 @@
 
 //---前方宣言---//
 class ModelCommon;
+class ModelManager;
 
 class Model
 {
@@ -89,6 +89,9 @@ private:
 	Material* materialData = nullptr;
 	// バッファリソースの使い道を補完するビュー
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
+
+
+	ModelManager* modelManager_ = nullptr;
 
 
 };
