@@ -207,7 +207,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		}
 		sprites.push_back(sprite);
 	}
-	
+
 	//3Dオブジェクト共通部の初期化
 	Object3dCommon* object3dCommon = nullptr;
 	object3dCommon = new Object3dCommon();
@@ -223,8 +223,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	modelCommon->Initialize(dxCommon);
 
 	// Modelの初期化
-	Model* model = new Model();
-	model->Initialize(modelCommon);
+	/*Model* model = new Model();
+	model->Initialize(modelCommon, "Resources", "plane.obj");*/
+
+
+	// ベクターに格納するためのモデルのリストを作成
+	std::vector<Model*> models;
+	models.push_back(new Model());
+	models.back()->Initialize(modelCommon, "Resources", "plane.obj");  // 1つ目のモデル
+
+	models.push_back(new Model());
+	models.back()->Initialize(modelCommon, "Resources", "axis.obj");  // 2つ目のモデル
+
 
 	// Object3dにModelをセット
 	//object3d->SetModel(model);
@@ -236,7 +246,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		// 新しいオブジェクトを作成して初期化
 		Object3d* object3d = new Object3d();
 		object3d->Initialize(object3dCommon);
-		object3d->SetModel(model);  // Modelをセット
+		object3d->SetModel(models[i]);  // Modelをセット
 
 		// 各オブジェクトに異なる位置や回転、スケールを設定
 		object3d->SetScale({ 1.0f, 1.0f, 1.0f });
@@ -283,7 +293,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//インデックスはuint32_tとする
 	startBufferViewSprite.Format = DXGI_FORMAT_R32_UINT;
 
-	
+
 
 	D3D12_VIEWPORT viewport{};
 	//クライアント領域のサイズと一緒にして画面全体に表示
@@ -472,7 +482,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 				sprite->SetTextureLeftTop({ 600.0f, 280.0f });
 				sprite->SetTextureSize({ 200.0f, 200.0f });
 			}
-			
+
 
 
 			// 各スプライトを更新
@@ -481,7 +491,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		}
 
 
-	
+
 		//////ImGuiの内部コマンドを生成する
 		ImGui::Render();
 
@@ -534,7 +544,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 		/*dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);*/
 
-		
+
 
 
 
@@ -598,7 +608,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	// 各クラスの解放
 	delete spriteCommon;
 	delete object3dCommon;
-	delete model;
+	for (Model* model : models)
+	{
+		delete model;
+	}
 	delete modelCommon;
 	delete dxCommon;
 	delete winApp;

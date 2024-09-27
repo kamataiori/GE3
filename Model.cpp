@@ -2,13 +2,13 @@
 #include "MathFunctions.h"
 #include "TextureManager.h"
 
-void Model::Initialize(ModelCommon* modelCommon)
+void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypath, const std::string& filename)
 {
 	//引数で受け取ってメンバ変数に記録する
 	this->modelCommon_ = modelCommon;
 
 	//モデル読み込み
-	modelData = LoadObjFile("Resources", "plane.obj");
+	modelData = LoadObjFile(directorypath, filename);
 
 	// 頂点データを作成
 	CreateVertexData();
