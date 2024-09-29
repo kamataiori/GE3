@@ -34,17 +34,24 @@ void Object3d::Update()
 	transformationMatrixData->WVP = worldviewProjectionMatrix;
 	transformationMatrixData->World = worldMatrix;
 
-	transform.rotate.y += 0.04f;
+	transform.rotate.y += 0.06f;
 
+}
 
-	ImGui::Begin("obj");
-	ImGui::DragFloat3("translate", &transform.translate.x);
-	ImGui::DragFloat3("scale", &transform.scale.x);
-	ImGui::DragFloat3("rotate", &transform.rotate.x);
-	ImGui::DragFloat3("cameraTranslate", &cameraTransform.translate.x);
-	ImGui::DragFloat3("cameraScale", &cameraTransform.scale.x);
-	ImGui::DragFloat3("cameraRotate", &cameraTransform.rotate.x);
+void Object3d::ImGuiUpdate(int id)
+{
+	std::string nodeName = "object3d" + std::to_string(id);
 
+	ImGui::Begin("object3d");
+	if (ImGui::TreeNode(nodeName.c_str())) {
+		ImGui::DragFloat3("translate", &transform.translate.x);
+		ImGui::DragFloat3("scale", &transform.scale.x);
+		ImGui::DragFloat3("rotate", &transform.rotate.x);
+		ImGui::DragFloat3("cameraTranslate", &cameraTransform.translate.x);
+		ImGui::DragFloat3("cameraScale", &cameraTransform.scale.x);
+		ImGui::DragFloat3("cameraRotate", &cameraTransform.rotate.x);
+		ImGui::TreePop();
+	}
 	ImGui::End();
 }
 

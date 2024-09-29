@@ -1,6 +1,7 @@
 #pragma once
 #include "Object3dCommon.h"
 #include "Model.h"
+#include "ModelManager.h"
 #include <fstream>
 #include "Vector4.h"
 #include "Vector2.h"
@@ -33,6 +34,7 @@ public:
 		float intensity;  //!<輝度
 	};
 
+	~Object3d() = default;
 
 	/// <summary>
 	/// 初期化
@@ -43,6 +45,11 @@ public:
 	/// 更新
 	/// </summary>
 	void Update();
+
+	/// <summary>
+	/// ImGuiの更新
+	/// </summary>
+	void ImGuiUpdate(int id);
 
 	/// <summary>
 	/// 描画
@@ -62,7 +69,8 @@ public:
 
 	//--------Setter--------//
 	//ModelのSetter
-	void SetModel(Model* model) { this->model_ = model; }
+	//void SetModel(Model* model) { this->model_ = model; }
+	void SetModel(const std::string& filePath) { model_ = ModelManager::GetInstance()->FindModel(filePath); }
 
 	//--------setter--------//
 	void SetScale(const Vector3& scale) { this->transform.scale = scale; }

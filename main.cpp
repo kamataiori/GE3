@@ -214,48 +214,59 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	object3dCommon->Initialize(dxCommon);
 
 	//3Dオブジェクトの初期化
-	/*Object3d* object3d = new Object3d();
-	object3d->Initialize(object3dCommon);*/
+	Object3d* object3d = new Object3d();
+	object3d->Initialize(object3dCommon);
+
+	Object3d* object3d2 = new Object3d();
+	object3d2->Initialize(object3dCommon);
 
 	//モデル共通部の初期化
 	ModelCommon* modelCommon = nullptr;
 	modelCommon = new ModelCommon();
 	modelCommon->Initialize(dxCommon);
 
-	// Modelの初期化
-	/*Model* model = new Model();
-	model->Initialize(modelCommon, "Resources", "plane.obj");*/
+	ModelManager::GetInstance()->Initialize(dxCommon);
+	ModelManager::GetInstance()->LoadModel("plane.obj");
+	ModelManager::GetInstance()->LoadModel("axis.obj");
+	object3d->SetModel("plane.obj");
+	object3d2->SetModel("axis.obj");
 
 
-	// ベクターに格納するためのモデルのリストを作成
-	std::vector<Model*> models;
-	models.push_back(new Model());
-	models.back()->Initialize(modelCommon, "Resources", "plane.obj");  // 1つ目のモデル
+	object3d->SetScale({ 1.0f, 1.0f, 1.0f });
+	object3d->SetRotate({ 0.0f,(45.0f), 0.0f });
+	object3d->SetTranslate({ (0.0f), 0.0f, 0.0f });
 
-	models.push_back(new Model());
-	models.back()->Initialize(modelCommon, "Resources", "axis.obj");  // 2つ目のモデル
+	object3d2->SetScale({ 1.0f, 1.0f, 1.0f });
+	object3d2->SetRotate({ 45.0f,(0.0f), 0.0f });
+	object3d2->SetTranslate({ (3.0f), 0.0f, 0.0f });
 
 
-	// Object3dにModelをセット
-	//object3d->SetModel(model);
 
-	// オブジェクトを格納するベクター
-	std::vector<Object3d*> object3dList;
-	// 各オブジェクトの初期化
-	for (int i = 0; i < 2; ++i) {
-		// 新しいオブジェクトを作成して初期化
-		Object3d* object3d = new Object3d();
-		object3d->Initialize(object3dCommon);
-		object3d->SetModel(models[i]);  // Modelをセット
 
-		// 各オブジェクトに異なる位置や回転、スケールを設定
-		object3d->SetScale({ 1.0f, 1.0f, 1.0f });
-		object3d->SetRotate({ 0.0f, static_cast<float>(i * 45.0f), 0.0f });
-		object3d->SetTranslate({ static_cast<float>(i * 3.0f), 0.0f, 0.0f });
+	//// オブジェクトを格納するベクター
+	//std::vector<Object3d*> object3dList;
+	//// 各オブジェクトの初期化
+	//for (int i = 0; i < 2; ++i) {
 
-		// オブジェクトをリストに追加
-		object3dList.push_back(object3d);
-	}
+	//	if (i % 2 == 0) {
+	//		
+	//		/*object3d->Initialize(object3dCommon);*/
+	//		//object3d->SetModel("plane.obj");
+	//	}
+	//	else {
+	//		
+	//		/*object3d->Initialize(object3dCommon);*/
+	//		//object3d->SetModel("axis.obj");
+	//	}
+
+	//	// 各オブジェクトに異なる位置や回転、スケールを設定
+	//	object3d->SetScale({ 1.0f, 1.0f, 1.0f });
+	//	object3d->SetRotate({ 0.0f, static_cast<float>(i * 45.0f), 0.0f });
+	//	object3d->SetTranslate({ static_cast<float>(i * 3.0f), 0.0f, 0.0f });
+
+	//	// オブジェクトをリストに追加
+	//	object3dList.push_back(object3d);
+	//}
 
 
 
@@ -415,10 +426,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//size.y += 0.6f;
 		//sprite->SetSize(size);
 
-		// 各オブジェクトの更新
-		for (auto object3d : object3dList) {
-			object3d->Update();  // 更新
-		}
+		//// 各オブジェクトの更新
+		//for (auto object3d : object3dList) {
+		//	object3d->Update();  // 更新
+		//}
+
+		object3d->Update();
+		object3d2->Update();
+
+		object3d->ImGuiUpdate(0);
+		object3d2->ImGuiUpdate(1);
+
 
 		//各スプライトの更新
 		for (size_t i = 0; i < sprites.size(); ++i) {
@@ -508,10 +526,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//================================
 
 		  // 各オブジェクトの更新と描画
-		for (auto object3d : object3dList) {
-			object3d->Draw();    // 描画
-		}
-
+		//for (auto object3d : object3dList) {
+		//	object3d->Draw();    // 描画
+		//}
+		object3d->Draw();
+		object3d2->Draw();
 
 		//================================
 		//ここまで3Dオブジェクト個々の描画
@@ -596,9 +615,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	TextureManager::GetInstance()->Finalize();
 
 	// 3D オブジェクト解放
-	for (auto object3d : object3dList) {
-		delete object3d;
-	}
+	delete object3d;
+	delete object3d2;
 
 	// Sprite の解放
 	for (Sprite* sprite : sprites) {
@@ -608,10 +626,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	// 各クラスの解放
 	delete spriteCommon;
 	delete object3dCommon;
-	for (Model* model : models)
-	{
-		delete model;
-	}
+	ModelManager::GetInstance()->Finalize();
 	delete modelCommon;
 	delete dxCommon;
 	delete winApp;
