@@ -214,11 +214,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	object3dCommon->Initialize(dxCommon);
 
 	//3Dオブジェクトの初期化
-	Object3d* object3d = new Object3d();
-	object3d->Initialize(object3dCommon);
+	Object3d* plane = new Object3d();
+	plane->Initialize(object3dCommon);
 
-	Object3d* object3d2 = new Object3d();
-	object3d2->Initialize(object3dCommon);
+	Object3d* axis = new Object3d();
+	axis->Initialize(object3dCommon);
 
 	//モデル共通部の初期化
 	ModelCommon* modelCommon = nullptr;
@@ -228,69 +228,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	ModelManager::GetInstance()->Initialize(dxCommon);
 	ModelManager::GetInstance()->LoadModel("plane.obj");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
-	object3d->SetModel("plane.obj");
-	object3d2->SetModel("axis.obj");
+	plane->SetModel("plane.obj");
+	axis->SetModel("axis.obj");
 
 
-	object3d->SetScale({ 1.0f, 1.0f, 1.0f });
-	object3d->SetRotate({ 0.0f,(45.0f), 0.0f });
-	object3d->SetTranslate({ (0.0f), 0.0f, 0.0f });
+	plane->SetScale({ 1.0f, 1.0f, 1.0f });
+	plane->SetRotate({ 0.0f,(45.0f), 0.0f });
+	plane->SetTranslate({ (0.0f), 0.0f, 0.0f });
 
-	object3d2->SetScale({ 1.0f, 1.0f, 1.0f });
-	object3d2->SetRotate({ 45.0f,(0.0f), 0.0f });
-	object3d2->SetTranslate({ (3.0f), 0.0f, 0.0f });
-
-
-
-
-	//// オブジェクトを格納するベクター
-	//std::vector<Object3d*> object3dList;
-	//// 各オブジェクトの初期化
-	//for (int i = 0; i < 2; ++i) {
-
-	//	if (i % 2 == 0) {
-	//		
-	//		/*object3d->Initialize(object3dCommon);*/
-	//		//object3d->SetModel("plane.obj");
-	//	}
-	//	else {
-	//		
-	//		/*object3d->Initialize(object3dCommon);*/
-	//		//object3d->SetModel("axis.obj");
-	//	}
-
-	//	// 各オブジェクトに異なる位置や回転、スケールを設定
-	//	object3d->SetScale({ 1.0f, 1.0f, 1.0f });
-	//	object3d->SetRotate({ 0.0f, static_cast<float>(i * 45.0f), 0.0f });
-	//	object3d->SetTranslate({ static_cast<float>(i * 3.0f), 0.0f, 0.0f });
-
-	//	// オブジェクトをリストに追加
-	//	object3dList.push_back(object3d);
-	//}
+	axis->SetScale({ 1.0f, 1.0f, 1.0f });
+	axis->SetRotate({ 45.0f,(0.0f), 0.0f });
+	axis->SetTranslate({ (3.0f), 0.0f, 0.0f });
 
 
 
+
+	
 	//////=========VertexResourceを生成する=========////
 
 	int  SphereVertex = 32 * 32 * 6;
 
-	//モデル読み込み
-	//ModelData modelData = LoadObjFile("Resources", "plane.obj");
-	//ModelData modelData = LoadObjFile("Resources", "axis.obj");
-
-	//Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource = dxCommon->CreateBufferResource(/*device,*/ sizeof(VertexData) * modelData.vertices.size());
-
-	//球
-	//ID3D12Resource* vertexResource = CreateBufferResource(device, sizeof(VertexData) * SphreVertex);
-
-	//三角形
-	//ID3D12Resource* vertexResource = CreateBufferResource(device, sizeof(VertexData) * 6);
-
-
-	//Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource = CreateDepthStencilTextureResorce(device, WinApp::kClientWidth, WinApp::kClientHeight);
-
-	//Sprite用の頂点リソースを作る
-	//Microsoft::WRL::ComPtr<ID3D12Resource> vertexResorceSprite = dxCommon->CreateBufferResource(/*device,*/ sizeof(VertexData) * 6);
+	
 
 	//Resourceを作成
 	Microsoft::WRL::ComPtr<ID3D12Resource> startResourceSprite = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(uint32_t) * 32 * 32 * 6);
@@ -349,24 +307,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());*/
 
 
-		////////=========DescriptorSizeを取得しておく=========////
-
-		/*const uint32_t descriptorSizeSRV = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-		const uint32_t descriptorSizeRTV = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-		const uint32_t descriptorSizeDSV = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
-	*/
-
 	bool useMonsterBall = true;
 	Vector4 color = { 1,1,1,1 };
 
-
-
-
-	//////-----Spriteの更新処理と描画処理-----////
-	//float offsetX = 100.0f;  // 各スプライトのX座標をずらすオフセット値
-	//float initialX = 100.0f; // 初期X座標
-	//// 小さく描画するための初期スケールを設定
-	//Vector2 initialSize(80.0f, 80.0f);  // 例として50x50のサイズに設定
 
 
 
@@ -395,50 +338,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//ゲームの処理
 
 
-		////-----Spriteの更新処理-----////
-		//sprite->Update();
+		////-----各3DObjectの更新処理-----////
 
-		////現在の座標を変数で受け取る
-		//Vector2 position = sprite->GetPosition();
-		////座標を変更
-		//position.x += 1.1f;
-		//position.y += 1.1f;
-		////変更を反映する
-		//sprite->SetPosition(position);
+		plane->Update();
+		axis->Update();
 
-		////角度を変化させる
-		//float rotation = sprite->GetRotation();
-		//rotation += 0.008f;
-		//sprite->SetRotation(rotation);
-
-		////色を変化させる
-		//Vector4 color = sprite->GetColor();
-		//color.x += 0.01f;
-		//if (color.x > 1.0f)
-		//{
-		//	color.x -= 1.0f;
-		//}
-		//sprite->SetColor(color);
-
-		////スケールを変化させる
-		//Vector2 size = sprite->GetSize();
-		//size.x += 0.6f;
-		//size.y += 0.6f;
-		//sprite->SetSize(size);
-
-		//// 各オブジェクトの更新
-		//for (auto object3d : object3dList) {
-		//	object3d->Update();  // 更新
-		//}
-
-		object3d->Update();
-		object3d2->Update();
-
-		object3d->ImGuiUpdate(0);
-		object3d2->ImGuiUpdate(1);
+		plane->ImGuiUpdate("plane");
+		axis->ImGuiUpdate("axis");
 
 
-		//各スプライトの更新
+		////-----各Spriteの更新処理-----////
 		for (size_t i = 0; i < sprites.size(); ++i) {
 			Sprite* sprite = sprites[i];
 
@@ -501,8 +410,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 				sprite->SetTextureSize({ 200.0f, 200.0f });
 			}
 
-
-
 			// 各スプライトを更新
 			sprite->Update();
 
@@ -529,8 +436,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		//for (auto object3d : object3dList) {
 		//	object3d->Draw();    // 描画
 		//}
-		object3d->Draw();
-		object3d2->Draw();
+		plane->Draw();
+		axis->Draw();
 
 		//================================
 		//ここまで3Dオブジェクト個々の描画
@@ -615,8 +522,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	TextureManager::GetInstance()->Finalize();
 
 	// 3D オブジェクト解放
-	delete object3d;
-	delete object3d2;
+	delete plane;
+	delete axis;
 
 	// Sprite の解放
 	for (Sprite* sprite : sprites) {

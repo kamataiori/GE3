@@ -49,7 +49,7 @@ public:
 	/// <summary>
 	/// ImGuiの更新
 	/// </summary>
-	void ImGuiUpdate(int id);
+	void ImGuiUpdate(const std::string& Name);
 
 	/// <summary>
 	/// 描画

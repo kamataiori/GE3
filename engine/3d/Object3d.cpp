@@ -38,9 +38,9 @@ void Object3d::Update()
 
 }
 
-void Object3d::ImGuiUpdate(int id)
+void Object3d::ImGuiUpdate(const std::string& Name)
 {
-	std::string nodeName = "object3d" + std::to_string(id);
+	std::string nodeName = "object3d_" + Name;
 
 	ImGui::Begin("object3d");
 	if (ImGui::TreeNode(nodeName.c_str())) {
