@@ -17,6 +17,9 @@ void Object3d::Initialize(Object3dCommon* object3dCommon)
 	transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	cameraTransform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-10.0f} };
 
+	//デフォルトカメラをセット
+	this->camera = object3dCommon_->GetDefaultCamera();
+
 }
 
 void Object3d::Update()
@@ -24,13 +27,14 @@ void Object3d::Update()
 	//TransformからworldMatrixを作る
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	//cameraTransformからcameraMatrixを作る
-	Matrix4x4 cameraMatrix = MakeAffineMatrix(cameraTransform.scale, cameraTransform.rotate, cameraTransform.translate);
-	//cameraMatrixからviewMatrixを作る
-	Matrix4x4 viewMatrix = Inverse(cameraMatrix);
-	//ProjectionMatrixを作って透視投影行列を書き込む
-	Matrix4x4 projectionMatrix = MakePerspectiveFovMatrix(0.45f, float(kWindowWidth) / float(kWindowHeight), 0.1f, 100.0f);
+	if (camera) {
+		const Matrix4x4& viewProjectionMatrix = camera->GetViewProjectionMatrix();
+		worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
+	}
+	else {
+		worldviewProjectionMatrix = worldMatrix;
+	}
 
-	Matrix4x4 worldviewProjectionMatrix = Multiply(worldMatrix, Multiply(viewMatrix, projectionMatrix));
 	transformationMatrixData->WVP = worldviewProjectionMatrix;
 	transformationMatrixData->World = worldMatrix;
 
@@ -47,9 +51,6 @@ void Object3d::ImGuiUpdate(const std::string& Name)
 		ImGui::DragFloat3("translate", &transform.translate.x);
 		ImGui::DragFloat3("scale", &transform.scale.x);
 		ImGui::DragFloat3("rotate", &transform.rotate.x);
-		ImGui::DragFloat3("cameraTranslate", &cameraTransform.translate.x);
-		ImGui::DragFloat3("cameraScale", &cameraTransform.scale.x);
-		ImGui::DragFloat3("cameraRotate", &cameraTransform.rotate.x);
 		ImGui::TreePop();
 	}
 	ImGui::End();

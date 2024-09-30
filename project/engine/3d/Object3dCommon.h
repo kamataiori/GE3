@@ -1,5 +1,6 @@
 #pragma once
 #include "DirectXCommon.h"
+#include "Camera.h"
 
 class Object3dCommon
 {
@@ -57,7 +58,10 @@ public:
 	//------Getter------//
 	//DirectXCommongetter
 	DirectXCommon* GetDxCommon() const { return dxCommon_; }
+	Camera* GetDefaultCamera() const { return defaultCamera; }
 
+	//------Setter------//
+	void SetDefaultCamera(Camera* camera) { this->defaultCamera = camera; }
 
 
 private:
@@ -116,6 +120,9 @@ private:
 	//Shaderをコンパイルする
 	Microsoft::WRL::ComPtr<IDxcBlob> vertexShaderBlob_{};
 	Microsoft::WRL::ComPtr<IDxcBlob> pixelShaderBlob_{};
+
+	//デフォルトカメラ
+	Camera* defaultCamera = nullptr;
 
 };
 

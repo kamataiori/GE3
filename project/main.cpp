@@ -21,6 +21,7 @@
 #include "TextureManager.h"
 #include "Object3dCommon.h"
 #include "Object3d.h"
+#include "Camera.h"
 #include "Transform.h"
 #include "MathFunctions.h"
 #include "externals/DirectXTex/DirectXTex.h"
@@ -174,13 +175,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//モデルにSRTを設定
 	plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f,(45.0f), 0.0f });
-	plane->SetTranslate({ (0.0f), 0.0f, 0.0f });
+	plane->SetTranslate({ (-2.0f), 0.0f, 0.0f });
 
 	axis->SetScale({ 1.0f, 1.0f, 1.0f });
-	axis->SetRotate({ 45.0f,(0.0f), 0.0f });
-	axis->SetTranslate({ (3.0f), 0.0f, 0.0f });
+	axis->SetRotate({ 0.0f,45.0f, 0.0f });
+	axis->SetTranslate({ (2.0f), 0.0f, 0.0f });
 
-
+	//3Dカメラの初期化
+	Camera* camera = new Camera();
+	camera->SetRotate({ 0.0f,0.0f,0.0f });
+	camera->SetTranslate({ 0.0f,0.0f,-10.0f });
+	object3dCommon->SetDefaultCamera(camera);
+	//カメラのセット
+	plane->SetCamera(camera);
+	axis->SetCamera(camera);
 
 
 	//////=========入力の初期化=========////
@@ -231,6 +239,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 		plane->ImGuiUpdate("plane");
 		axis->ImGuiUpdate("axis");
+
+		camera->Update();
 
 
 		////-----各Spriteの更新処理-----////
@@ -403,6 +413,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	// 各クラスの解放
 	delete spriteCommon;
 	delete object3dCommon;
+	delete camera;
 	ModelManager::GetInstance()->Finalize();
 	delete modelCommon;
 	delete dxCommon;

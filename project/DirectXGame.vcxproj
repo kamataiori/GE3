@@ -93,7 +93,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="engine\3d\Camera.cpp" />
     <ClCompile Include="engine\check\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="engine\directx\DirectXCommon.cpp" />
     <ClCompile Include="externals\imgui\imgui.cpp" />
@@ -122,7 +122,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\WinApp\WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="engine\3d\Camera.h" />
     <ClInclude Include="engine\check\D3DResourceLeakChecker.h" />
     <ClInclude Include="engine\directx\DirectXCommon.h" />
     <ClInclude Include="externals\imgui\imconfig.h" />

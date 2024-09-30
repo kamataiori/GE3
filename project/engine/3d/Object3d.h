@@ -2,6 +2,7 @@
 #include "Object3dCommon.h"
 #include "Model.h"
 #include "ModelManager.h"
+#include "Camera.h"
 #include <fstream>
 #include "Vector4.h"
 #include "Vector2.h"
@@ -11,6 +12,7 @@
 
 //---前方宣言---//
 class Object3dCommon;
+class Camera;
 
 class Object3d
 {
@@ -76,6 +78,7 @@ public:
 	void SetScale(const Vector3& scale) { this->transform.scale = scale; }
 	void SetRotate(const Vector3& rotate) { this->transform.rotate = rotate; }
 	void SetTranslate(const Vector3& translate) { this->transform.translate = translate; }
+	void SetCamera(Camera* camera) { this->camera = camera; }
 
 	//--------getter--------//
 	const Vector3& GetScale() const { return transform.scale; }
@@ -96,8 +99,13 @@ private:
 	TransformationMatrix* transformationMatrixData = nullptr;
 	DirectionalLight* directionalLightData = nullptr;
 
+	//Cameraの初期化
+	Camera* camera = nullptr;
 
-	//-------Transform--------//
+	Matrix4x4 worldviewProjectionMatrix;
+
+
+	////-------Transform--------//
 
 	Transform transform;
 	Transform cameraTransform;
