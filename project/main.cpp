@@ -22,6 +22,7 @@
 #include "Object3dCommon.h"
 #include "Object3d.h"
 #include "Camera.h"
+#include "CameraManager.h"
 #include "Transform.h"
 #include "MathFunctions.h"
 #include "externals/DirectXTex/DirectXTex.h"
@@ -182,13 +183,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	axis->SetTranslate({ (2.0f), 0.0f, 0.0f });
 
 	//3Dカメラの初期化
-	Camera* camera = new Camera();
+	/*Camera* camera = new Camera();
 	camera->SetRotate({ 0.0f,0.0f,0.0f });
 	camera->SetTranslate({ 0.0f,0.0f,-10.0f });
-	object3dCommon->SetDefaultCamera(camera);
-	//カメラのセット
-	plane->SetCamera(camera);
-	axis->SetCamera(camera);
+	object3dCommon->SetDefaultCamera(camera);*/
+
+	// カメラマネージャーの初期化
+	CameraManager* cameraManager = new CameraManager();
+	// 複数のカメラを追加
+	Camera* camera1 = new Camera();
+	camera1->SetTranslate({ 0.0f, 0.0f, -10.0f });
+	cameraManager->AddCamera(camera1);
+
+	Camera* camera2 = new Camera();
+	camera2->SetTranslate({ 1.0f, 1.0f, -20.0f });
+	cameraManager->AddCamera(camera2);
+
+	// カメラをObject3dにセット
+	plane->SetCameraManager(cameraManager);
+	axis->SetCameraManager(cameraManager);
+	////カメラのセット
+	//plane->SetCamera(camera);
+	//axis->SetCamera(camera);
+
 
 
 	//////=========入力の初期化=========////
@@ -240,7 +257,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		plane->ImGuiUpdate("plane");
 		axis->ImGuiUpdate("axis");
 
-		camera->Update();
+		//camera->Update();
+		camera1->Update();
+		camera2->Update();
+		ImGui::Begin("Camera Control");
+
+		bool cameraFlag = false;  // ImGuiで制御するカメラの切り替えフラグ
+
+		// カメラの切り替えフラグをチェックボックスで制御
+		if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
+			// チェックボックスが切り替わったらカメラを変更
+			if (cameraFlag) {
+				cameraManager->SetCurrentCamera(1);  // 2番目のカメラに切り替え
+			}
+			else {
+				cameraManager->SetCurrentCamera(0);  // 1番目のカメラに戻す
+			}
+		}
+
+		ImGui::End();
+
+
 
 
 		////-----各Spriteの更新処理-----////
@@ -413,7 +450,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	// 各クラスの解放
 	delete spriteCommon;
 	delete object3dCommon;
-	delete camera;
+	//delete camera;
+	delete cameraManager;
 	ModelManager::GetInstance()->Finalize();
 	delete modelCommon;
 	delete dxCommon;

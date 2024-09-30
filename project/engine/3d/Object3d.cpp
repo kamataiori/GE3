@@ -27,9 +27,12 @@ void Object3d::Update()
 	//TransformからworldMatrixを作る
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	//cameraTransformからcameraMatrixを作る
-	if (camera) {
-		const Matrix4x4& viewProjectionMatrix = camera->GetViewProjectionMatrix();
-		worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
+	if (cameraManager_) {
+		Camera* camera = cameraManager_->GetCurrentCamera();
+		if (camera) {
+			Matrix4x4 viewProjectionMatrix = camera->GetViewProjectionMatrix();
+			worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
+		}
 	}
 	else {
 		worldviewProjectionMatrix = worldMatrix;
@@ -92,4 +95,9 @@ void Object3d::CreateDirectionalLightData()
 	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
+}
+
+void Object3d::SetCameraManager(CameraManager* cameraManager)
+{
+	this->cameraManager_ = cameraManager;
 }

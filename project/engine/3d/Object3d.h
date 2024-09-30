@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "ModelManager.h"
 #include "Camera.h"
+#include "CameraManager.h"
 #include <fstream>
 #include "Vector4.h"
 #include "Vector2.h"
@@ -79,6 +80,8 @@ public:
 	void SetRotate(const Vector3& rotate) { this->transform.rotate = rotate; }
 	void SetTranslate(const Vector3& translate) { this->transform.translate = translate; }
 	void SetCamera(Camera* camera) { this->camera = camera; }
+	// カメラの設定
+	void SetCameraManager(CameraManager* cameraManager);
 
 	//--------getter--------//
 	const Vector3& GetScale() const { return transform.scale; }
@@ -101,6 +104,7 @@ private:
 
 	//Cameraの初期化
 	Camera* camera = nullptr;
+	 CameraManager* cameraManager_ = nullptr;
 
 	Matrix4x4 worldviewProjectionMatrix;
 
