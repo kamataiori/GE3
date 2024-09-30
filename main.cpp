@@ -1,5 +1,4 @@
 #include <Windows.h>
-
 #include <cstdint>
 #include <string>
 #include <format>
@@ -9,9 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include "wrl.h"
-
 #include "ResourceObject.h"
-
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <dxgidebug.h>
@@ -225,13 +222,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	modelCommon = new ModelCommon();
 	modelCommon->Initialize(dxCommon);
 
+	//モデル読み込み
 	ModelManager::GetInstance()->Initialize(dxCommon);
 	ModelManager::GetInstance()->LoadModel("plane.obj");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
 	plane->SetModel("plane.obj");
 	axis->SetModel("axis.obj");
 
-
+	//モデルにSRTを設定
 	plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f,(45.0f), 0.0f });
 	plane->SetTranslate({ (0.0f), 0.0f, 0.0f });
@@ -243,47 +241,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 
 
-	
-	//////=========VertexResourceを生成する=========////
-
-	int  SphereVertex = 32 * 32 * 6;
-
-	
-
-	//Resourceを作成
-	Microsoft::WRL::ComPtr<ID3D12Resource> startResourceSprite = dxCommon->CreateBufferResource(/*dxCommon->GetDevice().Get(),*/ sizeof(uint32_t) * 32 * 32 * 6);
-
-	//Viewを作成する
-	D3D12_INDEX_BUFFER_VIEW startBufferViewSprite{};
-	//リソースの先頭アドレスから使う
-	startBufferViewSprite.BufferLocation = startResourceSprite->GetGPUVirtualAddress();
-	//使用するリソースのサイズはインデックスつ分のサイズ
-	startBufferViewSprite.SizeInBytes = sizeof(uint32_t) * 32 * 32 * 6;
-	//インデックスはuint32_tとする
-	startBufferViewSprite.Format = DXGI_FORMAT_R32_UINT;
-
-
-
-	D3D12_VIEWPORT viewport{};
-	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = WinApp::kClientWidth;
-	viewport.Height = WinApp::kClientHeight;
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-
-	//シザー矩形
-	D3D12_RECT scissorRect{};
-	//基本的にビューポートと同じ矩形が構成されるようにする
-	scissorRect.left = 0;
-	scissorRect.right = WinApp::kClientWidth;
-	scissorRect.top = 0;
-	scissorRect.bottom = WinApp::kClientHeight;
-
-	MSG msg{};
-
-
 	//////=========入力の初期化=========////
 
 	//ポインタ
@@ -291,20 +248,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//入力の初期化
 	input = new Input();
 	input->Initialize(winApp);
-
-
-	//////=========Imguiの初期化=========////
-
-	/*IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui::StyleColorsDark();
-	ImGui_ImplWin32_Init(winApp->GetHwnd());
-	ImGui_ImplDX12_Init(device.Get(),
-		swapChainDesc.BufferCount,
-		rtvDesc.Format,
-		srvDescriptorHeap.Get(),
-		srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());*/
 
 
 	bool useMonsterBall = true;
@@ -330,12 +273,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		//////=========入力の更新=========////
+		////=========入力の更新=========////
 
 		input->Update();
 
-
-		//ゲームの処理
+		//===================================
+		//ここからゲームの処理
+		//===================================
 
 
 		////-----各3DObjectの更新処理-----////
@@ -417,7 +361,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 
 
-		//////ImGuiの内部コマンドを生成する
+		//ImGuiの内部コマンドを生成する
 		ImGui::Render();
 
 
@@ -453,25 +397,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 
 
-		////////=========コマンドを積む=========////
+		////=========コマンドを積む=========////
 
-		////一般的には2dは最後。3dを描画した後、ImGuiの前に描画する
-
-		dxCommon->GetCommandList()->RSSetViewports(1, &viewport);    //Viewportを設定
-		dxCommon->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scissorを設定
-		//RootSignatureを設定。PSOに設定しているけど別途設定が必要
-		/*dxCommon->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());*/
-		//dxCommon->GetCommandList()->SetPipelineState(graphicsPipelineState.Get());    //PSOを設定
-		/*for (Sprite* sprite : sprites)*/
-		//{
-		//	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, GetVertexBufferView());    //VBVを設定
-		//}
-		dxCommon->GetCommandList()->IASetIndexBuffer(&startBufferViewSprite);
-		//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-		/*dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);*/
-
-
-
+		//一般的には2dは最後。3dを描画した後、ImGuiの前に描画する
 
 
 		//sprite->Draw();
