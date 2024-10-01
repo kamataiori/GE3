@@ -196,7 +196,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	cameraManager->AddCamera(camera1);
 
 	Camera* camera2 = new Camera();
-	camera2->SetTranslate({ 1.0f, 1.0f, -20.0f });
+	camera2->SetTranslate({ 5.0f, 1.0f, -40.0f });
 	cameraManager->AddCamera(camera2);
 
 	// カメラをObject3dにセット
