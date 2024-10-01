@@ -205,7 +205,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	////カメラのセット
 	//plane->SetCamera(camera);
 	//axis->SetCamera(camera);
-
+	bool cameraFlag = false;  // ImGuiで制御するカメラの切り替えフラグ
 
 
 	//////=========入力の初期化=========////
@@ -261,8 +261,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		camera1->Update();
 		camera2->Update();
 		ImGui::Begin("Camera Control");
-
-		bool cameraFlag = false;  // ImGuiで制御するカメラの切り替えフラグ
 
 		// カメラの切り替えフラグをチェックボックスで制御
 		if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
