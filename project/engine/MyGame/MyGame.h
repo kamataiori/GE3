@@ -23,6 +23,7 @@
 #include "Object3d.h"
 #include "Camera.h"
 #include "CameraManager.h"
+#include "Framework.h"
 #include "Transform.h"
 #include "MathFunctions.h"
 #include "externals/DirectXTex/DirectXTex.h"
@@ -34,7 +35,7 @@
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib,"dxcompiler.lib")
 
-class MyGame
+class MyGame : public Framework
 {
 public:
 	//------メンバ関数------//
