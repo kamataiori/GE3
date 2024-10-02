@@ -7,6 +7,9 @@
 #include <Object3dCommon.h>
 #include <ModelCommon.h>
 
+static const int kWindowWidth = 1280;
+static const int kWindowHeight = 720;
+
 class Framework
 {
 public:
