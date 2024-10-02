@@ -29,31 +29,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	//リークチェッカー
 	D3DResourceLeakChecker leakCheck;
 
-	//MyGameのインスタンス作成
-	MyGame game;
+	Framework* game = new MyGame();
 
-	// ゲームの初期化
-	game.Initialize();
+	game->Run();
 
-	//メインループ
-	//ウィンドウの×ボタンが押されるまでループ
-	while (true) {
-
-		//毎フレーム更新
-		game.Update();
-
-		//終了リクエストが来たら抜ける
-		if (game.IsEndRequest())
-		{
-			//ゲームループを抜ける
-			break;
-		}
-
-		//描画
-		game.Draw();
-	}
-	//ゲームの終了
-	game.Finalize();
+	delete game;
 
 	return 0;
 }

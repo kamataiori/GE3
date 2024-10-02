@@ -13,13 +13,8 @@
 #include <dxgi1_6.h>
 #include <dxgidebug.h>
 #include <dxcapi.h>
-#include "Input.h"
-#include "WinApp.h"
-#include "DirectXCommon.h"
 #include "Sprite.h"
-#include "SpriteCommon.h"
 #include "TextureManager.h"
-#include "Object3dCommon.h"
 #include "Object3d.h"
 #include "Camera.h"
 #include "CameraManager.h"
@@ -43,47 +38,27 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize() override;
 
 	/// <summary>
 	/// 終了
 	/// </summary>
-	void Finalize();
+	void Finalize() override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw() override;
 
-	//------getter------//
-
-	//終了フラグのチェック
-	bool IsEndRequest() { return endRequest_; }
 
 private:
 	//------メンバ変数------//
-     //WindowsAPIの初期化
-    std::unique_ptr<WinApp> winApp = nullptr;
-    //入力の初期化
-    std::unique_ptr<Input> input = nullptr;
-    //DirectXの初期化
-    std::unique_ptr<DirectXCommon> dxCommon = nullptr;
-    //Sprite共通部の初期化
-    std::unique_ptr<SpriteCommon> spriteCommon = nullptr;
-    //3Dオブジェクト共通部の初期化
-    std::unique_ptr<Object3dCommon> object3dCommon = nullptr;
-    //モデル共通部の初期化
-    std::unique_ptr<ModelCommon> modelCommon = nullptr;
-    //3Dカメラの初期化
-    std::unique_ptr<CameraManager> cameraManager = nullptr;
-
-    // ゲーム終了フラグ
-    bool endRequest_ = false;
+   
 
     //------ゲーム関係------//
 
@@ -99,6 +74,8 @@ private:
     std::unique_ptr<Object3d> plane = std::make_unique<Object3d>();
     std::unique_ptr<Object3d> axis = std::make_unique<Object3d>();
 
+    //3Dカメラの初期化
+    std::unique_ptr<CameraManager> cameraManager = nullptr;
     std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
     std::unique_ptr<Camera> camera2 = std::make_unique<Camera>();
     bool cameraFlag = false;  //ImGuiで制御するカメラの切り替えフラグ

@@ -2,24 +2,8 @@
 
 void MyGame::Initialize()
 {
-    // リークチェッカー
-    //D3DResourceLeakChecker leakCheck;
-
-    // WindowsAPIの初期化
-    winApp = std::make_unique<WinApp>(); // unique_ptrで初期化
-    winApp->Initialize();
-
-    // 入力の初期化
-    input = std::make_unique<Input>(); // unique_ptrで初期化
-    input->Initialize(winApp.get());
-
-    // DirectXの初期化
-    dxCommon = std::make_unique<DirectXCommon>(); // unique_ptrで初期化
-    dxCommon->Initialize(winApp.get());
-
-    // Sprite共通部の初期化
-    spriteCommon = std::make_unique<SpriteCommon>(); // unique_ptrで初期化
-    spriteCommon->Initialize(dxCommon.get());
+    //基底クラスの初期化処理
+    Framework::Initialize();
 
     // テクスチャマネージャーの初期化
     TextureManager::GetInstance()->Initialize(dxCommon.get());
@@ -42,14 +26,6 @@ void MyGame::Initialize()
 
         sprites.push_back(std::move(sprite));
     }
-
-    // 3Dオブジェクト共通部の初期化
-    object3dCommon = std::make_unique<Object3dCommon>();
-    object3dCommon->Initialize(dxCommon.get());
-
-    // モデル共通部の初期化
-    modelCommon = std::make_unique<ModelCommon>();
-    modelCommon->Initialize(dxCommon.get());
 
     // モデルマネージャーの初期化
     ModelManager::GetInstance()->Initialize(dxCommon.get());
@@ -108,36 +84,22 @@ void MyGame::Finalize()
 
     // 各クラスの解放
     cameraManager.reset();
-    spriteCommon.reset();
-    object3dCommon.reset();
-    modelCommon.reset();
 
-    // 入力の解放
-    input.reset();
-
-    // DirectXの解放
-    CloseHandle(dxCommon->GetFenceEvent());
-
-    // WinAppの終了処理
-    winApp->Finalize();
+    // 基底クラスの終了処理
+    Framework::Finalize();
 }
 
 void MyGame::Update()
 {
-    // Windowsにメッセージが来てたら最優先で処理させる
-    if (winApp->ProcessMesage())
-    {
-        //ゲームループを抜ける
-        endRequest_ = true;
-    }
 
     // ImGuiのフレーム開始を宣言
     ImGui_ImplDX12_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    // 入力の更新
-    input->Update();
+    // 基底クラスの更新処理
+    Framework::Update();
+   
 
     // 各3Dオブジェクトの更新
     plane->Update();

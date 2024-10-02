@@ -57,7 +57,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\WinApp;$(ProjectDir)engine\MyGame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -77,7 +77,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\WinApp;$(ProjectDir)engine\MyGame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -104,9 +104,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="engine\input\Input.cpp" />
+    <ClCompile Include="engine\FrameWork\input\Input.cpp" />
     <ClCompile Include="engine\logger\Logger.cpp" />
-    <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="engine\FrameWork\Framework.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="engine\math\MathFunctions.cpp" />
     <ClCompile Include="engine\3d\Model.cpp" />
@@ -121,8 +121,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\string\StringUtility.cpp" />
     <ClCompile Include="engine\2d\TextureManager.cpp" />
     <ClCompile Include="engine\3d\ModelManager.cpp" />
-    <ClCompile Include="engine\WinApp\WinApp.cpp" />
-    <ClCompile Include="engine\MyGame\MyGame.cpp" />
+    <ClCompile Include="engine\FrameWork\WinApp\WinApp.cpp" />
+    <ClCompile Include="engine\FrameWork\MyGame\MyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\3d\CameraManager.h" />
@@ -137,10 +137,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="externals\imgui\imstb_rectpack.h" />
     <ClInclude Include="externals\imgui\imstb_textedit.h" />
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
-    <ClInclude Include="engine\input\Input.h" />
+    <ClInclude Include="engine\FrameWork\input\Input.h" />
     <ClInclude Include="engine\logger\Logger.h" />
     <ClInclude Include="engine\math\MathFunctions.h" />
-    <ClInclude Include="Framework.h" />
+    <ClInclude Include="engine\FrameWork\Framework.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />
     <ClInclude Include="matrix\Matrix4x4.h" />
     <ClInclude Include="engine\3d\Model.h" />
@@ -154,11 +154,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\2d\TextureManager.h" />
     <ClInclude Include="engine\math\Transform.h" />
     <ClInclude Include="engine\3d\ModelManager.h" />
-    <ClInclude Include="engine\MyGame\MyGame.h" />
+    <ClInclude Include="engine\FrameWork\MyGame\MyGame.h" />
     <ClInclude Include="vector\Vector2.h" />
     <ClInclude Include="vector\Vector3.h" />
     <ClInclude Include="vector\Vector4.h" />
-    <ClInclude Include="engine\WinApp\WinApp.h" />
+    <ClInclude Include="engine\FrameWork\WinApp\WinApp.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />

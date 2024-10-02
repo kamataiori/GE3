@@ -57,10 +57,10 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="engine\input\Input.cpp">
+    <ClCompile Include="engine\FrameWork\input\Input.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="engine\WinApp\WinApp.cpp">
+    <ClCompile Include="engine\FrameWork\WinApp\WinApp.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="engine\logger\Logger.cpp">
@@ -132,10 +132,10 @@
     <ClCompile Include="engine\3d\CameraManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="engine\MyGame\MyGame.cpp">
+    <ClCompile Include="engine\FrameWork\MyGame\MyGame.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Framework.cpp">
+    <ClCompile Include="engine\FrameWork\Framework.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,10 +179,10 @@
     <ClInclude Include="externals\imgui\imgui_internal.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="engine\input\Input.h">
+    <ClInclude Include="engine\FrameWork\input\Input.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="engine\WinApp\WinApp.h">
+    <ClInclude Include="engine\FrameWork\WinApp\WinApp.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="engine\logger\Logger.h">
@@ -236,10 +236,10 @@
     <ClInclude Include="engine\3d\CameraManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="engine\MyGame\MyGame.h">
+    <ClInclude Include="engine\FrameWork\MyGame\MyGame.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Framework.h">
+    <ClInclude Include="engine\FrameWork\Framework.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
