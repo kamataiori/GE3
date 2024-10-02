@@ -1,8 +1,37 @@
-﻿  DirectXCommon.cpp
+﻿  CameraManager.cpp
+  Camera.cpp
+  D3DResourceLeakChecker.cpp
+  DirectXCommon.cpp
+  Input.cpp
+  Logger.cpp
+  Framework.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_dx12.cpp
+  imgui_impl_win32.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  main.cpp
+  MathFunctions.cpp
+  Model.cpp
+  ModelCommon.cpp
+  Object3d.cpp
+  ResourceObject.cpp
+  Sprite.cpp
+  SpriteCommon.cpp
+  StringUtility.cpp
+  TextureManager.cpp
+  ModelManager.cpp
+  WinApp.cpp
+  MyGame.cpp
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\Model.cpp(48,52): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\2d\TextureManager.cpp(61,13): warning C4834: [[nodiscard]] 属性を持つ関数の戻り値を破棄しています
+  Object3dCommon.cpp
   コード生成しています。
-  13 of 3888 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    30 functions had inline decision re-evaluated but remain unchanged
+  1045 of 4113 functions (25.4%) were compiled, the rest were copied from previous compilation.
+    277 functions were new in current compilation
+    482 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   DirectXGame.vcxproj -> C:\Users\k023g\OneDrive\デスクトップ\GE3\project\x64\Release\DirectXGame.exe
           1 個のファイルをコピーしました。
