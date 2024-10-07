@@ -4,8 +4,9 @@
 #include <memory>
 #include <Sprite.h>
 #include <Object3d.h>
+#include "BaseScene.h"
 
-class GamePlayScene
+class GamePlayScene : public BaseScene
 {
 public:
 	//------メンバ関数------
@@ -13,22 +14,22 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize() override;
 
 	/// <summary>
 	/// 終了
 	/// </summary>
-	void Finalize();
+	void Finalize() override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw() override;
 
 private:
 

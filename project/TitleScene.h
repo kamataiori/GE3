@@ -1,10 +1,10 @@
-#include "Framework.h"
-#include "GamePlayScene.h"
+#pragma once
+#include "BaseScene.h"
 
-class MyGame : public Framework
+class TitleScene : public BaseScene
 {
 public:
-	//------メンバ関数------//
+	//------メンバ関数------
 
 	/// <summary>
 	/// 初期化
@@ -26,13 +26,9 @@ public:
 	/// </summary>
 	void Draw() override;
 
-
 private:
-	//------メンバ変数------//
-   
 
-    //------ゲーム関係------//
-	std::unique_ptr<GamePlayScene> scene_ = nullptr;
 
 
 };
+
