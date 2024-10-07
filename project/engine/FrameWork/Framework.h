@@ -7,6 +7,7 @@
 #include <Object3dCommon.h>
 #include <ModelCommon.h>
 #include "SceneManager.h"
+#include "AbstractSceneFactory.h"
 #include "D3DResourceLeakChecker.h"
 
 static const int kWindowWidth = 1280;
@@ -66,6 +67,9 @@ protected:
 	std::unique_ptr<Object3dCommon> object3dCommon = nullptr;
 	// モデル共通部の初期化
 	std::unique_ptr<ModelCommon> modelCommon = nullptr;
+
+	// シーンファクトリー
+	AbstractSceneFactory* sceneFactory_ = nullptr;
 
 private:
 	// ゲーム終了フラグ

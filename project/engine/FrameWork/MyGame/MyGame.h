@@ -1,5 +1,5 @@
 #include "Framework.h"
-#include "GamePlayScene.h"
+#include "SceneFactory.h"
 
 class MyGame : public Framework
 {

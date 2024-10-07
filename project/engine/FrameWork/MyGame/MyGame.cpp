@@ -5,10 +5,12 @@ void MyGame::Initialize()
     // 基底クラスの初期化処理
     Framework::Initialize();
 
-    // 最初のシーンの生成
-    BaseScene* scene = new TitleScene();
-    // シーンマネージャーに最初のシーンをセット
-    SceneManager::GetInstance()->SetNextScene(scene);
+    // シーンファクトリーを生成し、マネージャーにセット
+    sceneFactory_ = new SceneFactory();
+    SceneManager::GetInstance()->SetSceneFactory(sceneFactory_);
+
+    SceneManager::GetInstance()->ChangeScene("TITLE");
+
 
 }
 

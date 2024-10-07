@@ -54,3 +54,16 @@ void SceneManager::Draw()
 {
 	scene_->Draw();
 }
+
+void SceneManager::ChangeScene(const std::string& sceneName)
+{
+	assert(sceneFactory_);
+	assert(nextScene_ == nullptr);
+
+	// 引数で受け取った次シーン名sceneNameを
+	// ファクトリーに渡してシーンを生成させ(CreateScene)、
+	// 生成されたシーンを次シーンとしてセットする
+
+	// 次シーンを生成
+	nextScene_ = sceneFactory_->CreateScene(sceneName);
+}

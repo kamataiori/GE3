@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseScene.h"
-#include "GamePlayScene.h"
 
 class TitleScene : public BaseScene
 {
@@ -26,10 +25,6 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw() override;
-
-private:
-
-	
 
 };
 

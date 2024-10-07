@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseScene.h"
 #include <string>
+#include "TitleScene.h"
+#include "GamePlayScene.h"
 
 class AbstractSceneFactory
 {

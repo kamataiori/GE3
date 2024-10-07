@@ -36,6 +36,7 @@ void Framework::Finalize()
 	// 各クラスの解放
 	Input::GetInstance()->Finalize();
 	SceneManager::GetInstance()->Finalize();
+	delete sceneFactory_;
 	spriteCommon.reset();
 	spriteCommon->Finalize();
 	object3dCommon.reset();

@@ -1,4 +1,6 @@
 #include "GamePlayScene.h"
+#include <Input.h>
+#include "SceneManager.h"
 
 void GamePlayScene::Initialize()
 {
@@ -142,6 +144,11 @@ void GamePlayScene::Update()
 
         // 各スプライトを更新
         sprite->Update();
+    }
+
+    if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+        // シーン切り替え
+        SceneManager::GetInstance()->ChangeScene("TITLE");
     }
 }
 
