@@ -1,9 +1,19 @@
 #include "SpriteCommon.h"
 
-void SpriteCommon::Initialize(DirectXCommon* dxCommon)
+SpriteCommon* SpriteCommon::instance = nullptr;
+
+SpriteCommon* SpriteCommon::GetInstance()
+{
+	if (!instance) {
+		instance = new SpriteCommon();
+	}
+	return instance;
+}
+
+void SpriteCommon::Initialize()
 {
 	//引数で受け取ってメンバ変数に記録する
-	dxCommon_ = dxCommon;
+	dxCommon_ = DirectXCommon::GetInstance();
 
 	//グラフィックスパイプラインの生成
 	GraphicsPipelineState();
@@ -236,4 +246,10 @@ void SpriteCommon::CommonSetting()
 
 	//プリミティブトポロジーをセットするコマンド
 	dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void SpriteCommon::Finalize()
+{
+	delete instance;
+	instance = nullptr;
 }

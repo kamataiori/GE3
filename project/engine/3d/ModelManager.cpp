@@ -5,7 +5,7 @@ ModelManager* ModelManager::instance = nullptr;
 void ModelManager::Initialize(DirectXCommon* dxCommon)
 {
     modelCommon = new ModelCommon;
-    modelCommon->Initialize(dxCommon);
+    modelCommon->Initialize();
 }
 
 void ModelManager::LoadModel(const std::string& filepath)

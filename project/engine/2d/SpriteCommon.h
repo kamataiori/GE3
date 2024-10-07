@@ -6,6 +6,21 @@ class SpriteCommon
 {
 public:
 
+	static SpriteCommon* instance;
+
+	// インスタンスを取得するシングルトンメソッド
+	static SpriteCommon* GetInstance();
+
+	// プライベートコンストラクタ
+	SpriteCommon() = default;
+
+	// コピーコンストラクタおよび代入演算子を削除
+	SpriteCommon(const SpriteCommon&) = delete;
+	SpriteCommon& operator=(const SpriteCommon&) = delete;
+
+
+public:
+
 	///===========================
 	// メンバ関数
 	///===========================
@@ -13,7 +28,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(DirectXCommon* dxCommon);
+	void Initialize();
 
 	/// <summary>
 	/// ルートシグネチャの作成
@@ -54,6 +69,11 @@ public:
 	/// 共通描画設定
 	/// </summary>
 	void CommonSetting();
+
+	/// <summary>
+	/// 終了
+	/// </summary>
+	void Finalize();
 
 
 	////======ゲッター関数======////

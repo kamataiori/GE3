@@ -11,20 +11,18 @@ void Framework::Initialize()
 	input->Initialize(winApp.get());
 
 	// DirectXの初期化
-	dxCommon = std::make_unique<DirectXCommon>();
+	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(winApp.get());
 
 	// Sprite共通部の初期化
-	spriteCommon = std::make_unique<SpriteCommon>();
-	spriteCommon->Initialize(dxCommon.get());
+	SpriteCommon::GetInstance()->Initialize();
 
 	// 3Dオブジェクト共通部の初期化
-	object3dCommon = std::make_unique<Object3dCommon>();
-	object3dCommon->Initialize(dxCommon.get());
+	Object3dCommon::GetInstance()->Initialize();
 
 	// モデル共通部の初期化
 	modelCommon = std::make_unique<ModelCommon>();
-	modelCommon->Initialize(dxCommon.get());
+	modelCommon->Initialize();
 }
 
 void Framework::Finalize()
@@ -37,11 +35,13 @@ void Framework::Finalize()
 
 	// WinAppの終了処理
 	winApp->Finalize();
-
 	// 各クラスの解放
 	spriteCommon.reset();
+	spriteCommon->Finalize();
 	object3dCommon.reset();
+	object3dCommon->Finalize();
 	modelCommon.reset();
+	dxCommon->Finalize();
 }
 
 void Framework::Update()

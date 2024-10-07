@@ -23,10 +23,28 @@ enum BlendMode {
 class Object3dCommon
 {
 public:
+	static Object3dCommon* instance;
+
+	// インスタンスを取得するシングルトンメソッド
+	static Object3dCommon* GetInstance();
+
+	// プライベートコンストラクタ
+	Object3dCommon() = default;
+
+	// コピーコンストラクタおよび代入演算子を削除
+	Object3dCommon(const Object3dCommon&) = delete;
+	Object3dCommon& operator=(const Object3dCommon&) = delete;
+
+public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(DirectXCommon* dxCommon);
+	void Initialize();
+
+	/// <summary>
+	/// 終了
+	/// </summary>
+	void Finalize();
 
 private:
 

@@ -20,9 +20,9 @@ void TextureManager::Finalize()
 	instance = nullptr;
 }
 
-void TextureManager::Initialize(DirectXCommon* dxCommon)
+void TextureManager::Initialize()
 {
-	dxCommon_ = dxCommon;
+	dxCommon_ = DirectXCommon::GetInstance();
 	//SRVの数と同数
 	textureDatas.reserve(DirectXCommon::kMaxSRVCount);
 }

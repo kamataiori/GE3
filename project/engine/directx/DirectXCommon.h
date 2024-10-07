@@ -15,12 +15,28 @@
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxguid.lib")
+#pragma comment(lib, "dxgi.lib") 
+#pragma comment(lib, "dxcompiler.lib") 
+
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 class DirectXCommon
 {
+public:
+	static DirectXCommon* instance;
+
+	// インスタンスを取得するシングルトンメソッド
+	static DirectXCommon* GetInstance();
+
+	// プライベートコンストラクタ
+	DirectXCommon() = default;
+
+	// コピーコンストラクタおよび代入演算子を削除
+	DirectXCommon(const DirectXCommon&) = delete;
+	DirectXCommon& operator=(const DirectXCommon&) = delete;
+
 public:
 
 	///===========================
@@ -92,7 +108,10 @@ public:
 	/// </summary>
 	void ImGui();
 
-
+	/// <summary>
+	/// 終了
+	/// </summary>
+	void Finalize();
 
 	/// <summary>
 	/// ディスクリプタヒープの生成

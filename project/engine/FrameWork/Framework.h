@@ -6,6 +6,7 @@
 #include <SpriteCommon.h>
 #include <Object3dCommon.h>
 #include <ModelCommon.h>
+#include "D3DResourceLeakChecker.h"
 
 static const int kWindowWidth = 1280;
 static const int kWindowHeight = 720;
@@ -59,8 +60,7 @@ protected:
 	// Inputの初期化
 	std::unique_ptr<Input> input = nullptr;
 	// DxCommonの初期化
-	std::unique_ptr<DirectXCommon> dxCommon = nullptr;
-
+	DirectXCommon* dxCommon = nullptr;
 	// Sprite共通部の初期化
 	std::unique_ptr<SpriteCommon> spriteCommon = nullptr;
 	// 3Dオブジェクト共通部の初期化

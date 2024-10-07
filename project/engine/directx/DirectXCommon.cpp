@@ -11,6 +11,15 @@
 
 using namespace Microsoft::WRL;
 const uint32_t DirectXCommon::kMaxSRVCount = 512;
+DirectXCommon* DirectXCommon::instance = nullptr;
+
+DirectXCommon* DirectXCommon::GetInstance()
+{
+	if (!instance) {
+		instance = new DirectXCommon();
+	}
+	return instance;
+}
 
 void DirectXCommon::Initialize(WinApp* winApp)
 {
@@ -385,6 +394,12 @@ void DirectXCommon::ImGui()
 		srvDescriptorHeap.Get(),
 		srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+}
+
+void DirectXCommon::Finalize()
+{
+	delete instance;
+	instance = nullptr;
 }
 
 

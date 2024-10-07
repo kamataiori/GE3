@@ -1,10 +1,20 @@
 #include "Object3dCommon.h"
 #include "Logger.h"
 
-void Object3dCommon::Initialize(DirectXCommon* dxCommon)
+Object3dCommon* Object3dCommon::instance = nullptr;
+
+Object3dCommon* Object3dCommon::GetInstance()
+{
+	if (!instance) {
+		instance = new Object3dCommon();
+	}
+	return instance;
+}
+
+void Object3dCommon::Initialize()
 {
 	//引数で受け取ってメンバ変数に記録する
-	dxCommon_ = dxCommon;
+	dxCommon_ = DirectXCommon::GetInstance();
 
 	//グラフィックスパイプラインの生成
 	GraphicsPipelineState();
@@ -257,6 +267,12 @@ void Object3dCommon::PSO()
 	}
 
 	assert(SUCCEEDED(hr));
+}
+
+void Object3dCommon::Finalize()
+{
+	delete instance;
+	instance = nullptr;
 }
 
 void Object3dCommon::CommonSetting()
