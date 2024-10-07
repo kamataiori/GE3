@@ -98,6 +98,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractSceneFactory.cpp" />
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="engine\3d\CameraManager.cpp" />
     <ClCompile Include="engine\3d\Camera.cpp" />
@@ -130,10 +131,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\3d\ModelManager.cpp" />
     <ClCompile Include="engine\FrameWork\WinApp\WinApp.cpp" />
     <ClCompile Include="engine\FrameWork\MyGame\MyGame.cpp" />
+    <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractSceneFactory.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="engine\3d\CameraManager.h" />
     <ClInclude Include="engine\3d\Camera.h" />
@@ -166,6 +169,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\math\Transform.h" />
     <ClInclude Include="engine\3d\ModelManager.h" />
     <ClInclude Include="engine\FrameWork\MyGame\MyGame.h" />
+    <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="vector\Vector2.h" />
