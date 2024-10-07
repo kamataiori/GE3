@@ -41,6 +41,8 @@ private:
 	Vector2 initialSize = { 80.0f,80.0f };
 	std::vector<std::unique_ptr<Sprite>> sprites;
 
+	std::unique_ptr<Sprite> monsterBall = std::make_unique<Sprite>();
+
 	// 3Dオブジェクトの初期化
 	std::unique_ptr<Object3d> plane = std::make_unique<Object3d>();
 	std::unique_ptr<Object3d> axis = std::make_unique<Object3d>();

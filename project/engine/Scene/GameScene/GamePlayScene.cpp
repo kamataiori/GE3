@@ -26,6 +26,9 @@ void GamePlayScene::Initialize()
         sprites.push_back(std::move(sprite));
     }
 
+    monsterBall = std::make_unique<Sprite>();
+    monsterBall->Initialize(SpriteCommon::GetInstance(), "Resources/monsterBall.png");
+
     // モデルマネージャーの初期化
     ModelManager::GetInstance()->Initialize(DirectXCommon::GetInstance());
 
@@ -103,6 +106,13 @@ void GamePlayScene::Update()
 
     ImGui::End();
 
+    // モンスターボール
+    Vector2 MonsterPosition = monsterBall->GetPosition();
+    MonsterPosition = { 0.0f,0.0f };
+    monsterBall->SetPosition(MonsterPosition);
+    monsterBall->SetSize({100.0f,100.0f});
+    monsterBall->Update();
+
     // 各スプライトの更新処理
     for (size_t i = 0; i < sprites.size(); ++i) {
         auto& sprite = sprites[i];
@@ -177,11 +187,13 @@ void GamePlayScene::Draw()
     // ================================================
     // ここからSprite個々の描画
     // ================================================
+    monsterBall->Draw();
 
     // スプライトを描画する
     for (const auto& sprite : sprites) {
         sprite->Draw();
     }
+
 
     // ================================================
     // ここまでSprite個々の描画
