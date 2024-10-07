@@ -23,7 +23,6 @@ void Framework::Initialize()
 	modelCommon = std::make_unique<ModelCommon>();
 	modelCommon->Initialize();
 
-	
 }
 
 void Framework::Finalize()

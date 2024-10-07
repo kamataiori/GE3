@@ -26,13 +26,4 @@ public:
 	/// </summary>
 	void Draw() override;
 
-
-private:
-	//------メンバ変数------//
-   
-
-    //------ゲーム関係------//
-
-
-
 };

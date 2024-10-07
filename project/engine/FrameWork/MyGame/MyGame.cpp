@@ -10,8 +10,6 @@ void MyGame::Initialize()
     SceneManager::GetInstance()->SetSceneFactory(sceneFactory_);
 
     SceneManager::GetInstance()->ChangeScene("TITLE");
-
-
 }
 
 
@@ -21,9 +19,6 @@ void MyGame::Finalize()
     ImGui_ImplDX12_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
-
-    // ゲームシーンの終了
-    //scene_->Finalize();
     
     // 基底クラスの終了処理
     Framework::Finalize();
