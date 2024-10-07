@@ -9,9 +9,29 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
+
+
 //入力
 class Input
 {
+public:
+	static Input* instance;
+
+	// インスタンスを取得するシングルトンメソッド
+	static Input* GetInstance();
+
+	// プライベートコンストラクタ
+	Input() = default;
+
+	// コピーコンストラクタおよび代入演算子を削除
+	Input(const Input&) = delete;
+	Input& operator=(const Input&) = delete;
+
+	/// <summary>
+	/// 終了
+	/// </summary>
+	void Finalize();
+
 public:
 
 	//namespace省略

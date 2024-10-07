@@ -6,6 +6,7 @@
 #include <SpriteCommon.h>
 #include <Object3dCommon.h>
 #include <ModelCommon.h>
+#include "SceneManager.h"
 #include "D3DResourceLeakChecker.h"
 
 static const int kWindowWidth = 1280;
@@ -57,8 +58,6 @@ public:
 protected:
 	// WinAppの初期化
 	std::unique_ptr<WinApp> winApp = nullptr;
-	// Inputの初期化
-	std::unique_ptr<Input> input = nullptr;
 	// DxCommonの初期化
 	DirectXCommon* dxCommon = nullptr;
 	// Sprite共通部の初期化

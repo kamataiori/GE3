@@ -1,4 +1,8 @@
 #pragma once
+
+// 前方宣言
+class SceneManager;
+
 class BaseScene
 {
 public:
@@ -27,8 +31,15 @@ public:
 	/// </summary>
 	virtual void Draw() = 0;
 
-private:
+	/// <summary>
+	/// シーンマネージャーをシーンに貸し出すためのSetter
+	/// </summary>
+	/// <param name="sceneManager"></param>
+	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
 
+private:
+	// シーンマネージャー (借りてくる)
+	SceneManager* sceneManager_ = nullptr;
 
 };
 

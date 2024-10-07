@@ -5,9 +5,11 @@ void MyGame::Initialize()
     // 基底クラスの初期化処理
     Framework::Initialize();
 
-    // ゲームシーンの初期化
-    scene_ = std::make_unique<GamePlayScene>();
-    scene_->Initialize();
+    // 最初のシーンの生成
+    BaseScene* scene = new TitleScene();
+    // シーンマネージャーに最初のシーンをセット
+    SceneManager::GetInstance()->SetNextScene(scene);
+
 }
 
 
@@ -19,7 +21,7 @@ void MyGame::Finalize()
     ImGui::DestroyContext();
 
     // ゲームシーンの終了
-    scene_->Finalize();
+    //scene_->Finalize();
     
     // 基底クラスの終了処理
     Framework::Finalize();
@@ -35,10 +37,6 @@ void MyGame::Update()
 
     // 基底クラスの更新処理
     Framework::Update();
-   
-    // ゲームシーンの更新
-    scene_->Update();
-    
 
     // ImGuiの内部コマンドを生成する
     ImGui::Render();
@@ -51,7 +49,7 @@ void MyGame::Draw()
     dxCommon->PreDraw();
 
     // ゲームシーンの描画
-    scene_->Draw();
+    SceneManager::GetInstance()->Draw();
 
     // 実際にcommandListのImGuiの描画コマンドを積む
     ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->GetCommandList().Get());

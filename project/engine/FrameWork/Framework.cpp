@@ -7,8 +7,7 @@ void Framework::Initialize()
 	winApp->Initialize();
 
 	// 入力の初期化
-	input = std::make_unique<Input>();
-	input->Initialize(winApp.get());
+	Input::GetInstance()->Initialize(winApp.get());
 
 	// DirectXの初期化
 	dxCommon = DirectXCommon::GetInstance();
@@ -23,19 +22,20 @@ void Framework::Initialize()
 	// モデル共通部の初期化
 	modelCommon = std::make_unique<ModelCommon>();
 	modelCommon->Initialize();
+
+	
 }
 
 void Framework::Finalize()
 {
-	// 入力の解放
-	input.reset();
-
 	// DirectXの解放
 	CloseHandle(dxCommon->GetFenceEvent());
 
 	// WinAppの終了処理
 	winApp->Finalize();
 	// 各クラスの解放
+	Input::GetInstance()->Finalize();
+	SceneManager::GetInstance()->Finalize();
 	spriteCommon.reset();
 	spriteCommon->Finalize();
 	object3dCommon.reset();
@@ -51,8 +51,11 @@ void Framework::Update()
 		endRequest_ = true;
 	}
 
+	// シーンマネージャーの更新処理
+	SceneManager::GetInstance()->Update();
+
 	// 入力の更新
-	input->Update();
+	Input::GetInstance()->Update();
 }
 
 void Framework::Run()

@@ -32,7 +32,7 @@ private:
    
 
     //------ゲーム関係------//
-	std::unique_ptr<GamePlayScene> scene_ = nullptr;
+
 
 
 };

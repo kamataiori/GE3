@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "GamePlayScene.h"
 
 class TitleScene : public BaseScene
 {
@@ -28,7 +29,7 @@ public:
 
 private:
 
-
+	
 
 };
 
