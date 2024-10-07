@@ -61,7 +61,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\Scene\TitleScene;$(ProjectDir)engine\Scene\GameScene</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -81,7 +81,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\Scene\TitleScene;$(ProjectDir)engine\Scene\GameScene</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -98,8 +98,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractSceneFactory.cpp" />
-    <ClCompile Include="BaseScene.cpp" />
+    <ClCompile Include="engine\Scene\SceneManager\AbstractSceneFactory\AbstractSceneFactory.cpp" />
+    <ClCompile Include="engine\Scene\SceneManager\BaseScene\BaseScene.cpp" />
     <ClCompile Include="engine\3d\CameraManager.cpp" />
     <ClCompile Include="engine\3d\Camera.cpp" />
     <ClCompile Include="engine\check\D3DResourceLeakChecker.cpp" />
@@ -114,7 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="GamePlayScene.cpp" />
+    <ClCompile Include="engine\Scene\GameScene\GamePlayScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="engine\math\MathFunctions.cpp" />
     <ClCompile Include="engine\3d\Model.cpp" />
@@ -131,13 +131,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\3d\ModelManager.cpp" />
     <ClCompile Include="engine\FrameWork\WinApp\WinApp.cpp" />
     <ClCompile Include="engine\FrameWork\MyGame\MyGame.cpp" />
-    <ClCompile Include="SceneFactory.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory\SceneFactory.cpp" />
+    <ClCompile Include="engine\Scene\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="engine\Scene\TitleScene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractSceneFactory.h" />
-    <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="engine\Scene\SceneManager\AbstractSceneFactory\AbstractSceneFactory.h" />
+    <ClInclude Include="engine\Scene\SceneManager\BaseScene\BaseScene.h" />
     <ClInclude Include="engine\3d\CameraManager.h" />
     <ClInclude Include="engine\3d\Camera.h" />
     <ClInclude Include="engine\check\D3DResourceLeakChecker.h" />
@@ -154,7 +154,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\logger\Logger.h" />
     <ClInclude Include="engine\math\MathFunctions.h" />
     <ClInclude Include="engine\FrameWork\Framework.h" />
-    <ClInclude Include="GamePlayScene.h" />
+    <ClInclude Include="engine\Scene\GameScene\GamePlayScene.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />
     <ClInclude Include="matrix\Matrix4x4.h" />
     <ClInclude Include="engine\3d\Model.h" />
@@ -169,9 +169,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\math\Transform.h" />
     <ClInclude Include="engine\3d\ModelManager.h" />
     <ClInclude Include="engine\FrameWork\MyGame\MyGame.h" />
-    <ClInclude Include="SceneFactory.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory\SceneFactory.h" />
+    <ClInclude Include="engine\Scene\SceneManager\SceneManager.h" />
+    <ClInclude Include="engine\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="vector\Vector2.h" />
     <ClInclude Include="vector\Vector3.h" />
     <ClInclude Include="vector\Vector4.h" />
@@ -184,6 +184,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
