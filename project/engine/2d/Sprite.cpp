@@ -2,10 +2,10 @@
 #include "MathFunctions.h"
 #include "TextureManager.h"
 
-void Sprite::Initialize(SpriteCommon* spriteCommon, std::string textureFilePath)
+void Sprite::Initialize( std::string textureFilePath)
 {
 	//引数で受け取ってメンバ変数に記録する
-	this->spriteCommon = spriteCommon;
+	this->spriteCommon = SpriteCommon::GetInstance();
 
 	// 頂点データを作成
 	CreateVertexData();

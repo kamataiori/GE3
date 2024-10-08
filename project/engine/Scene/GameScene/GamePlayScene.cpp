@@ -16,18 +16,18 @@ void GamePlayScene::Initialize()
 
         if (i % 2 == 0) {
             // 0, 2, 4 は "Resources/uvChecker.png"
-            sprite->Initialize(SpriteCommon::GetInstance(), "Resources/uvChecker.png");
+            sprite->Initialize("Resources/uvChecker.png");
         }
         else {
             // 1, 3, 5 は "Resources/monsterBall.png"
-            sprite->Initialize(SpriteCommon::GetInstance(), "Resources/monsterBall.png");
+            sprite->Initialize("Resources/monsterBall.png");
         }
 
         sprites.push_back(std::move(sprite));
     }
 
     monsterBall = std::make_unique<Sprite>();
-    monsterBall->Initialize(SpriteCommon::GetInstance(), "Resources/monsterBall.png");
+    monsterBall->Initialize("Resources/monsterBall.png");
 
     // モデルマネージャーの初期化
     ModelManager::GetInstance()->Initialize(DirectXCommon::GetInstance());
