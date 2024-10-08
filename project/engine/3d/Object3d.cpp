@@ -2,10 +2,10 @@
 #include "MathFunctions.h"
 #include "TextureManager.h"
 
-void Object3d::Initialize(Object3dCommon* object3dCommon)
+void Object3d::Initialize()
 {
 	//引数で受け取ってメンバ変数に記録する
-	this->object3dCommon_ = object3dCommon;
+	this->object3dCommon_ = Object3dCommon::GetInstance();
 
 	// 座標変換行列データの初期化
 	CreateTransformationMatrixData();

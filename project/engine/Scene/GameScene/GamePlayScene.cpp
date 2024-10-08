@@ -4,10 +4,7 @@
 
 void GamePlayScene::Initialize()
 {
-    // テクスチャマネージャーの初期化
-    TextureManager::GetInstance()->Initialize();
-
-    ////-----Spriteの初期化-----////
+    //-----Spriteの初期化-----
 
     for (uint32_t i = 0; i < 6; ++i)
     {
@@ -29,13 +26,10 @@ void GamePlayScene::Initialize()
     monsterBall = std::make_unique<Sprite>();
     monsterBall->Initialize("Resources/monsterBall.png");
 
-    // モデルマネージャーの初期化
-    ModelManager::GetInstance()->Initialize(DirectXCommon::GetInstance());
-
     // 3Dオブジェクトの初期化
-    plane->Initialize(Object3dCommon::GetInstance());
-    axis->Initialize(Object3dCommon::GetInstance());
-
+    plane->Initialize();
+    axis->Initialize();
+   
     // モデル読み込み
     ModelManager::GetInstance()->LoadModel("plane.obj");
     ModelManager::GetInstance()->LoadModel("axis.obj");

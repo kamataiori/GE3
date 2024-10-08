@@ -15,6 +15,8 @@ void Framework::Initialize()
 
 	// Sprite共通部の初期化
 	SpriteCommon::GetInstance()->Initialize();
+	// テクスチャマネージャーの初期化
+	TextureManager::GetInstance()->Initialize();
 
 	// 3Dオブジェクト共通部の初期化
 	Object3dCommon::GetInstance()->Initialize();
@@ -22,6 +24,9 @@ void Framework::Initialize()
 	// モデル共通部の初期化
 	modelCommon = std::make_unique<ModelCommon>();
 	modelCommon->Initialize();
+
+	// モデルマネージャーの初期化
+	ModelManager::GetInstance()->Initialize(DirectXCommon::GetInstance());
 
 }
 
