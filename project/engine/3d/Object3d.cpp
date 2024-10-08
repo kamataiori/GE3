@@ -41,7 +41,7 @@ void Object3d::Update()
 	transformationMatrixData->WVP = worldviewProjectionMatrix;
 	transformationMatrixData->World = worldMatrix;
 
-	transform.rotate.y += 0.06f;
+	//transform.rotate.y += 0.06f;
 
 }
 

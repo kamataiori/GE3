@@ -8,7 +8,7 @@ void GamePlayScene::Initialize()
 
     for (uint32_t i = 0; i < 6; ++i)
     {
-        // スプライトをunique_ptrで初期化
+        // スプライトを初期化
         auto sprite = std::make_unique<Sprite>();
 
         if (i % 2 == 0) {
@@ -38,11 +38,11 @@ void GamePlayScene::Initialize()
 
     // モデルにSRTを設定
     plane->SetScale({ 1.0f, 1.0f, 1.0f });
-    plane->SetRotate({ 0.0f, 45.0f, 0.0f });
+    plane->SetRotate({ 0.0f, 0.0f, 0.0f });
     plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
     axis->SetScale({ 1.0f, 1.0f, 1.0f });
-    axis->SetRotate({ 0.0f, 45.0f, 0.0f });
+    axis->SetRotate({ 0.0f, 0.0f, 0.0f });
     axis->SetTranslate({ 2.0f, 0.0f, 0.0f });
 
     // 3Dカメラの初期化
@@ -88,6 +88,11 @@ void GamePlayScene::Update()
 
     // カメラの更新
     camera1->Update();
+    Vector3 cameraRotate = camera2->GetRotate();
+    cameraRotate.x = 0.0f;
+    cameraRotate.y += 0.1f;
+    cameraRotate.z = 0.0f;
+    camera2->SetRotate(cameraRotate);
     camera2->Update();
 
     // カメラコントロール用のウィンドウを作成
