@@ -207,6 +207,6 @@ private:
 	//テクスチャサイズイメージ合わせ
 	void AdjustTextureSize();
 
-
+	std::string FilePath = {};
 };
 

@@ -6,6 +6,7 @@
 #include <SpriteCommon.h>
 #include <Object3dCommon.h>
 #include <ModelCommon.h>
+#include "SrvManager.h"
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
 #include "D3DResourceLeakChecker.h"
@@ -61,6 +62,8 @@ protected:
 	std::unique_ptr<WinApp> winApp = nullptr;
 	// DxCommonの初期化
 	DirectXCommon* dxCommon = nullptr;
+	// SrvManagerの初期化
+	std::unique_ptr<SrvManager> srvManager = nullptr;
 	// Sprite共通部の初期化
 	std::unique_ptr<SpriteCommon> spriteCommon = nullptr;
 	// 3Dオブジェクト共通部の初期化

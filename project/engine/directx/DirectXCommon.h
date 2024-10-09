@@ -256,18 +256,6 @@ public:
 	}
 
 	/// <summary>
-	/// srvDescriptorHeapのゲッター
-	/// </summary>
-	/// <returns></returns>
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetSrvDescriptorHeap() const { return srvDescriptorHeap; }
-
-	/// <summary>
-	/// descriptorSizeSRVのゲッター
-	/// </summary>
-	/// <returns></returns>
-	uint32_t GetDescriptorSizeSRV() const { return descriptorSizeSRV; }
-
-	/// <summary>
 	/// commandQueueのゲッター
 	/// </summary>
 	/// <returns></returns>
@@ -290,9 +278,6 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCommandAllocator() const { return commandAllocator; }
 
 
-
-
-
 	////====================セッター関数====================////
 
 
@@ -304,8 +289,8 @@ public:
 
 
 
-	//最大SRV数(最大テクスチャ枚数)
-	static const uint32_t kMaxSRVCount;
+	////最大SRV数(最大テクスチャ枚数)
+	//static const uint32_t kMaxSRVCount;
 
 
 private:
@@ -352,7 +337,7 @@ private:
 
 
 	//DescriptorSizeの取得
-	uint32_t descriptorSizeSRV = 0;
+	//uint32_t descriptorSizeSRV = 0;
 	uint32_t descriptorSizeRTV = 0;
 	uint32_t descriptorSizeDSV = 0;
 
@@ -363,8 +348,8 @@ private:
 	//RTV用のヒープディスクリプタの数は2。RTVはShader内で触るものではないので、ShaderVisibleはfalse
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap = nullptr;
 
-	//SRV用のヒープディスクリプタの数は128。SRVはShader内で触るものなので、ShaderVisibleはtrue
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap = nullptr;
+	////SRV用のヒープディスクリプタの数は128。SRVはShader内で触るものなので、ShaderVisibleはtrue
+	//Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap = nullptr;
 
 	//DSV用のヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = nullptr;

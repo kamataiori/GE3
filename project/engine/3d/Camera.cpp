@@ -24,9 +24,9 @@ void Camera::Update()
 	//合成行列
 	viewProjectionMatrix = Multiply(viewMatrix, projectionMatrix);
 
-    ImGui::Begin("camera");
-    //ImGui::Text("cameraChange : SPACE");
-    ImGui::DragFloat3("translate", &transform.translate.x);
-    ImGui::DragFloat3("rotate", &transform.rotate.x);
-    ImGui::End();
+    //ImGui::Begin("camera");
+    ////ImGui::Text("cameraChange : SPACE");
+    //ImGui::DragFloat3("translate", &transform.translate.x);
+    //ImGui::DragFloat3("rotate", &transform.rotate.x);
+    //ImGui::End();
 }

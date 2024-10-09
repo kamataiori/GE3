@@ -47,7 +47,7 @@ void Object3d::Update()
 
 void Object3d::ImGuiUpdate(const std::string& Name)
 {
-	std::string nodeName = "object3d_" + Name;
+	/*std::string nodeName = "object3d_" + Name;
 
 	ImGui::Begin("object3d");
 	if (ImGui::TreeNode(nodeName.c_str())) {
@@ -56,7 +56,7 @@ void Object3d::ImGuiUpdate(const std::string& Name)
 		ImGui::DragFloat3("rotate", &transform.rotate.x);
 		ImGui::TreePop();
 	}
-	ImGui::End();
+	ImGui::End();*/
 }
 
 void Object3d::Draw()

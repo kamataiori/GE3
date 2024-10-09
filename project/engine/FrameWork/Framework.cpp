@@ -13,6 +13,9 @@ void Framework::Initialize()
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(winApp.get());
 
+	// SrvManagerの初期化
+	SrvManager::GetInstance()->Initialize();
+
 	// Sprite共通部の初期化
 	SpriteCommon::GetInstance()->Initialize();
 
@@ -41,6 +44,8 @@ void Framework::Finalize()
 	winApp->Finalize();
 	// 各クラスの解放
 	Input::GetInstance()->Finalize();
+	// SrvManagerの終了処理
+	SrvManager::GetInstance()->Finalize();
 	// テクスチャマネージャーの終了処理
 	TextureManager::GetInstance()->Finalize();
 	// モデルマネージャーの終了処理

@@ -134,6 +134,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory\SceneFactory.cpp" />
     <ClCompile Include="engine\Scene\SceneManager\SceneManager.cpp" />
     <ClCompile Include="engine\Scene\TitleScene\TitleScene.cpp" />
+    <ClCompile Include="SrvManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Scene\SceneManager\AbstractSceneFactory\AbstractSceneFactory.h" />
@@ -172,6 +173,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory\SceneFactory.h" />
     <ClInclude Include="engine\Scene\SceneManager\SceneManager.h" />
     <ClInclude Include="engine\Scene\TitleScene\TitleScene.h" />
+    <ClInclude Include="SrvManager.h" />
     <ClInclude Include="vector\Vector2.h" />
     <ClInclude Include="vector\Vector3.h" />
     <ClInclude Include="vector\Vector4.h" />
