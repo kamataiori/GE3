@@ -60,20 +60,15 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Finalize()
 {
-    // テクスチャマネージャーの終了処理
-    TextureManager::GetInstance()->Finalize();
-    // モデルマネージャーの終了処理
-    ModelManager::GetInstance()->Finalize();
+    //// 3Dオブジェクトの解放
+    //plane.reset();
+    //axis.reset();
 
-    // 3Dオブジェクトの解放
-    plane.reset();
-    axis.reset();
+    //// Sprite の解放
+    //sprites.clear();
 
-    // Sprite の解放
-    sprites.clear();
-
-    // 各クラスの解放
-    cameraManager.reset();
+    //// 各クラスの解放
+    //cameraManager.reset();
 }
 
 void GamePlayScene::Update()

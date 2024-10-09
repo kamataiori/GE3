@@ -15,18 +15,20 @@ void Framework::Initialize()
 
 	// Sprite共通部の初期化
 	SpriteCommon::GetInstance()->Initialize();
+
 	// テクスチャマネージャーの初期化
 	TextureManager::GetInstance()->Initialize();
 
 	// 3Dオブジェクト共通部の初期化
 	Object3dCommon::GetInstance()->Initialize();
 
+	// モデルマネージャーの初期化
+	ModelManager::GetInstance()->Initialize(DirectXCommon::GetInstance());
+
 	// モデル共通部の初期化
 	modelCommon = std::make_unique<ModelCommon>();
 	modelCommon->Initialize();
 
-	// モデルマネージャーの初期化
-	ModelManager::GetInstance()->Initialize(DirectXCommon::GetInstance());
 
 }
 
@@ -39,6 +41,11 @@ void Framework::Finalize()
 	winApp->Finalize();
 	// 各クラスの解放
 	Input::GetInstance()->Finalize();
+	// テクスチャマネージャーの終了処理
+	TextureManager::GetInstance()->Finalize();
+	// モデルマネージャーの終了処理
+	ModelManager::GetInstance()->Finalize();
+	// シーンマネージャーの終了処理
 	SceneManager::GetInstance()->Finalize();
 	delete sceneFactory_;
 	spriteCommon.reset();
