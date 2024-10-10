@@ -5,6 +5,7 @@
 #include <Sprite.h>
 #include <Object3d.h>
 #include "BaseScene.h"
+#include "Audio.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -52,5 +53,8 @@ private:
 	std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
 	std::unique_ptr<Camera> camera2 = std::make_unique<Camera>();
 	bool cameraFlag = false;  //ImGuiで制御するカメラの切り替えフラグ
+
+	std::unique_ptr<Audio> audio = std::make_unique<Audio>();
+	Audio::SoundData sound = {};
 };
 

@@ -9,6 +9,10 @@ void Framework::Initialize()
 	// 入力の初期化
 	Input::GetInstance()->Initialize(winApp.get());
 
+	// オーディオの初期化
+	audio = std::make_unique<Audio>();
+	audio->Initialize();
+
 	// DirectXの初期化
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(winApp.get());
@@ -31,7 +35,6 @@ void Framework::Initialize()
 	// モデル共通部の初期化
 	modelCommon = std::make_unique<ModelCommon>();
 	modelCommon->Initialize();
-
 
 }
 

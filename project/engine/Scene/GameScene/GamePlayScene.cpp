@@ -56,19 +56,21 @@ void GamePlayScene::Initialize()
     // カメラのセット
     plane->SetCameraManager(cameraManager.get());
     axis->SetCameraManager(cameraManager.get());
+
+    // Audioの初期化
+    audio->Initialize();
+    sound = audio->SoundLoadWave("Resources/fanfare.wav");
+    //audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
+    audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);
 }
 
 void GamePlayScene::Finalize()
 {
-    //// 3Dオブジェクトの解放
-    //plane.reset();
-    //axis.reset();
+    // 音声データの解放
+    audio->SoundUnload(&sound);
 
-    //// Sprite の解放
-    //sprites.clear();
-
-    //// 各クラスの解放
-    //cameraManager.reset();
+    // Audioの終了処理
+    audio->Finalize();
 }
 
 void GamePlayScene::Update()
@@ -149,6 +151,11 @@ void GamePlayScene::Update()
         // 各スプライトを更新
         sprite->Update();
     }
+
+    // 音声再生を無限ループで呼び出す
+   /* audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);*/
+   /* audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);*/
+
 
     if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
         // シーン切り替え
