@@ -71,6 +71,11 @@ public:
     void SoundPlayLoopWave(IXAudio2* xAudio2, const SoundData& soundData);
 
     /// <summary>
+    /// 音声の停止
+    /// </summary>
+    void SoundStop();
+
+    /// <summary>
     /// xAudio2のゲッター
     /// </summary>
     Microsoft::WRL::ComPtr<IXAudio2> GetXAudio2() const;

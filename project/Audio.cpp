@@ -160,6 +160,18 @@ void Audio::SoundPlayLoopWave(IXAudio2* xAudio2, const SoundData& soundData)
 	assert(SUCCEEDED(result));
 }
 
+void Audio::SoundStop()
+{
+	if (pSourceVoice != nullptr)
+	{
+		// 再生停止
+		pSourceVoice->Stop(0);
+
+		// バッファをリセットして再生位置をリセット
+		pSourceVoice->FlushSourceBuffers();
+	}
+}
+
 Microsoft::WRL::ComPtr<IXAudio2> Audio::GetXAudio2() const
 {
 	return xAudio2;
