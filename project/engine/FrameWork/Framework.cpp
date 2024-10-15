@@ -13,6 +13,10 @@ void Framework::Initialize()
 	audio = std::make_unique<Audio>();
 	audio->Initialize();
 
+	// ImGuiManagerの初期化
+	imGuiManager = std::make_unique<ImGuiManager>();
+	imGuiManager->Initialize(winApp.get());
+
 	// DirectXの初期化
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(winApp.get());

@@ -10,6 +10,7 @@
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
 #include "Audio.h"
+#include "ImGuiManager.h"
 #include "D3DResourceLeakChecker.h"
 
 static const int kWindowWidth = 1280;
@@ -65,6 +66,8 @@ protected:
 	DirectXCommon* dxCommon = nullptr;
 	// Audioの初期化
 	std::unique_ptr<Audio> audio = nullptr;
+	// ImGuiManagerの初期化
+	std::unique_ptr<ImGuiManager> imGuiManager = nullptr;
 	// SrvManagerの初期化
 	std::unique_ptr<SrvManager> srvManager = nullptr;
 	// Sprite共通部の初期化
