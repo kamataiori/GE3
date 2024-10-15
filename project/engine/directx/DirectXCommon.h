@@ -193,7 +193,8 @@ public:
 	// CreateBufferResource 関数
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetCreateBufferResource(size_t sizeInBytes);
 
-
+	// バックバッファの数を取得
+	size_t GetBackBufferCount() const {return swapChainDesc.BufferCount;}
 
 	//==========dxcCompiler==========//
 

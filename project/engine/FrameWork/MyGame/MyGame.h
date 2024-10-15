@@ -1,5 +1,6 @@
 #include "Framework.h"
 #include "SceneFactory.h"
+#include "ImGuiManager.h"
 
 class MyGame : public Framework
 {
@@ -25,5 +26,9 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw() override;
+
+private:
+
+	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
 
 };

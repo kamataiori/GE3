@@ -10,15 +10,17 @@ void MyGame::Initialize()
     SceneManager::GetInstance()->SetSceneFactory(sceneFactory_);
 
     SceneManager::GetInstance()->ChangeScene("TITLE");
+
+    // ImGuiManagerの初期化
+    imGuiManager_ = std::make_unique<ImGuiManager>();
+    imGuiManager_->Initialize(winApp.get(), DirectXCommon::GetInstance());
 }
 
 
 void MyGame::Finalize()
 {
     // ImGuiの終了処理
-  /*  ImGui_ImplDX12_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();*/
+    imGuiManager_->Finalize();
     
     // 基底クラスの終了処理
     Framework::Finalize();
@@ -26,17 +28,14 @@ void MyGame::Finalize()
 
 void MyGame::Update()
 {
-
     // ImGuiのフレーム開始を宣言
-   /* ImGui_ImplDX12_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();*/
+    imGuiManager_->Update();
 
     // 基底クラスの更新処理
     Framework::Update();
 
     // ImGuiの内部コマンドを生成する
-    //ImGui::Render();
+    ImGui::Render();
 }
 
 
@@ -50,7 +49,7 @@ void MyGame::Draw()
     SceneManager::GetInstance()->Draw();
 
     // 実際にcommandListのImGuiの描画コマンドを積む
-   // ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->GetCommandList().Get());
+    imGuiManager_->Draw();
 
     // 描画後処理
     dxCommon->PostDraw();

@@ -94,14 +94,14 @@ void GamePlayScene::Update()
 	camera2->Update();
 
 	// カメラコントロール用のウィンドウを作成
-	//ImGui::Begin("Camera Control");
+	ImGui::Begin("Camera Control");
 
-	//// カメラの切り替え
-	//if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
-	//    cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
-	//}
+	// カメラの切り替え
+	if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
+	    cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
+	}
 
-	//ImGui::End();
+	ImGui::End();
 
 	// モンスターボール
 	Vector2 MonsterPosition = monsterBall->GetPosition();
