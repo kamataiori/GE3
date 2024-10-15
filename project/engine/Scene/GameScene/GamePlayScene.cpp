@@ -25,6 +25,8 @@ void GamePlayScene::Initialize()
 
 	monsterBall = std::make_unique<Sprite>();
 	monsterBall->Initialize("Resources/monsterBall.png");
+	MonsterPosition = monsterBall->GetPosition();
+	MonsterPosition = { 100.0f,100.0f };
 
 	// 3Dオブジェクトの初期化
 	plane->Initialize();
@@ -104,11 +106,13 @@ void GamePlayScene::Update()
 	ImGui::End();
 
 	// モンスターボール
-	Vector2 MonsterPosition = monsterBall->GetPosition();
-	MonsterPosition = { 0.0f,0.0f };
 	monsterBall->SetPosition(MonsterPosition);
 	monsterBall->SetSize({ 100.0f,100.0f });
 	monsterBall->Update();
+
+	ImGui::Begin("monsterBall");
+	ImGui::DragFloat2("transformation", &MonsterPosition.x);
+	ImGui::End();
 
 	// 各スプライトの更新処理
 	for (size_t i = 0; i < sprites.size(); ++i) {

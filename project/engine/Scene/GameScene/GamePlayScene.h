@@ -57,5 +57,7 @@ private:
 	std::unique_ptr<Audio> audio = std::make_unique<Audio>();
 	Audio::SoundData sound = {};
 	bool isAudio = false;
+
+	Vector2 MonsterPosition;
 };
 
