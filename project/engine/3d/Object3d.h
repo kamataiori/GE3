@@ -42,6 +42,15 @@ public:
 		Vector3 worldPosition;
 	};
 
+	//ポイントライト
+	struct PointLight {
+		Vector4 color;   //!<ライトの色
+		Vector3 position;  //!ライトの位置
+		float intensity;  //!<輝度
+		float radius;  //! ライトの届く最大距離 
+		float decay;  //!減衰率
+	};
+
 	~Object3d() = default;
 
 	/// <summary>
@@ -79,6 +88,10 @@ public:
 	/// </summary>
 	void CreateCameraShaderData();
 
+	/// <summary>
+	/// ポイントライトの初期化
+	/// </summary>
+	void CreatePointLightData();
 
 	//--------Setter--------//
 	//ModelのSetter
@@ -109,10 +122,12 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  // TransformMatrix用Matrix4x4 1つ分のサイズを用意する
 	Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource;  // 平行光源用
 	Microsoft::WRL::ComPtr<ID3D12Resource> CameraShaderResource;  // シェーダーのカメラ位置
+	Microsoft::WRL::ComPtr<ID3D12Resource> pointLightResource;  // ポイントライト用
 	// バッファリソース内のデータを指すポインタ
 	TransformationMatrix* transformationMatrixData = nullptr;
 	DirectionalLight* directionalLightData = nullptr;
 	CameraForGPU* cameraLightData = nullptr;
+	PointLight* pointLightData = nullptr;
 
 	//Cameraの初期化
 	Camera* camera = nullptr;

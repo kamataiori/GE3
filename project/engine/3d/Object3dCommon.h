@@ -111,7 +111,7 @@ private:
 
 	//RootSignature
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
-	D3D12_ROOT_PARAMETER rootParameters_[5] = {};
+	D3D12_ROOT_PARAMETER rootParameters_[6] = {};
 
 	//バイナリを元に生成
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;

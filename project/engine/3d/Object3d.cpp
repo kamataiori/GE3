@@ -10,11 +10,14 @@ void Object3d::Initialize()
 	// 座標変換行列データの初期化
 	CreateTransformationMatrixData();
 
-	//平行光源の初期化
+	// 平行光源の初期化
 	CreateDirectionalLightData();
 
 	// 光源のカメラ位置の初期化
 	CreateCameraShaderData();
+
+	// ポイントライトの初期化
+	CreatePointLightData();
 
 	//Transform変数を作る
 	transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
@@ -76,12 +79,14 @@ void Object3d::ImGuiUpdate(const std::string& Name)
 
 void Object3d::Draw()
 {
-	//座標変換行列CBufferの場所を設定
+	// 座標変換行列CBufferの場所を設定
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
-	//平行光源CBufferの場所を設定
+	// 平行光源CBufferの場所を設定
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, shaderResource->GetGPUVirtualAddress());
-
+	// 光源のカメラ位置CBufferの場所を設定
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, CameraShaderResource->GetGPUVirtualAddress());
+	// ポイントライトCBufferの場所を設定
+	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(5, pointLightResource->GetGPUVirtualAddress());
 
 	//3Dモデルが割り当てられていたら描画する
 	if (model_) {
@@ -124,6 +129,20 @@ void Object3d::CreateCameraShaderData()
 	CameraShaderResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraLightData));
 	//デフォルト値はとりあえず以下のようにしておく
 	cameraLightData->worldPosition = {};
+}
+
+void Object3d::CreatePointLightData()
+{
+	//平行光源用のリソースを作る
+	pointLightResource = object3dCommon_->GetDxCommon()->CreateBufferResource(sizeof(PointLight));
+	//書き込むためのアドレスを取得
+	pointLightResource->Map(0, nullptr, reinterpret_cast<void**>(&pointLightData));
+	//デフォルト値はとりあえず以下のようにしておく
+	pointLightData->color = { 1.0f,1.0f,1.0f,1.0f };
+	pointLightData->position = { 0.0f,2.0f,0.0f };
+	pointLightData->intensity = 1.0f;
+	pointLightData->radius = 20.0f;
+	pointLightData->decay = 10.0f;
 }
 
 void Object3d::SetCameraManager(CameraManager* cameraManager)
