@@ -42,6 +42,8 @@ VertexShaderOutput main(VertexShaderInput input)
     //////=========法線の座標系を変換してPixelShaderに送る=========////
 
     output.normal = normalize(mul(input.normal, (float3x3) gTransformationMatrix.World));
+    
+    output.worldPosition = mul(input.position, gTransformationMatrix.World).xyz;
 
     return output;
 }

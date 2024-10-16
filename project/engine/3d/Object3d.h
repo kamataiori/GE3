@@ -37,6 +37,10 @@ public:
 		float intensity;  //!<輝度
 	};
 
+	struct CameraForGPU {
+		Vector3 worldPosition;
+	};
+
 	~Object3d() = default;
 
 	/// <summary>
@@ -69,6 +73,11 @@ public:
 	/// </summary>
 	void CreateDirectionalLightData();
 
+	/// <summary>
+	/// 光源のカメラ位置の初期化
+	/// </summary>
+	void CreateCameraShaderData();
+
 
 	//--------Setter--------//
 	//ModelのSetter
@@ -96,11 +105,13 @@ private:
 	Model* model_ = nullptr;
 
 	// バッファリソース
-	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  //TransformMatrix用Matrix4x4 1つ分のサイズを用意する
-	Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource;  //平行光源用
+	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  // TransformMatrix用Matrix4x4 1つ分のサイズを用意する
+	Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource;  // 平行光源用
+	Microsoft::WRL::ComPtr<ID3D12Resource> CameraShaderResource;  // シェーダーのカメラ位置
 	// バッファリソース内のデータを指すポインタ
 	TransformationMatrix* transformationMatrixData = nullptr;
 	DirectionalLight* directionalLightData = nullptr;
+	CameraForGPU* cameraLightData = nullptr;
 
 	//Cameraの初期化
 	Camera* camera = nullptr;

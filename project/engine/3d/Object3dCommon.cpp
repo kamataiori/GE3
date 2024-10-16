@@ -55,6 +55,10 @@ void Object3dCommon::RootSignature()
 	rootParameters_[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  //CBVを使う
 	rootParameters_[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  //PixelShaderで使う
 	rootParameters_[3].Descriptor.ShaderRegister = 1;  //レジスタ番号1を使う
+	////=========光源のカメラの位置をShaderで使う=========////
+	rootParameters_[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  //CBVを使う
+	rootParameters_[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  //PixelShaderで使う
+	rootParameters_[4].Descriptor.ShaderRegister = 2;  //レジスタ番号1を使う
 
 	descriptionRootSignature_.pParameters = rootParameters_;    //ルートパラメータ配列へのポインタ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters_);    //配列の長さ

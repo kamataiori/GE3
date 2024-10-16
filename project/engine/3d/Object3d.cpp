@@ -13,9 +13,12 @@ void Object3d::Initialize()
 	//平行光源の初期化
 	CreateDirectionalLightData();
 
+	// 光源のカメラ位置の初期化
+	CreateCameraShaderData();
+
 	//Transform変数を作る
 	transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-	cameraTransform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-10.0f} };
+	cameraTransform = { {1.0f,1.0f,1.0f},{0.0f,3.14f,0.0f},{0.0f,/*4.0f*/1.0f,-10.0f} };
 
 	//デフォルトカメラをセット
 	this->camera = object3dCommon_->GetDefaultCamera();
@@ -44,6 +47,9 @@ void Object3d::Update()
 	transformationMatrixData->WVP = Multiply(modelData.rootNode.localMatrix , worldviewProjectionMatrix);
 	transformationMatrixData->World = Multiply(modelData.rootNode.localMatrix , worldMatrix);
 
+	//ライトの位置にカメラの位置をを入れる
+	cameraLightData->worldPosition = cameraTransform.translate;
+
 	//transform.rotate.y += 0.06f;
 }
 
@@ -58,6 +64,11 @@ void Object3d::ImGuiUpdate(const std::string& Name)
 		ImGui::DragFloat3("translate", &transform.translate.x);
 		ImGui::DragFloat3("scale", &transform.scale.x);
 		ImGui::DragFloat3("rotate", &transform.rotate.x);
+		ImGui::DragFloat3("CameraRotate", &cameraTransform.rotate.x, 0.01f);
+		ImGui::DragFloat3("CameraTransform", &cameraTransform.translate.x, 0.01f);
+		//ImGui::Checkbox("usebillboardMatrix", &usebillboardMatrix);
+		ImGui::DragFloat3("directionalLight", &directionalLightData->direction.x, 0.01f);
+		directionalLightData->direction = Normalize(directionalLightData->direction);
 		ImGui::TreePop();
 	}
 	ImGui::End();
@@ -69,6 +80,8 @@ void Object3d::Draw()
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 	//平行光源CBufferの場所を設定
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, shaderResource->GetGPUVirtualAddress());
+
+	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, CameraShaderResource->GetGPUVirtualAddress());
 
 	//3Dモデルが割り当てられていたら描画する
 	if (model_) {
@@ -99,6 +112,17 @@ void Object3d::CreateDirectionalLightData()
 	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
+}
+
+void Object3d::CreateCameraShaderData()
+{
+	//平行光源用のリソースを作る
+	CameraShaderResource = object3dCommon_->GetDxCommon()->CreateBufferResource(sizeof(CameraForGPU));
+	//データを書き込む
+	//書き込むためのアドレスを取得
+	CameraShaderResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraLightData));
+	//デフォルト値はとりあえず以下のようにしておく
+	cameraLightData->worldPosition = {};
 }
 
 void Object3d::SetCameraManager(CameraManager* cameraManager)
