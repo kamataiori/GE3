@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "MathFunctions.h"
 #include "TextureManager.h"
+#include <Object3d.h>
 
 void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypath, const std::string& filename)
 {
@@ -8,13 +9,16 @@ void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypat
 	this->modelCommon_ = modelCommon;
 
 	//モデル読み込み
-	modelData = LoadObjFile(directorypath, filename);
+	modelData = LoadModelFile(directorypath, filename);
 
 	// 頂点データを作成
 	CreateVertexData();
 
 	// マテリアルデータの初期化
 	CreateMaterialData();
+
+	// WVPデータの初期化
+	CreateWVPData();
 
 	//.objの参照しているテクスチャファイル読み込み
 	TextureManager::GetInstance()->LoadTexture(modelData.material.textureFilePath);
@@ -30,6 +34,8 @@ void Model::Draw()
 
 	//マテリアルCBufferの場所を設定
 	modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
+	//wvp用のCBufferの場所を設定
+	//modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定
 	modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, modelCommon_->GetDxCommon()->GetGPUDescriptorHandle(SrvManager::GetInstance()->GetSrvDescriptorHeap().Get(), SrvManager::GetInstance()->GetDescriptorSizeSRV(), 1));
 
@@ -70,6 +76,19 @@ void Model::CreateMaterialData()
 	materialData->uvTransform = MakeIdentity4x4();
 }
 
+void Model::CreateWVPData()
+{
+	wvpResource = modelCommon_->GetDxCommon()->CreateBufferResource(sizeof(Object3d::TransformationMatrix));
+	//データを書き込む
+	Object3d::TransformationMatrix* wvpData = nullptr;
+	//書き込むためのアドレスを取得
+	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
+	//単位行列を書き込んでおく
+	wvpData->WVP = MakeIdentity4x4();
+	wvpData->World = MakeIdentity4x4();
+	//wvpData->WorldInverseTranspose = MakeIdentity4x4();
+}
+
 //.mtlファイル読み取り
 Model::MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
 {
@@ -102,8 +121,44 @@ Model::MaterialData Model::LoadMaterialTemplateFile(const std::string& directory
 	return materialData;
 }
 
+Model::Node Model::ReadNode(aiNode* node)
+{
+	Node result;
+
+	aiMatrix4x4 aiLocalMatrix = node->mTransformation;  // nodeのlocalMatrixを取得
+	aiLocalMatrix.Transpose();  // 列ベクトル形式を行ベクトル形式に転置
+	result.localMatrix.m[0][0] = aiLocalMatrix[0][0];
+	result.localMatrix.m[0][1] = aiLocalMatrix[0][1];
+	result.localMatrix.m[0][2] = aiLocalMatrix[0][2];
+	result.localMatrix.m[0][3] = aiLocalMatrix[0][3];
+
+	result.localMatrix.m[1][0] = aiLocalMatrix[1][0];
+	result.localMatrix.m[1][1] = aiLocalMatrix[1][1];
+	result.localMatrix.m[1][2] = aiLocalMatrix[1][2];
+	result.localMatrix.m[1][3] = aiLocalMatrix[1][3];
+
+	result.localMatrix.m[2][0] = aiLocalMatrix[2][0];
+	result.localMatrix.m[2][1] = aiLocalMatrix[2][1];
+	result.localMatrix.m[2][2] = aiLocalMatrix[2][2];
+	result.localMatrix.m[2][3] = aiLocalMatrix[2][3];
+
+	result.localMatrix.m[3][0] = aiLocalMatrix[3][0];
+	result.localMatrix.m[3][1] = aiLocalMatrix[3][1];
+	result.localMatrix.m[3][2] = aiLocalMatrix[3][2];
+	result.localMatrix.m[3][3] = aiLocalMatrix[3][3];
+
+	result.name = node->mName.C_Str();  // Node名を格納
+	result.children.resize(node->mNumChildren);  // 子供の数だけ確保
+	for (uint32_t childIndex = 0; childIndex < node->mNumChildren; ++childIndex)
+	{
+		// 再帰的に読んで階層構造を作っていく
+		result.children[childIndex] = ReadNode(node->mChildren[childIndex]);
+	}
+	return result;
+}
+
 //.objファイル読み取り
-Model::ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
+Model::ModelData Model::LoadModelFile(const std::string& directoryPath, const std::string& filename)
 {
 	// Assimpのインポーターを作成
 	Assimp::Importer importer;
@@ -158,6 +213,9 @@ Model::ModelData Model::LoadObjFile(const std::string& directoryPath, const std:
 			modelData.material.textureFilePath = directoryPath + "/" + textureFilePath.C_Str();
 		}
 	}
+
+	// ルートノードを解析してモデルデータに設定
+	modelData.rootNode = ReadNode(scene->mRootNode);
 
 	return modelData;
 }

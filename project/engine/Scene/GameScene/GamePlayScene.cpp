@@ -33,9 +33,9 @@ void GamePlayScene::Initialize()
 	axis->Initialize();
 
 	// モデル読み込み
-	ModelManager::GetInstance()->LoadModel("plane.obj");
+	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
-	plane->SetModel("plane.obj");
+	plane->SetModel("uvChecker.gltf");
 	axis->SetModel("axis.obj");
 
 	// モデルにSRTを設定

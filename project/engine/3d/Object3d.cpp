@@ -24,6 +24,9 @@ void Object3d::Initialize()
 
 void Object3d::Update()
 {
+	// model_ から modelData を取得
+	const Model::ModelData& modelData = model_->GetModelData();
+
 	//TransformからworldMatrixを作る
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	//cameraTransformからcameraMatrixを作る
@@ -38,12 +41,13 @@ void Object3d::Update()
 		worldviewProjectionMatrix = worldMatrix;
 	}
 
-	transformationMatrixData->WVP = worldviewProjectionMatrix;
-	transformationMatrixData->World = worldMatrix;
+	transformationMatrixData->WVP = Multiply(modelData.rootNode.localMatrix , worldviewProjectionMatrix);
+	transformationMatrixData->World = Multiply(modelData.rootNode.localMatrix , worldMatrix);
 
 	//transform.rotate.y += 0.06f;
-
 }
+
+
 
 void Object3d::ImGuiUpdate(const std::string& Name)
 {
@@ -65,7 +69,7 @@ void Object3d::Draw()
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 	//平行光源CBufferの場所を設定
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, shaderResource->GetGPUVirtualAddress());
-	
+
 	//3Dモデルが割り当てられていたら描画する
 	if (model_) {
 		model_->Draw();
