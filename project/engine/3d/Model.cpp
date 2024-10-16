@@ -74,6 +74,7 @@ void Model::CreateMaterialData()
 	//SpriteはLightingしないfalseを設定する
 	materialData->enableLighting = false;
 	materialData->uvTransform = MakeIdentity4x4();
+	materialData->shininess = 50.0f;
 }
 
 void Model::CreateWVPData()
