@@ -61,11 +61,13 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\Scene\TitleScene;$(ProjectDir)engine\Scene\GameScene;$(ProjectDir)engine\SRVManager</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\Scene\TitleScene;$(ProjectDir)engine\Scene\GameScene;$(ProjectDir)engine\SRVManager;$(ProjectDir)externals\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)externals\assimp\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
@@ -81,7 +83,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\Scene\TitleScene;$(ProjectDir)engine\Scene\GameScene;$(ProjectDir)engine\SRVManager</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\Scene\TitleScene;$(ProjectDir)engine\Scene\GameScene;$(ProjectDir)engine\SRVManager;$(ProjectDir)externals\assimp\include</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -91,6 +93,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)externals\assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"

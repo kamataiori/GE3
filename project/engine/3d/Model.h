@@ -1,12 +1,14 @@
 #pragma once
 #include <fstream>
-
 #include "ModelCommon.h"
 #include "SrvManager.h"
 #include "Vector4.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 //---前方宣言---//
 class ModelCommon;
