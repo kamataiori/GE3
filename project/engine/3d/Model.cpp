@@ -17,9 +17,6 @@ void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypat
 	// マテリアルデータの初期化
 	CreateMaterialData();
 
-	// WVPデータの初期化
-	CreateWVPData();
-
 	//.objの参照しているテクスチャファイル読み込み
 	TextureManager::GetInstance()->LoadTexture(modelData.material.textureFilePath);
 	//読み込んだテクスチャの番号を取得
@@ -34,8 +31,6 @@ void Model::Draw()
 
 	//マテリアルCBufferの場所を設定
 	modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
-	//wvp用のCBufferの場所を設定
-	//modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定
 	modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, modelCommon_->GetDxCommon()->GetGPUDescriptorHandle(SrvManager::GetInstance()->GetSrvDescriptorHeap().Get(), SrvManager::GetInstance()->GetDescriptorSizeSRV(), 1));
 
@@ -74,19 +69,6 @@ void Model::CreateMaterialData()
 	//SpriteはLightingしないfalseを設定する
 	materialData->enableLighting = false;
 	materialData->uvTransform = MakeIdentity4x4();
-}
-
-void Model::CreateWVPData()
-{
-	wvpResource = modelCommon_->GetDxCommon()->CreateBufferResource(sizeof(Object3d::TransformationMatrix));
-	//データを書き込む
-	Object3d::TransformationMatrix* wvpData = nullptr;
-	//書き込むためのアドレスを取得
-	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
-	//単位行列を書き込んでおく
-	wvpData->WVP = MakeIdentity4x4();
-	wvpData->World = MakeIdentity4x4();
-	//wvpData->WorldInverseTranspose = MakeIdentity4x4();
 }
 
 //.mtlファイル読み取り

@@ -77,12 +77,6 @@ public:
 	void  CreateMaterialData();
 
 	/// <summary>
-	/// WVPの初期化
-	/// </summary>
-	void CreateWVPData();
-
-
-	/// <summary>
 	/// .mtlファイルの読み取り
 	/// </summary>
 	static MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
@@ -113,7 +107,6 @@ private:
 	// バッファリソース
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource;  // 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> materialResource;  // マテリアル用の定数バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> wvpResource;  // /WVP用のバッファ
 	// バッファリソース内のデータを指すポインタ
 	VertexData* vertexData = nullptr;
 	Material* materialData = nullptr;
