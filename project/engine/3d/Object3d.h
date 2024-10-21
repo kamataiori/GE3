@@ -10,6 +10,7 @@
 #include "Vector3.h"
 #include "Matrix4x4.h"
 #include "Transform.h"
+#include <numbers>
 
 //---前方宣言---//
 class Object3dCommon;
@@ -49,6 +50,18 @@ public:
 		float intensity;  //!<輝度
 		float radius;  //! ライトの届く最大距離 
 		float decay;  //!減衰率
+	};
+
+	//スポットライト
+	struct SpotLight {
+		Vector4 color;  //!<ライトの色
+		Vector3 position;  //!<ライトの位置
+		float intensity;  //!<輝度
+		Vector3 direction;  //!<スポットライトの方向
+		float distance;  //!<ライトの届く最大距離
+		float decay;  //!減衰率
+		float cosAngle;  //!<スポットライトの余弦
+		float padding[2];
 	};
 
 	~Object3d() = default;
@@ -93,6 +106,11 @@ public:
 	/// </summary>
 	void CreatePointLightData();
 
+	/// <summary>
+	/// スポットライトの初期化
+	/// </summary>
+	void CreateSpotLightData();
+
 	//--------Setter--------//
 	//ModelのSetter
 	//void SetModel(Model* model) { this->model_ = model; }
@@ -123,11 +141,13 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> shaderResource;  // 平行光源用
 	Microsoft::WRL::ComPtr<ID3D12Resource> CameraShaderResource;  // シェーダーのカメラ位置
 	Microsoft::WRL::ComPtr<ID3D12Resource> pointLightResource;  // ポイントライト用
+	Microsoft::WRL::ComPtr<ID3D12Resource> spotLightResource;  // スポットライト用
 	// バッファリソース内のデータを指すポインタ
 	TransformationMatrix* transformationMatrixData = nullptr;
 	DirectionalLight* directionalLightData = nullptr;
 	CameraForGPU* cameraLightData = nullptr;
 	PointLight* pointLightData = nullptr;
+	SpotLight* spotLightData = nullptr;
 
 	//Cameraの初期化
 	Camera* camera = nullptr;

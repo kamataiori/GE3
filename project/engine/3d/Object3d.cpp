@@ -1,6 +1,7 @@
 #include "Object3d.h"
 #include "MathFunctions.h"
 #include "TextureManager.h"
+#define _USE_MATH_DEFINES
 
 void Object3d::Initialize()
 {
@@ -18,6 +19,9 @@ void Object3d::Initialize()
 
 	// ポイントライトの初期化
 	CreatePointLightData();
+
+	// スポットライトの初期化
+	CreateSpotLightData();
 
 	//Transform変数を作る
 	transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
@@ -87,6 +91,8 @@ void Object3d::Draw()
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, CameraShaderResource->GetGPUVirtualAddress());
 	// ポイントライトCBufferの場所を設定
 	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(5, pointLightResource->GetGPUVirtualAddress());
+	// スポットライトCBufferの場所を設定
+	object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(6, spotLightResource->GetGPUVirtualAddress());
 
 	//3Dモデルが割り当てられていたら描画する
 	if (model_) {
@@ -143,6 +149,22 @@ void Object3d::CreatePointLightData()
 	pointLightData->intensity = 1.0f;
 	pointLightData->radius = 20.0f;
 	pointLightData->decay = 10.0f;
+}
+
+void Object3d::CreateSpotLightData()
+{
+	//平行光源用のリソースを作る
+	spotLightResource =object3dCommon_->GetDxCommon()->CreateBufferResource(sizeof(SpotLight));
+	//書き込むためのアドレスを取得
+	spotLightResource->Map(0, nullptr, reinterpret_cast<void**>(&spotLightData));
+	//デフォルト値はとりあえず以下のようにしておく
+	spotLightData->color = { 1.0f,1.0f,1.0f,1.0f };
+	spotLightData->position = { 2.0f,1.25,0.0f };
+	spotLightData->distance = 7.0f;
+	spotLightData->direction = Normalize({ -1.0f,-1.0f,0.0f });
+	spotLightData->intensity = 4.0f;
+	spotLightData->decay = 2.0f;
+	spotLightData->cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
 }
 
 void Object3d::SetCameraManager(CameraManager* cameraManager)
