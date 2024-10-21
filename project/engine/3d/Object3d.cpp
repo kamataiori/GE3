@@ -55,7 +55,7 @@ void Object3d::Update()
 	transformationMatrixData->World = Multiply(modelData.rootNode.localMatrix , worldMatrix);
 
 	//ライトの位置にカメラの位置をを入れる
-	cameraLightData->worldPosition = cameraTransform.translate;
+	//cameraLightData->worldPosition = cameraTransform.translate;
 
 	//transform.rotate.y += 0.06f;
 }
@@ -76,6 +76,11 @@ void Object3d::ImGuiUpdate(const std::string& Name)
 		//ImGui::Checkbox("usebillboardMatrix", &usebillboardMatrix);
 		ImGui::DragFloat3("directionalLight", &directionalLightData->direction.x, 0.01f);
 		directionalLightData->direction = Normalize(directionalLightData->direction);
+		ImGui::DragFloat3("position", &spotLightData->position.x, 0.01f);
+		ImGui::DragFloat("distance", &spotLightData->distance, 0.01f);
+		ImGui::DragFloat("direction", &spotLightData->direction.x, 0.01f);
+		ImGui::DragFloat("cosAngle", &spotLightData->cosAngle, 0.01f);
+		ImGui::DragFloat("intensity", &spotLightData->intensity, 0.01f);
 		ImGui::TreePop();
 	}
 	ImGui::End();
