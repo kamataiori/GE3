@@ -65,6 +65,17 @@ void GamePlayScene::Initialize()
 	audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
 	//audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);
 	isAudio = false;
+
+
+	// ライト
+	// Lightクラスのデータを初期化
+	light->Initialize();
+	light->GetCameraLight();
+	light->GetSpotLight();
+	light->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
+	light->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	light->SetSpotLightPosition({ 0.0f,0.25f,0.0f });
+	light->SetSpotLightIntensity({ 4.0f });
 }
 
 void GamePlayScene::Finalize()
@@ -81,6 +92,7 @@ void GamePlayScene::Update()
 	// 各3Dオブジェクトの更新
 	plane->Update();
 	axis->Update();
+
 
 	// ImGuiでオブジェクトの情報を表示
 	plane->ImGuiUpdate("plane");
@@ -100,7 +112,7 @@ void GamePlayScene::Update()
 
 	// カメラの切り替え
 	if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
-	    cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
+		cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
 	}
 
 	ImGui::End();
@@ -156,6 +168,12 @@ void GamePlayScene::Update()
 		// 各スプライトを更新
 		sprite->Update();
 	}
+
+	ImGui::Begin("light");
+	ImGui::DragFloat3("transform", &light->cameraLightData.worldPosition.x, 0.01f);
+	ImGui::DragFloat3("position", &light->spotLightData.position.x, 0.01f);
+	ImGui::DragFloat("intensity", &light->spotLightData.intensity, 0.01f);
+	ImGui::End();
 
 	// 音声再生を無限ループで呼び出す
 	//audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);

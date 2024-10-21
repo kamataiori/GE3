@@ -6,6 +6,7 @@
 #include <Object3d.h>
 #include "BaseScene.h"
 #include "Audio.h"
+#include "Light.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -59,5 +60,8 @@ private:
 	bool isAudio = false;
 
 	Vector2 MonsterPosition;
+
+	// ライトの初期化
+	std::unique_ptr<Light> light = std::make_unique<Light>();
 };
 

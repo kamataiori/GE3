@@ -39,17 +39,38 @@ public:
     PointLight pointLightData;
     SpotLight spotLightData;
 
-    Light();
     ~Light() = default;
 
+    void Initialize();
     void InitializeDirectionalLight();
     void InitializeCameraLight();
     void InitializePointLight();
     void InitializeSpotLight();
 
-    // 各ライトのセット・ゲット関数
+    // Getter
     DirectionalLight& GetDirectionalLight();
     CameraForGPU& GetCameraLight();
     PointLight& GetPointLight();
     SpotLight& GetSpotLight();
+
+    // Setter
+    void SetDirectionalLightColor(const Vector4& color);
+    void SetDirectionalLightDirection(const Vector3& direction);
+    void SetDirectionalLightIntensity(float intensity);
+
+    void SetCameraPosition(const Vector3& position);
+
+    void SetPointLightColor(const Vector4& color);
+    void SetPointLightPosition(const Vector3& position);
+    void SetPointLightIntensity(float intensity);
+    void SetPointLightRadius(float radius);
+    void SetPointLightDecay(float decay);
+
+    void SetSpotLightColor(const Vector4& color);
+    void SetSpotLightPosition(const Vector3& position);
+    void SetSpotLightDirection(const Vector3& direction);
+    void SetSpotLightIntensity(float intensity);
+    void SetSpotLightDistance(float distance);
+    void SetSpotLightDecay(float decay);
+    void SetSpotLightCosAngle(float cosAngle);
 };
