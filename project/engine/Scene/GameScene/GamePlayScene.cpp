@@ -29,6 +29,9 @@ void GamePlayScene::Initialize()
 	MonsterPosition = { 100.0f,100.0f };
 
 	// 3Dオブジェクトの初期化
+	plane = std::make_unique<Object3d>(this);
+	axis = std::make_unique<Object3d>(this);
+
 	plane->Initialize();
 	axis->Initialize();
 

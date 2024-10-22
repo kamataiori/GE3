@@ -33,6 +33,13 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	/// <summary>
+	/// Lightのゲッター
+	/// </summary>
+	Light* GetLight() const {
+		return light.get();  // unique_ptr から Light ポインタを返す
+	}
+
 private:
 
 	float offsetX = 100.0f;  //各スプライトのX座標をずらすオフセット値
@@ -46,8 +53,8 @@ private:
 	std::unique_ptr<Sprite> monsterBall = std::make_unique<Sprite>();
 
 	// 3Dオブジェクトの初期化
-	std::unique_ptr<Object3d> plane = std::make_unique<Object3d>();
-	std::unique_ptr<Object3d> axis = std::make_unique<Object3d>();
+	std::unique_ptr<Object3d> plane = nullptr;
+	std::unique_ptr<Object3d> axis = nullptr;
 
 	//3Dカメラの初期化
 	std::unique_ptr<CameraManager> cameraManager = nullptr;

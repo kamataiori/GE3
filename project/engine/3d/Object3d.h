@@ -11,11 +11,12 @@
 #include "Matrix4x4.h"
 #include "Transform.h"
 #include <numbers>
-#include "Light.h" // 新しく追加するLightクラスのインクルード
+#include "Light.h"
 
 //---前方宣言---//
 class Object3dCommon;
 class Camera;
+class GamePlayScene;
 
 class Object3d
 {
@@ -33,6 +34,7 @@ public:
         Matrix4x4 WorldInverseTranspose;
     };
 
+    Object3d(GamePlayScene* scene);
     ~Object3d() = default;
 
     /// <summary>
@@ -83,6 +85,8 @@ private:
     // Modelの初期化
     Model* model_ = nullptr;
 
+    GamePlayScene* gamePlayScene_ = nullptr;
+
     // バッファリソース
     Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  // TransformMatrix用Matrix4x4 1つ分のサイズを用意する
     TransformationMatrix* transformationMatrixData = nullptr;
@@ -96,7 +100,4 @@ private:
     // Transform関連
     Transform transform;
     Transform cameraTransform;
-
-    // Lightクラスのインスタンスを保持
-    Light light;
 };
