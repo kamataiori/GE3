@@ -75,6 +75,14 @@ void Object3d::Draw()
     // 座標変換行列CBufferの場所を設定
     object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, light.GetDirectionalLightGPUAddress());
+
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, light.GetCameraLightGPUAddress());
+
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(5, light.GetPointLightGPUAddress());
+
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(6, light.GetSpotLightGPUAddress());
+
     // 3Dモデルが割り当てられていたら描画する
     if (model_) {
         model_->Draw();

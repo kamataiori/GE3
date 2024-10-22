@@ -2,6 +2,9 @@
 #include "Vector3.h"
 #include "Vector4.h"
 #include <numbers>
+#include <wrl.h>
+#include <d3d12.h>
+#include "Object3dCommon.h"
 
 class Light {
 public:
@@ -73,4 +76,20 @@ public:
     void SetSpotLightDistance(float distance);
     void SetSpotLightDecay(float decay);
     void SetSpotLightCosAngle(float cosAngle);
+
+    // GPU バッファのアドレスを取得
+    D3D12_GPU_VIRTUAL_ADDRESS GetDirectionalLightGPUAddress() const;
+    D3D12_GPU_VIRTUAL_ADDRESS GetCameraLightGPUAddress() const;
+    D3D12_GPU_VIRTUAL_ADDRESS GetPointLightGPUAddress() const;
+    D3D12_GPU_VIRTUAL_ADDRESS GetSpotLightGPUAddress() const;
+
+private:
+    // Object3dCommonの初期化
+    Object3dCommon* object3dCommon_ = nullptr;
+
+    // ライト関連のバッファリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource> directionalLightResource;   // 平行光源用
+    Microsoft::WRL::ComPtr<ID3D12Resource> cameraLightResource;        // カメラ位置用
+    Microsoft::WRL::ComPtr<ID3D12Resource> pointLightResource;         // ポイントライト用
+    Microsoft::WRL::ComPtr<ID3D12Resource> spotLightResource;          // スポットライト用
 };

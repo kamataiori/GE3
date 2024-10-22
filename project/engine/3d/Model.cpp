@@ -67,8 +67,9 @@ void Model::CreateMaterialData()
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	materialData->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	//SpriteはLightingしないfalseを設定する
-	materialData->enableLighting = false;
+	materialData->enableLighting = true;
 	materialData->uvTransform = MakeIdentity4x4();
+	materialData->shininess = 50.0f;
 }
 
 //.mtlファイル読み取り
