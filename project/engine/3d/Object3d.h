@@ -99,7 +99,4 @@ private:
 
     // Lightクラスのインスタンスを保持
     Light light;
-
-    // ライトデータへのポインタ
-    Light* lightData = nullptr;
 };

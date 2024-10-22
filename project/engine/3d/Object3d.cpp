@@ -12,7 +12,7 @@ void Object3d::Initialize()
     CreateTransformationMatrixData();
 
     // Lightクラスのデータを初期化
-    lightData = &light;
+    light.Initialize();
 
     // Transform変数を作る
     transform = { {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} };

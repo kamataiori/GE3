@@ -71,11 +71,13 @@ void GamePlayScene::Initialize()
 	// Lightクラスのデータを初期化
 	light->Initialize();
 	light->GetCameraLight();
-	light->GetSpotLight();
+	light->GetDirectionalLight();
+	light->SetDirectionalLightIntensity({ 1.0f });
+	//light->GetSpotLight();
 	light->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
-	light->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	/*light->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
 	light->SetSpotLightPosition({ 0.0f,0.25f,0.0f });
-	light->SetSpotLightIntensity({ 4.0f });
+	light->SetSpotLightIntensity({ 4.0f });*/
 }
 
 void GamePlayScene::Finalize()
