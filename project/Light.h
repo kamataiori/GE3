@@ -37,10 +37,10 @@ public:
         float padding[2];  //!< パディング
     };
 
-    DirectionalLight directionalLightData;
-    CameraForGPU cameraLightData;
-    PointLight pointLightData;
-    SpotLight spotLightData;
+    DirectionalLight* directionalLightData;
+    CameraForGPU* cameraLightData;
+    PointLight* pointLightData;
+    SpotLight* spotLightData;
 
     ~Light() = default;
 
@@ -51,10 +51,10 @@ public:
     void InitializeSpotLight();
 
     // Getter
-    DirectionalLight& GetDirectionalLight();
-    CameraForGPU& GetCameraLight();
-    PointLight& GetPointLight();
-    SpotLight& GetSpotLight();
+    DirectionalLight* GetDirectionalLight();
+    CameraForGPU* GetCameraLight();
+    PointLight* GetPointLight();
+    SpotLight* GetSpotLight();
 
     // Setter
     void SetDirectionalLightColor(const Vector4& color);

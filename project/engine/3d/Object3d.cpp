@@ -9,6 +9,11 @@ Object3d::Object3d(GamePlayScene* scene)
     gamePlayScene_ = scene;
 }
 
+Object3d::Object3d(TitleScene* scene)
+{
+    titleScene_ = scene;
+}
+
 void Object3d::Initialize()
 {
     // 引数で受け取ってメンバ変数に記録する

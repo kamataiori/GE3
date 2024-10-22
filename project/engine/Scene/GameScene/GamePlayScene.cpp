@@ -175,9 +175,9 @@ void GamePlayScene::Update()
 	}
 
 	ImGui::Begin("light");
-	ImGui::DragFloat3("transform", &light->cameraLightData.worldPosition.x, 0.01f);
-	ImGui::DragFloat3("position", &light->spotLightData.position.x, 0.01f);
-	ImGui::DragFloat("intensity", &light->spotLightData.intensity, 0.01f);
+	ImGui::DragFloat3("transform", &light->cameraLightData->worldPosition.x, 0.01f);
+	ImGui::DragFloat3("position", &light->spotLightData->position.x, 0.01f);
+	ImGui::DragFloat("intensity", &light->spotLightData->intensity, 0.01f);
 	ImGui::End();
 
 	// 音声再生を無限ループで呼び出す
