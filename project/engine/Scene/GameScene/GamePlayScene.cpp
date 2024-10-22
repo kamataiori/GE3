@@ -65,7 +65,7 @@ void GamePlayScene::Initialize()
 	// Audioの初期化
 	audio->Initialize();
 	sound = audio->SoundLoadWave("Resources/fanfare.wav");
-	audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
+	//audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
 	//audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);
 	isAudio = false;
 
@@ -76,11 +76,13 @@ void GamePlayScene::Initialize()
 	light->GetCameraLight();
 	light->GetDirectionalLight();
 	light->SetDirectionalLightIntensity({ 1.0f });
-	//light->GetSpotLight();
+	light->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	light->SetDirectionalLightDirection({ 1.0f,1.0f });
+	light->GetSpotLight();
 	light->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
-	/*light->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	light->SetSpotLightPosition({ 0.0f,0.25f,0.0f });
-	light->SetSpotLightIntensity({ 4.0f });*/
+	light->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	light->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
+	light->SetSpotLightIntensity({ 4.0f });
 }
 
 void GamePlayScene::Finalize()
@@ -176,8 +178,10 @@ void GamePlayScene::Update()
 
 	ImGui::Begin("light");
 	ImGui::DragFloat3("transform", &light->cameraLightData->worldPosition.x, 0.01f);
-	ImGui::DragFloat3("position", &light->spotLightData->position.x, 0.01f);
-	ImGui::DragFloat("intensity", &light->spotLightData->intensity, 0.01f);
+	ImGui::DragFloat3("DirectionalDirection", &light->directionalLightData->direction.x, 0.01f);
+	ImGui::DragFloat("DirectionalIntensity", &light->directionalLightData->intensity, 0.01f);
+	ImGui::DragFloat3("SpotPosition", &light->spotLightData->position.x, 0.01f);
+	ImGui::DragFloat("SpotIntensity", &light->spotLightData->intensity, 0.01f);
 	ImGui::End();
 
 	// 音声再生を無限ループで呼び出す
