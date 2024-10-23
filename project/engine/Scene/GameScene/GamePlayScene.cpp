@@ -52,7 +52,7 @@ void GamePlayScene::Initialize()
 
 	// 3Dカメラの初期化
 	cameraManager = std::make_unique<CameraManager>();
-	camera1->SetTranslate({ 0.0f, 0.0f, -10.0f });
+	camera1->SetTranslate({ 0.0f, 0.0f, -20.0f });
 	cameraManager->AddCamera(camera1.get());
 
 	camera2->SetTranslate({ 5.0f, 1.0f, -40.0f });
@@ -77,7 +77,7 @@ void GamePlayScene::Initialize()
 	light->GetDirectionalLight();
 	light->SetDirectionalLightIntensity({ 1.0f });
 	light->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	light->SetDirectionalLightDirection({ 1.0f,1.0f });
+	light->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
 	light->GetSpotLight();
 	light->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
 	light->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
@@ -196,8 +196,6 @@ void GamePlayScene::Update()
 
 void GamePlayScene::Draw()
 {
-
-
 	// 3Dオブジェクトの描画前処理。3Dオブジェクトの描画設定に共通のグラフィックスコマンドを積む
 	Object3dCommon::GetInstance()->CommonSetting();
 

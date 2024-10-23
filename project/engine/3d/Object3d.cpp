@@ -9,11 +9,6 @@ Object3d::Object3d(GamePlayScene* scene)
     gamePlayScene_ = scene;
 }
 
-Object3d::Object3d(TitleScene* scene)
-{
-    titleScene_ = scene;
-}
-
 void Object3d::Initialize()
 {
     // 引数で受け取ってメンバ変数に記録する
@@ -63,15 +58,6 @@ void Object3d::ImGuiUpdate(const std::string& Name)
         ImGui::DragFloat3("rotate", &transform.rotate.x);
         ImGui::DragFloat3("CameraRotate", &cameraTransform.rotate.x, 0.01f);
         ImGui::DragFloat3("CameraTransform", &cameraTransform.translate.x, 0.01f);
-
-        //// DirectionalLight の更新
-        //ImGui::DragFloat3("DirectionalLight Direction", &lightData->GetDirectionalLight().direction.x, 0.01f);
-        //ImGui::DragFloat("DirectionalLight Intensity", &lightData->GetDirectionalLight().intensity, 0.01f);
-
-        //// SpotLight の更新
-        //ImGui::DragFloat3("SpotLight Position", &lightData->GetSpotLight().position.x, 0.01f);
-        //ImGui::DragFloat3("SpotLight Direction", &lightData->GetSpotLight().direction.x, 0.01f);
-        //ImGui::DragFloat("SpotLight Intensity", &lightData->GetSpotLight().intensity, 0.01f);
 
         ImGui::TreePop();
     }

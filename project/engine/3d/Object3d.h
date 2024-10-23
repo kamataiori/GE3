@@ -17,7 +17,6 @@
 class Object3dCommon;
 class Camera;
 class GamePlayScene;
-class TitleScene;
 
 class Object3d
 {
@@ -36,7 +35,6 @@ public:
     };
 
     Object3d(GamePlayScene* scene);
-    Object3d(TitleScene* scene);
     ~Object3d() = default;
 
     /// <summary>
@@ -87,7 +85,6 @@ private:
     // Modelの初期化
     Model* model_ = nullptr;
 
-    TitleScene* titleScene_ = nullptr;
     GamePlayScene* gamePlayScene_ = nullptr;
 
     // バッファリソース
