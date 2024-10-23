@@ -33,13 +33,6 @@ public:
 	/// </summary>
 	void Draw() override;
 
-	/// <summary>
-	/// Lightのゲッター
-	/// </summary>
-	Light* GetLight() const {
-		return light.get();  // unique_ptr から Light ポインタを返す
-	}
-
 private:
 
 	float offsetX = 100.0f;  //各スプライトのX座標をずらすオフセット値
@@ -69,6 +62,6 @@ private:
 	Vector2 MonsterPosition;
 
 	// ライトの初期化
-	std::unique_ptr<Light> light = std::make_unique<Light>();
+	//std::unique_ptr<Light> light = std::make_unique<Light>();
 };
 

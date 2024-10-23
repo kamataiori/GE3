@@ -1,4 +1,5 @@
 #pragma once
+#include "Light.h"
 
 // 前方宣言
 class SceneManager;
@@ -37,9 +38,20 @@ public:
 	/// <param name="sceneManager"></param>
 	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
 
+	/// <summary>
+	/// Lightのゲッター
+	/// </summary>
+	Light* GetLight() const {
+		return light.get();  // unique_ptr から Light ポインタを返す
+	}
+
 private:
 	// シーンマネージャー (借りてくる)
 	SceneManager* sceneManager_ = nullptr;
+
+public:
+	// ライトの初期化
+	std::unique_ptr<Light> light = std::make_unique<Light>();
 
 };
 

@@ -4,9 +4,9 @@
 #define _USE_MATH_DEFINES
 #include "GamePlayScene.h"
 
-Object3d::Object3d(GamePlayScene* scene)
+Object3d::Object3d(BaseScene* scene)
 {
-    gamePlayScene_ = scene;
+    baseScene_ = scene;
 }
 
 void Object3d::Initialize()
@@ -69,13 +69,13 @@ void Object3d::Draw()
     // 座標変換行列CBufferの場所を設定
     object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, gamePlayScene_->GetLight()->GetDirectionalLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, baseScene_->GetLight()->GetDirectionalLightGPUAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, gamePlayScene_->GetLight()->GetCameraLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, baseScene_->GetLight()->GetCameraLightGPUAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(5, gamePlayScene_->GetLight()->GetPointLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(5, baseScene_->GetLight()->GetPointLightGPUAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(6, gamePlayScene_->GetLight()->GetSpotLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(6, baseScene_->GetLight()->GetSpotLightGPUAddress());
 
     // 3Dモデルが割り当てられていたら描画する
     if (model_) {

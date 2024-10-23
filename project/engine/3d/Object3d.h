@@ -16,7 +16,7 @@
 //---前方宣言---//
 class Object3dCommon;
 class Camera;
-class GamePlayScene;
+class BaseScene;
 
 class Object3d
 {
@@ -34,7 +34,7 @@ public:
         Matrix4x4 WorldInverseTranspose;
     };
 
-    Object3d(GamePlayScene* scene);
+    Object3d(BaseScene* scene);
     ~Object3d() = default;
 
     /// <summary>
@@ -85,7 +85,7 @@ private:
     // Modelの初期化
     Model* model_ = nullptr;
 
-    GamePlayScene* gamePlayScene_ = nullptr;
+    BaseScene* baseScene_ = nullptr;
 
     // バッファリソース
     Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  // TransformMatrix用Matrix4x4 1つ分のサイズを用意する
