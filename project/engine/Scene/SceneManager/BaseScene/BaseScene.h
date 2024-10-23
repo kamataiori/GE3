@@ -49,7 +49,6 @@ private:
 	// シーンマネージャー (借りてくる)
 	SceneManager* sceneManager_ = nullptr;
 
-public:
 	// ライトの初期化
 	std::unique_ptr<Light> light = std::make_unique<Light>();
 

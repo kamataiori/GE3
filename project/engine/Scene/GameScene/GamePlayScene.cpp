@@ -72,17 +72,18 @@ void GamePlayScene::Initialize()
 
 	// ライト
 	// Lightクラスのデータを初期化
-	light->Initialize();
-	light->GetCameraLight();
-	light->GetDirectionalLight();
-	light->SetDirectionalLightIntensity({ 1.0f });
-	light->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	light->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
-	light->GetSpotLight();
-	light->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
-	light->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	light->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
-	light->SetSpotLightIntensity({ 4.0f });
+	BaseScene::GetLight()->Initialize();
+	BaseScene::GetLight()->Initialize();
+	BaseScene::GetLight()->GetCameraLight();
+	BaseScene::GetLight()->GetDirectionalLight();
+	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
+	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
+	BaseScene::GetLight()->GetSpotLight();
+	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
+	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
+	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });
 }
 
 void GamePlayScene::Finalize()
@@ -177,11 +178,11 @@ void GamePlayScene::Update()
 	}
 
 	ImGui::Begin("light");
-	ImGui::DragFloat3("transform", &light->cameraLightData->worldPosition.x, 0.01f);
-	ImGui::DragFloat3("DirectionalDirection", &light->directionalLightData->direction.x, 0.01f);
-	ImGui::DragFloat("DirectionalIntensity", &light->directionalLightData->intensity, 0.01f);
-	ImGui::DragFloat3("SpotPosition", &light->spotLightData->position.x, 0.01f);
-	ImGui::DragFloat("SpotIntensity", &light->spotLightData->intensity, 0.01f);
+	ImGui::DragFloat3("transform", &BaseScene::GetLight()->cameraLightData->worldPosition.x, 0.01f);
+	ImGui::DragFloat3("DirectionalDirection", &BaseScene::GetLight()->directionalLightData->direction.x, 0.01f);
+	ImGui::DragFloat("DirectionalIntensity", &BaseScene::GetLight()->directionalLightData->intensity, 0.01f);
+	ImGui::DragFloat3("SpotPosition", &BaseScene::GetLight()->spotLightData->position.x, 0.01f);
+	ImGui::DragFloat("SpotIntensity", &BaseScene::GetLight()->spotLightData->intensity, 0.01f);
 	ImGui::End();
 
 	// 音声再生を無限ループで呼び出す
