@@ -1,3 +1,6 @@
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\Audio.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\Audio.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\Scene\SceneManager\AbstractSceneFactory\AbstractSceneFactory.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\AbstractSceneFactory.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\Scene\SceneManager\BaseScene\BaseScene.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\BaseScene.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\CameraManager.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\CameraManager.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\Camera.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\Camera.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\check\D3DResourceLeakChecker.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\D3DResourceLeakChecker.obj
@@ -12,6 +15,9 @@ C:\Users\k023g\OneDrive\デスクトップ\GE3\project\externals\imgui\imgui_imp
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\externals\imgui\imgui_impl_win32.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\imgui_impl_win32.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\externals\imgui\imgui_tables.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\imgui_tables.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\externals\imgui\imgui_widgets.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\imgui_widgets.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\Scene\GameScene\GamePlayScene.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\GamePlayScene.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\ImGuiManager.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\ImGuiManager.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\Light.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\Light.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\main.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\main.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\math\MathFunctions.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\MathFunctions.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\Model.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\Model.obj
@@ -26,3 +32,7 @@ C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\2d\TextureManager.
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\ModelManager.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\ModelManager.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\FrameWork\WinApp\WinApp.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\WinApp.obj
 C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\FrameWork\MyGame\MyGame.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\MyGame.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory\SceneFactory.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\SceneFactory.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\Scene\SceneManager\SceneManager.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\SceneManager.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\Scene\TitleScene\TitleScene.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\TitleScene.obj
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\SRVManager\SrvManager.cpp;C:\Users\k023g\OneDrive\デスクトップ\GE3\project\DirectXGame\x64\Release\SrvManager.obj

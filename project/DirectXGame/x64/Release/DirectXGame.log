@@ -1,4 +1,7 @@
-﻿  CameraManager.cpp
+﻿  Audio.cpp
+  AbstractSceneFactory.cpp
+  BaseScene.cpp
+  CameraManager.cpp
   Camera.cpp
   D3DResourceLeakChecker.cpp
   DirectXCommon.cpp
@@ -12,6 +15,9 @@
   imgui_impl_win32.cpp
   imgui_tables.cpp
   imgui_widgets.cpp
+  GamePlayScene.cpp
+  ImGuiManager.cpp
+  Light.cpp
   main.cpp
   MathFunctions.cpp
   Model.cpp
@@ -19,19 +25,24 @@
   Object3d.cpp
   ResourceObject.cpp
   Sprite.cpp
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\Audio.cpp(27,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
   SpriteCommon.cpp
   StringUtility.cpp
   TextureManager.cpp
   ModelManager.cpp
   WinApp.cpp
   MyGame.cpp
-C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\Model.cpp(48,52): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\2d\TextureManager.cpp(61,13): warning C4834: [[nodiscard]] 属性を持つ関数の戻り値を破棄しています
+  SceneFactory.cpp
+  SceneManager.cpp
+  TitleScene.cpp
+  SrvManager.cpp
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\Model.cpp(49,52): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\2d\TextureManager.cpp(60,13): warning C4834: [[nodiscard]] 属性を持つ関数の戻り値を破棄しています
   Object3dCommon.cpp
   コード生成しています。
-  1045 of 4113 functions (25.4%) were compiled, the rest were copied from previous compilation.
-    277 functions were new in current compilation
-    482 functions had inline decision re-evaluated but remain unchanged
+  1323 of 4195 functions (31.5%) were compiled, the rest were copied from previous compilation.
+    430 functions were new in current compilation
+    177 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   DirectXGame.vcxproj -> C:\Users\k023g\OneDrive\デスクトップ\GE3\project\x64\Release\DirectXGame.exe
           1 個のファイルをコピーしました。
