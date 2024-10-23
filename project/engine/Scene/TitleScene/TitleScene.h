@@ -27,5 +27,14 @@ public:
 	/// </summary>
 	void Draw() override;
 
+private:
+
+	// 3Dオブジェクトの初期化
+	std::unique_ptr<Object3d> plane = nullptr;
+
+	//3Dカメラの初期化
+	std::unique_ptr<CameraManager> cameraManager = nullptr;
+	std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
+
 };
 

@@ -73,7 +73,6 @@ void GamePlayScene::Initialize()
 	// ライト
 	// Lightクラスのデータを初期化
 	BaseScene::GetLight()->Initialize();
-	BaseScene::GetLight()->Initialize();
 	BaseScene::GetLight()->GetCameraLight();
 	BaseScene::GetLight()->GetDirectionalLight();
 	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });

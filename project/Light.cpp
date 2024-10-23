@@ -20,14 +20,6 @@ void Light::InitializeDirectionalLight()
     // データのマッピング
     directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
 
-    //// データのマッピング
-    //HRESULT result = directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-    //if (FAILED(result)) {
-    //    // Map が失敗した場合のエラーログや処理
-    //    OutputDebugStringA("Failed to map directional light resource!\n");
-    //    return;  // エラー時は処理を中断
-    //}
-
     // デフォルト値の設定
     directionalLightData->color = { 1.0f, 1.0f, 1.0f, 1.0f };
     directionalLightData->direction = { 0.0f, -1.0f, 0.0f };
@@ -42,14 +34,6 @@ void Light::InitializeCameraLight()
     // データのマッピング
     cameraLightResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraLightData));
 
-    //// データのマッピング
-    //HRESULT result = directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-    //if (FAILED(result)) {
-    //    // Map が失敗した場合のエラーログや処理
-    //    OutputDebugStringA("Failed to map directional light resource!\n");
-    //    return;  // エラー時は処理を中断
-    //}
-
     // デフォルト値の設定
     cameraLightData->worldPosition = { 0.0f, 0.0f, 0.0f };
 }
@@ -61,14 +45,6 @@ void Light::InitializePointLight()
 
     // データのマッピング
     pointLightResource->Map(0, nullptr, reinterpret_cast<void**>(&pointLightData));
-
-    //// データのマッピング
-    //HRESULT result = directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-    //if (FAILED(result)) {
-    //    // Map が失敗した場合のエラーログや処理
-    //    OutputDebugStringA("Failed to map directional light resource!\n");
-    //    return;  // エラー時は処理を中断
-    //}
 
     // デフォルト値の設定
     pointLightData->color = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -85,14 +61,6 @@ void Light::InitializeSpotLight()
 
     // データのマッピング
     spotLightResource->Map(0, nullptr, reinterpret_cast<void**>(&spotLightData));
-
-    //// データのマッピング
-    //HRESULT result = directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-    //if (FAILED(result)) {
-    //    // Map が失敗した場合のエラーログや処理
-    //    OutputDebugStringA("Failed to map directional light resource!\n");
-    //    return;  // エラー時は処理を中断
-    //}
 
     // デフォルト値の設定
     spotLightData->color = { 1.0f, 1.0f, 1.0f, 1.0f };
