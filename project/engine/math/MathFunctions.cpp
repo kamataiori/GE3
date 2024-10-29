@@ -179,6 +179,10 @@ Matrix4x4  Multiply(const Matrix4x4& m1, const Matrix4x4& m2)
 	return result;
 }
 
+Vector3 Multiply(float scalar, Vector3& vec) {
+	return Vector3(vec.x * scalar, vec.y * scalar, vec.z * scalar);
+}
+
 // アフィン変換行列計算関数
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate)
 {

@@ -28,6 +28,8 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 
 Matrix4x4  Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
 
+Vector3 Multiply(float scalar, Vector3& vec);
+
 // アフィン変換行列計算関数
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 

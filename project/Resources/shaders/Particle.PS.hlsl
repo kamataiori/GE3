@@ -61,6 +61,8 @@ PixelShaderOutput main(VertexShaderOutput input)
     //    discard;
     //}
     
+    
+    
     //Textureのα値が0のときにPixelを棄却
     if (output.color.a == 0.0)
     {

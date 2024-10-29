@@ -52,19 +52,32 @@ void ParticleManager::Update()
 		billboardMatrix = MakeIdentity4x4();
 	}
 
+	
 	for (auto& group : particleGroups)
 	{
 		for (std::list<Particle>::iterator particleIterator = group.second.particleList.begin(); particleIterator != group.second.particleList.end();)
 		{
+			//if ((*particleIterator).lifeTime <= (*particleIterator).currentTime)
+			//{
+			//	//生存期間が過ぎたParticleはlistから消す。戻り値が次のイテレータとなる
+			//	particleIterator = group.second.particleList.erase(particleIterator);
+			//	//生存期間を過ぎていたら更新せず描画対象にしない
+			//	continue;
+			//}
+
 			if (group.second.instanceCount < kNumMaxInstance) {
 
+				//速度を適用
+				(*particleIterator).transform.translate = Add((*particleIterator).transform.translate, Multiply(kDeltaTime, (*particleIterator).velocity));
+				(*particleIterator).currentTime += kDeltaTime; //経過時間を足す
 				Matrix4x4 worldMatrix = Multiply(billboardMatrix, MakeAffineMatrix((*particleIterator).transform.scale, (*particleIterator).transform.rotate, (*particleIterator).transform.translate));
 				Matrix4x4 worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
 				group.second.instancingDataPtr[group.second.instanceCount].WVP = worldviewProjectionMatrix;
 				group.second.instancingDataPtr[group.second.instanceCount].World = worldMatrix;
-				group.second.instancingDataPtr[group.second.instanceCount].color = { 1.0f,1.0f,1.0f,1.0f };
+				//group.second.instancingDataPtr[group.second.instanceCount].color = { 1.0f,1.0f,1.0f,1.0f };
 				//徐々に消す
 				float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
+				alpha = (alpha < 0.0f) ? 0.0f : alpha;  // アルファが0以下にならないようにする
 				group.second.instancingDataPtr[group.second.instanceCount].color = (*particleIterator).color;
 				group.second.instancingDataPtr[group.second.instanceCount].color.w = alpha;
 				++group.second.instanceCount;
@@ -206,17 +219,6 @@ void ParticleManager::CreateMaterialData()
 	materialData->uvTransform = MakeIdentity4x4();
 }
 
-void ParticleManager::InstancingResource()
-{
-	/*instancingResource =
-		dxCommon_->CreateBufferResource(sizeof(TransformationMatrix) * kNumInstance);
-	instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&instancingData));
-	for (uint32_t index = 0; index < kNumInstance; ++index)
-	{
-		instancingData[index].WVP = MakeIdentity4x4();
-		instancingData[index].World = MakeIdentity4x4();
-	}*/
-}
 
 void ParticleManager::InstancingMaxResource()
 {
@@ -230,13 +232,6 @@ void ParticleManager::InstancingMaxResource()
 		instancingData2[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }
-
-void ParticleManager::CreateSRV()
-{
-
-}
-
-
 
 ParticleManager::Particle ParticleManager::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate)
 {
@@ -261,20 +256,19 @@ ParticleManager::Particle ParticleManager::MakeNewParticle(std::mt19937& randomE
 
 void ParticleManager::Emit(const std::string name, const Vector3& position, uint32_t count)
 {
-	//// パーティクルグループが存在するかをチェック
-	//auto it = std::find_if(particleGroups.begin(), particleGroups.end(),
-	//	[&name](const std::unordered_map<std::string, ParticleGroup>& group) {
-	//		if(group.)
-	//	});
 	if (particleGroups.find(name) == particleGroups.end()) {
 		// パーティクルグループが存在しない場合はエラーを出力して終了
 		assert("Specified particle group does not exist!");
 
 	}
 
-
 	// 指定されたパーティクルグループが存在する場合、そのグループにパーティクルを追加
 	ParticleGroup& group = particleGroups[name];
+
+	// すでにkNumMaxInstanceに達している場合、新しいパーティクルの追加をスキップする
+	if (group.particleList.size() >= kNumMaxInstance) {
+		return;
+	}
 
 	// 指定された数のパーティクルを生成して追加
 	for (uint32_t i = 0; i < count; ++i) {

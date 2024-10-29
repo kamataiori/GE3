@@ -10,6 +10,7 @@
 #include "WinApp.h"
 #include <CameraManager.h>
 #include "MathFunctions.h"
+#include <algorithm>
 
 class ParticleManager
 {
@@ -79,19 +80,9 @@ public:
 	void  CreateMaterialData();
 
 	/// <summary>
-	/// Instancing用のResource
-	/// </summary>
-	void InstancingResource();
-
-	/// <summary>
 	/// InstancingMax用のResource
 	/// </summary>
 	void InstancingMaxResource();
-
-	/// <summary>
-	/// SRV生成
-	/// </summary>
-	void CreateSRV();
 
 private:
 
@@ -173,6 +164,9 @@ private:
 
 		// インスタンシングデータを書き込むためのポインタ
 		ParticleForGPU* instancingDataPtr = nullptr;
+
+		// スケール
+		Vector3 scale = { 1.0f, 1.0f, 1.0f };
 	};
 
 	/// <summary>
@@ -216,8 +210,10 @@ private:
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine;
 
-	const uint32_t kNumInstance = 10;
-	const uint32_t kNumMaxInstance = 1024;
+	// パーティクルの最大出力数
+	const uint32_t kNumMaxInstance = 10;
+	//とりあえず60fps固定してあるが、実時間を計測して可変fpsで動かせるようにしておくとなおよい
+	const float kDeltaTime = 1.0f / 60.0f;
 
 private:
 	static const int kWindowWidth = 1280;

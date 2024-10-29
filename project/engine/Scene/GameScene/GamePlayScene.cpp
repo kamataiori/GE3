@@ -87,7 +87,7 @@ void GamePlayScene::Initialize()
 
 
 	particle->Initialize();
-	particle->CreateParticleGroup("particle", "Resources/uvChecker.png");
+	particle->CreateParticleGroup("particle", "Resources/circle.png");
 }
 
 void GamePlayScene::Finalize()
