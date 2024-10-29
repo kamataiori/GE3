@@ -61,6 +61,7 @@ void GamePlayScene::Initialize()
 	// カメラのセット
 	plane->SetCameraManager(cameraManager.get());
 	axis->SetCameraManager(cameraManager.get());
+	particle->SetCameraManager(cameraManager.get());
 
 	// Audioの初期化
 	audio->Initialize();
@@ -83,6 +84,10 @@ void GamePlayScene::Initialize()
 	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
 	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
 	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });
+
+
+	particle->Initialize();
+	particle->CreateParticleGroup("particle", "Resources/uvChecker.png");
 }
 
 void GamePlayScene::Finalize()
@@ -192,6 +197,9 @@ void GamePlayScene::Update()
 		// シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
+
+	particle->Emit("particle", { 0.0f,0.0f,0.0f }, 10);
+	particle->Update();
 }
 
 void GamePlayScene::Draw()
@@ -224,7 +232,7 @@ void GamePlayScene::Draw()
 		sprite->Draw();
 	}
 
-
+	particle->Draw();
 	// ================================================
 	// ここまでSprite個々の描画
 	// ================================================

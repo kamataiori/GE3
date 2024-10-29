@@ -13,8 +13,6 @@
 //---前方宣言---//
 class ModelCommon;
 
-
-
 class Model
 {
 public:

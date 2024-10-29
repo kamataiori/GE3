@@ -7,6 +7,7 @@
 #include "BaseScene.h"
 #include "Audio.h"
 #include "Light.h"
+#include "ParticleManager.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -61,7 +62,7 @@ private:
 
 	Vector2 MonsterPosition;
 
-	// ライトの初期化
-	//std::unique_ptr<Light> light = std::make_unique<Light>();
+	
+	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
 };
 

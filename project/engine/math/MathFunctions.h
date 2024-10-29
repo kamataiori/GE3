@@ -43,3 +43,5 @@ Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float botto
 float Length(const Vector3& v);
 
 Vector3 Normalize(const Vector3& v);
+
+Vector3 Add(const Vector3& v1, const Vector3& v2);
