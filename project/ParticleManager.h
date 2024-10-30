@@ -241,7 +241,7 @@ private:
 	/// <summary>
 	/// グラフィックスパイプラインの生成
 	/// </summary>
-	void GraphicsPipelineState();
+	void GraphicsPipelineState(BlendMode blendMode);
 
 	/// <summary>
 	/// InputLayoutの設定
@@ -255,6 +255,8 @@ private:
 
 	// メンバ変数にブレンドモードを追加
 	BlendMode blendMode_; // 現在のブレンドモード
+	// ブレンドモードごとにPSOをキャッシュするためのマップ
+	std::unordered_map<BlendMode, Microsoft::WRL::ComPtr<ID3D12PipelineState>> pipelineStateCache_;
 
 	/// <summary>
 	/// RasterizerStateの設定
@@ -269,7 +271,9 @@ private:
 	/// <summary>
 	/// PSOの生成
 	/// </summary>
-	void PSO();
+	//void PSO();
+
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> PSO();
 
 private:
     DirectXCommon* dxCommon_ = nullptr;

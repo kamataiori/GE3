@@ -9,11 +9,10 @@ void ParticleManager::Initialize()
 	// ランダムエンジンの初期化
 	randomEngine.seed(seedGenerator());
 
-	// デフォルトブレンドモードを設定
-	blendMode_ = kBlendModeNormal;
-
-	// グラフィックスパイプラインの生成
-	GraphicsPipelineState();
+	// 各ブレンドモードのPSOを事前に生成してキャッシュ
+	for (int mode = kBlendModeNone; mode < kCountOfBlendMode; ++mode) {
+		GraphicsPipelineState(static_cast<BlendMode>(mode));
+	}
 
 	// 頂点リソースに頂点データを書き込む
 	CreateVertexData();
@@ -96,9 +95,18 @@ void ParticleManager::Draw()
 	// ルートシグネチャを設定
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
 
-	// 現在のブレンドモードでパイプラインステートを設定
-	//GraphicsPipelineState();
-	commandList->SetPipelineState(graphicsPipelineState.Get());
+	// キャッシュ内に指定されたブレンドモードのPSOが存在するか確認
+	auto it = pipelineStateCache_.find(blendMode_);
+	if (it == pipelineStateCache_.end() || !it->second) {
+		Logger::Log("PSO for blend mode not found, defaulting to normal blend mode.");
+		it = pipelineStateCache_.find(kBlendModeNormal);
+		if (it == pipelineStateCache_.end() || !it->second) {
+			Logger::Log("Default PSO not found. Aborting draw call.");
+			return;
+		}
+	}
+
+	commandList->SetPipelineState(it->second.Get());
 
 	// プリミティブトポロジ（描画形状）を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -206,7 +214,7 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 
 	// 新しいブレンドモードを設定
 	blendMode_ = blendMode;
-	GraphicsPipelineState();  // 再生成
+	//GraphicsPipelineState(blendMode);  // 再生成
 }
 
 void ParticleManager::SetCameraManager(CameraManager* cameraManager)
@@ -379,7 +387,7 @@ void ParticleManager::RootSignature()
 	assert(SUCCEEDED(hr));
 }
 
-void ParticleManager::GraphicsPipelineState()
+void ParticleManager::GraphicsPipelineState(BlendMode blendMode)
 {
 	//ルートシグネチャの生成
 	RootSignature();
@@ -391,7 +399,7 @@ void ParticleManager::GraphicsPipelineState()
 
 	////=========BlendStateの設定を行う=========////
 
-	BlendState(blendMode_);
+	BlendState(blendMode);
 
 	////=========RasterizerStateの設定を行う=========////
 
@@ -422,8 +430,15 @@ void ParticleManager::GraphicsPipelineState()
 
 
 	////=========PSOを生成する=========////
-
-	PSO();
+	  // PSOを生成しキャッシュに保存
+	auto pipelineState = PSO();
+	if (pipelineState) {
+		pipelineStateCache_[blendMode] = pipelineState;
+	}
+	else {
+		Logger::Log("Failed to create PSO for blend mode: " + std::to_string(blendMode));
+		assert(false && "PSO creation failed!");
+	}
 }
 
 void ParticleManager::InputLayout()
@@ -521,40 +536,67 @@ void ParticleManager::DepthStencilState()
 	depthStencilDesc_.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 }
 
-void ParticleManager::PSO()
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ParticleManager::PSO()
 {
-	////=========PSOを生成する=========////
-
-	/*D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};*/
-	graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get();    //RootSignature
-	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc_;    //InputLayout
-	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(),
-	vertexShaderBlob_->GetBufferSize() };    //VertexShader
-	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(),
-	pixelShaderBlob_->GetBufferSize() };    //PixelShader
-	graphicsPipelineStateDesc.BlendState = blendDesc_;    //BlendState
-	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc_;    //RasterizerState
-	//書き込むRTVの情報
+	graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get();
+	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc_;
+	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() };
+	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
+	graphicsPipelineStateDesc.BlendState = blendDesc_;
+	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc_;
 	graphicsPipelineStateDesc.NumRenderTargets = 1;
 	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	//利用するトポロジ(形状)のタイプ。三角形
-	graphicsPipelineStateDesc.PrimitiveTopologyType =
-		D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	//どのように画面に色を打ち込むかの設定(気にしなくて良い)
+	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	graphicsPipelineStateDesc.SampleDesc.Count = 1;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	//DepthStencilの設定
 	graphicsPipelineStateDesc.DepthStencilState = depthStencilDesc_;
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	//実際に生成
-	/*Microsoft::WRL::ComPtr<ID3D12PipelineState>graphicsPipelineState = nullptr;*/
-	HRESULT hr = dxCommon_->GetDevice().Get()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
-		IID_PPV_ARGS(&graphicsPipelineState));
+
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
+	HRESULT hr = dxCommon_->GetDevice().Get()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineState));
 
 	if (FAILED(hr)) {
-		Logger::Log("PSO\n");
-		exit(1);
+		Logger::Log("PSO creation failed");
+		return nullptr;
 	}
 
-	assert(SUCCEEDED(hr));
+	return pipelineState;
 }
+
+//void ParticleManager::PSO()
+//{
+//	////=========PSOを生成する=========////
+//
+//	/*D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};*/
+//	graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get();    //RootSignature
+//	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc_;    //InputLayout
+//	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(),
+//	vertexShaderBlob_->GetBufferSize() };    //VertexShader
+//	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(),
+//	pixelShaderBlob_->GetBufferSize() };    //PixelShader
+//	graphicsPipelineStateDesc.BlendState = blendDesc_;    //BlendState
+//	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc_;    //RasterizerState
+//	//書き込むRTVの情報
+//	graphicsPipelineStateDesc.NumRenderTargets = 1;
+//	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+//	//利用するトポロジ(形状)のタイプ。三角形
+//	graphicsPipelineStateDesc.PrimitiveTopologyType =
+//		D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+//	//どのように画面に色を打ち込むかの設定(気にしなくて良い)
+//	graphicsPipelineStateDesc.SampleDesc.Count = 1;
+//	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+//	//DepthStencilの設定
+//	graphicsPipelineStateDesc.DepthStencilState = depthStencilDesc_;
+//	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+//	//実際に生成
+//	/*Microsoft::WRL::ComPtr<ID3D12PipelineState>graphicsPipelineState = nullptr;*/
+//	HRESULT hr = dxCommon_->GetDevice().Get()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+//		IID_PPV_ARGS(&graphicsPipelineState));
+//
+//	if (FAILED(hr)) {
+//		Logger::Log("PSO\n");
+//		exit(1);
+//	}
+//
+//	assert(SUCCEEDED(hr));
+//}
