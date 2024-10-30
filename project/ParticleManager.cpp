@@ -54,7 +54,7 @@ void ParticleManager::Update()
 		billboardMatrix = MakeIdentity4x4();
 	}
 
-	
+
 	for (auto& group : particleGroups)
 	{
 		for (std::list<Particle>::iterator particleIterator = group.second.particleList.begin(); particleIterator != group.second.particleList.end();)
@@ -145,7 +145,7 @@ void ParticleManager::VertexBufferView()
 	vertexResource = dxCommon_->CreateBufferResource(sizeof(VertexData) * modelData.vertices.size());
 
 	////=========VertexBufferViewを作成する=========////
-	
+
 	//リソースの先頭のアドレスから使う
 	vertexBufferView.BufferLocation = vertexResource->GetGPUVirtualAddress();
 	//使用するリソースのサイズは頂点のサイズ
@@ -538,23 +538,42 @@ void ParticleManager::DepthStencilState()
 
 Microsoft::WRL::ComPtr<ID3D12PipelineState> ParticleManager::PSO()
 {
+	// グラフィックスパイプラインのルートシグネチャを設定
 	graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get();
+
+	// 入力レイアウトを設定
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc_;
+
+	// 頂点シェーダーとピクセルシェーダーを設定
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() };
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
+
+	// ブレンドステートを設定
 	graphicsPipelineStateDesc.BlendState = blendDesc_;
+
+	// ラスタライザーステートを設定
 	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc_;
+
+	// レンダーターゲットの数を設定し、フォーマットを指定
 	graphicsPipelineStateDesc.NumRenderTargets = 1;
 	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+
+	// プリミティブトポロジの種類を設定します（ここでは三角形）
 	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+	// サンプルの設定（標準の1xサンプリング）
 	graphicsPipelineStateDesc.SampleDesc.Count = 1;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+
+	// 深度ステンシルステートの設定
 	graphicsPipelineStateDesc.DepthStencilState = depthStencilDesc_;
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
+	// グラフィックスパイプラインステートオブジェクト (PSO) を生成
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
 	HRESULT hr = dxCommon_->GetDevice().Get()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineState));
 
+	// PSOの生成に失敗した場合、ログを出力し、nullポインタを返す
 	if (FAILED(hr)) {
 		Logger::Log("PSO creation failed");
 		return nullptr;
