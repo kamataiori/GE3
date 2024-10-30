@@ -198,7 +198,7 @@ void GamePlayScene::Update()
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
-	particle->Emit("particle", { 0.0f,0.0f,0.0f }, 10);
+	particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
 	particle->Update();
 }
 

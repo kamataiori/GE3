@@ -74,7 +74,6 @@ void ParticleManager::Update()
 				Matrix4x4 worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
 				group.second.instancingDataPtr[group.second.instanceCount].WVP = worldviewProjectionMatrix;
 				group.second.instancingDataPtr[group.second.instanceCount].World = worldMatrix;
-				//group.second.instancingDataPtr[group.second.instanceCount].color = { 1.0f,1.0f,1.0f,1.0f };
 				//徐々に消す
 				float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
 				alpha = (alpha < 0.0f) ? 0.0f : alpha;  // アルファが0以下にならないようにする
@@ -179,12 +178,13 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 	// インスタンシング用リソースの生成
 	//InstancingResource();
 	newGroup.instancingResource =
-		dxCommon_->CreateBufferResource(sizeof(TransformationMatrix) * kNumMaxInstance);
+		dxCommon_->CreateBufferResource(sizeof(ParticleForGPU) * kNumMaxInstance);
 	newGroup.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&newGroup.instancingDataPtr));
 	for (uint32_t index = 0; index < kNumMaxInstance; ++index)
 	{
 		newGroup.instancingDataPtr[index].WVP = MakeIdentity4x4();
 		newGroup.instancingDataPtr[index].World = MakeIdentity4x4();
+		//newGroup.instancingDataPtr[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	// 最大インスタンシング用リソースの生成
@@ -192,7 +192,7 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 
 	// インスタンシング用SRVを確保してSRVインデックスを記録
 	newGroup.instancingSrvIndex = srvManager_->Allocate() + 1;
-	srvManager_->CreateSRVforStructuredBuffer(newGroup.instancingSrvIndex, newGroup.instancingResource.Get(), kNumMaxInstance, sizeof(TransformationMatrix));
+	srvManager_->CreateSRVforStructuredBuffer(newGroup.instancingSrvIndex, newGroup.instancingResource.Get(), kNumMaxInstance, sizeof(ParticleForGPU));
 
 	// パーティクルグループをリストに追加
 	particleGroups.emplace(name, newGroup);
@@ -229,7 +229,7 @@ void ParticleManager::InstancingMaxResource()
 	{
 		instancingData2[index].WVP = MakeIdentity4x4();
 		instancingData2[index].World = MakeIdentity4x4();
-		instancingData2[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		//instancingData2[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }
 
@@ -266,14 +266,15 @@ void ParticleManager::Emit(const std::string name, const Vector3& position, uint
 	ParticleGroup& group = particleGroups[name];
 
 	// すでにkNumMaxInstanceに達している場合、新しいパーティクルの追加をスキップする
-	if (group.particleList.size() >= kNumMaxInstance) {
+	if (group.particleList.size() >= count) {
 		return;
 	}
 
 	// 指定された数のパーティクルを生成して追加
 	for (uint32_t i = 0; i < count; ++i) {
-		Particle newParticle = MakeNewParticle(randomEngine, position);
-		group.particleList.push_back(newParticle);
+		/*Particle newParticle = MakeNewParticle(randomEngine, position);
+		group.particleList.push_back(newParticle);*/
+		group.particleList.push_back(MakeNewParticle(randomEngine, position));
 	}
 }
 
@@ -447,6 +448,7 @@ void ParticleManager::BlendState()
 	//D3D12_BLEND_DESC blendDesc{};
 	//すべての色要素を書き込む
 	blendDesc_.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	blendDesc_.RenderTarget[0].BlendEnable = TRUE;
 	//--------ノーマルブレンド--------//
 	/*blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 	blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
@@ -496,7 +498,7 @@ void ParticleManager::DepthStencilState()
 	//Depthの機能を有効化する
 	depthStencilDesc_.DepthEnable = true;
 	//書き込みします
-	depthStencilDesc_.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc_.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 	//比較関数はLessEqual。つまり、近ければ描画される
 	depthStencilDesc_.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 }

@@ -57,6 +57,16 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// パーティクルグループの生成
+	/// </summary>
+	void CreateParticleGroup(const std::string name, const std::string textureFilePath);
+
+	// カメラの設定
+	void SetCameraManager(CameraManager* cameraManager);
+
+private:
+
+	/// <summary>
 	/// 頂点リソースの生成、バッファービューの作成
 	/// </summary>
 	void VertexBufferView();
@@ -65,14 +75,6 @@ public:
 	/// 頂点データに書き込む
 	/// </summary>
 	void CreateVertexData();
-
-	/// <summary>
-	/// パーティクルグループの生成
-	/// </summary>
-	void CreateParticleGroup(const std::string name, const std::string textureFilePath);
-
-	// カメラの設定
-	void SetCameraManager(CameraManager* cameraManager);
 
 	/// <summary>
 	/// マテリアルデータの初期化
@@ -141,7 +143,7 @@ private:
 	{
 		Matrix4x4 WVP;
 		Matrix4x4 World;
-		Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+		Vector4 color;
 	};
 
 	// パーティクルグループ構造体の定義
@@ -211,7 +213,7 @@ private:
 	std::mt19937 randomEngine;
 
 	// パーティクルの最大出力数
-	const uint32_t kNumMaxInstance = 10;
+	const uint32_t kNumMaxInstance = 1024;
 	//とりあえず60fps固定してあるが、実時間を計測して可変fpsで動かせるようにしておくとなおよい
 	const float kDeltaTime = 1.0f / 60.0f;
 
