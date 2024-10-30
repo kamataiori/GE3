@@ -59,7 +59,7 @@ public:
 	/// <summary>
 	/// パーティクルグループの生成
 	/// </summary>
-	void CreateParticleGroup(const std::string name, const std::string textureFilePath);
+	void CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode = kBlendModeNormal);
 
 	// カメラの設定
 	void SetCameraManager(CameraManager* cameraManager);
@@ -251,7 +251,10 @@ private:
 	/// <summary>
 	/// BlendStateの設定
 	/// </summary>
-	void BlendState();
+	void BlendState(BlendMode blendMode);
+
+	// メンバ変数にブレンドモードを追加
+	BlendMode blendMode_; // 現在のブレンドモード
 
 	/// <summary>
 	/// RasterizerStateの設定

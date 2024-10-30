@@ -9,6 +9,9 @@ void ParticleManager::Initialize()
 	// ランダムエンジンの初期化
 	randomEngine.seed(seedGenerator());
 
+	// デフォルトブレンドモードを設定
+	blendMode_ = kBlendModeNormal;
+
 	// グラフィックスパイプラインの生成
 	GraphicsPipelineState();
 
@@ -93,7 +96,8 @@ void ParticleManager::Draw()
 	// ルートシグネチャを設定
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
 
-	// パイプラインステートを設定
+	// 現在のブレンドモードでパイプラインステートを設定
+	//GraphicsPipelineState();
 	commandList->SetPipelineState(graphicsPipelineState.Get());
 
 	// プリミティブトポロジ（描画形状）を設定
@@ -152,7 +156,7 @@ void ParticleManager::CreateVertexData()
 	modelData.vertices.push_back({ .position = {-1.0f, -1.0f, 0.0f, 1.0f}, .texcoord = {1.0f, 1.0f}, .normal = {0.0f, 0.0f, 1.0f} });
 }
 
-void ParticleManager::CreateParticleGroup(const std::string name, const std::string textureFilePath)
+void ParticleManager::CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode)
 {
 	// 登録済みの名前かチェックして assert
 	bool nameExists = false;
@@ -199,6 +203,10 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 
 	// マテリアルデータの初期化
 	CreateMaterialData();
+
+	// 新しいブレンドモードを設定
+	blendMode_ = blendMode;
+	GraphicsPipelineState();  // 再生成
 }
 
 void ParticleManager::SetCameraManager(CameraManager* cameraManager)
@@ -383,7 +391,7 @@ void ParticleManager::GraphicsPipelineState()
 
 	////=========BlendStateの設定を行う=========////
 
-	BlendState();
+	BlendState(blendMode_);
 
 	////=========RasterizerStateの設定を行う=========////
 
@@ -440,39 +448,49 @@ void ParticleManager::InputLayout()
 	inputLayoutDesc_.NumElements = _countof(inputElementDescs);
 }
 
-void ParticleManager::BlendState()
+void ParticleManager::BlendState(BlendMode blendMode)
 {
 	////=========BlendStateの設定を行う=========////
 
-	////BlendStateの設定
-	//D3D12_BLEND_DESC blendDesc{};
-	//すべての色要素を書き込む
+	 // すべての色要素を書き込む
 	blendDesc_.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	blendDesc_.RenderTarget[0].BlendEnable = TRUE;
-	//--------ノーマルブレンド--------//
-	/*blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;*/
-	//--------加算合成--------//
-	blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-	//--------減算合成--------//
-	/*blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;*/
-	//--------乗算合成--------//
-	/*blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
-	blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;*/
-	//--------スクリーン合成--------//
-	/*blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
-	blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;*/
-	//α値のブレンド設定で基本的には使わない
+
+	switch (blendMode) {
+	case kBlendModeNormal:
+		blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+		blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		break;
+	case kBlendModeAdd:
+		blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		break;
+	case kBlendModeSubtract:
+		blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+		break;
+	case kBlendModeMultiply:
+		blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+		blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+		blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		break;
+	case kBlendModeScreen:
+		blendDesc_.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+		blendDesc_.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		blendDesc_.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		break;
+	default:
+		blendDesc_.RenderTarget[0].BlendEnable = FALSE;
+		break;
+	}
+
+	// α値のブレンド設定
 	blendDesc_.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	blendDesc_.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blendDesc_.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+	blendDesc_.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 }
 
 void ParticleManager::RasterizerState()

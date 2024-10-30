@@ -87,7 +87,7 @@ void GamePlayScene::Initialize()
 
 
 	particle->Initialize();
-	particle->CreateParticleGroup("particle", "Resources/circle.png");
+	particle->CreateParticleGroup("particle", "Resources/circle.png",ParticleManager::BlendMode::kBlendModeSubtract);
 }
 
 void GamePlayScene::Finalize()
