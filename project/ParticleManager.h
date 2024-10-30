@@ -213,7 +213,7 @@ private:
 	std::mt19937 randomEngine;
 
 	// パーティクルの最大出力数
-	const uint32_t kNumMaxInstance = 1024;
+	const uint32_t kNumMaxInstance = 128;
 	//とりあえず60fps固定してあるが、実時間を計測して可変fpsで動かせるようにしておくとなおよい
 	const float kDeltaTime = 1.0f / 60.0f;
 

@@ -62,7 +62,7 @@ private:
 
 	Vector2 MonsterPosition;
 
-	
+
 	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
 };
 
