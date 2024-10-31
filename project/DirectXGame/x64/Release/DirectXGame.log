@@ -1,29 +1,7 @@
-﻿  AbstractSceneFactory.cpp
-  BaseScene.cpp
-  CameraManager.cpp
-  Camera.cpp
-  Framework.cpp
-  GamePlayScene.cpp
-  Light.cpp
-  main.cpp
-  MathFunctions.cpp
-  Model.cpp
-  Object3d.cpp
-  Sprite.cpp
-  TextureManager.cpp
-  ModelManager.cpp
-  MyGame.cpp
-  SceneFactory.cpp
-  SceneManager.cpp
-  TitleScene.cpp
-  ParticleManager.cpp
-C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\2d\TextureManager.cpp(59,13): warning C4834: [[nodiscard]] 属性を持つ関数の戻り値を破棄しています
-C:\Users\k023g\OneDrive\デスクトップ\GE3\project\engine\3d\Model.cpp(49,52): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-  Object3dCommon.cpp
-  コード生成しています。
-  742 of 4726 functions (15.7%) were compiled, the rest were copied from previous compilation.
-    528 functions were new in current compilation
-    362 functions had inline decision re-evaluated but remain unchanged
+﻿  コード生成しています。
+  5 of 4726 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    28 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   DirectXGame.vcxproj -> C:\Users\k023g\OneDrive\デスクトップ\GE3\project\x64\Release\DirectXGame.exe
           1 個のファイルをコピーしました。
