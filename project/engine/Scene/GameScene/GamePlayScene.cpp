@@ -74,7 +74,7 @@ void GamePlayScene::Initialize()
 	// ライト
 	// Lightクラスのデータを初期化
 	BaseScene::GetLight()->Initialize();
-	BaseScene::GetLight()->GetCameraLight();
+	/*BaseScene::GetLight()->GetCameraLight();
 	BaseScene::GetLight()->GetDirectionalLight();
 	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
 	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
@@ -83,7 +83,7 @@ void GamePlayScene::Initialize()
 	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
 	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
 	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
-	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });
+	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 
 	particle->Initialize();
@@ -181,13 +181,13 @@ void GamePlayScene::Update()
 		sprite->Update();
 	}
 
-	ImGui::Begin("light");
+	/*ImGui::Begin("light");
 	ImGui::DragFloat3("transform", &BaseScene::GetLight()->cameraLightData->worldPosition.x, 0.01f);
 	ImGui::DragFloat3("DirectionalDirection", &BaseScene::GetLight()->directionalLightData->direction.x, 0.01f);
 	ImGui::DragFloat("DirectionalIntensity", &BaseScene::GetLight()->directionalLightData->intensity, 0.01f);
 	ImGui::DragFloat3("SpotPosition", &BaseScene::GetLight()->spotLightData->position.x, 0.01f);
 	ImGui::DragFloat("SpotIntensity", &BaseScene::GetLight()->spotLightData->intensity, 0.01f);
-	ImGui::End();
+	ImGui::End();*/
 
 	// 音声再生を無限ループで呼び出す
 	//audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
