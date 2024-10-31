@@ -59,13 +59,13 @@ void ParticleManager::Update()
 	{
 		for (std::list<Particle>::iterator particleIterator = group.second.particleList.begin(); particleIterator != group.second.particleList.end();)
 		{
-			//if ((*particleIterator).lifeTime <= (*particleIterator).currentTime)
-			//{
-			//	//生存期間が過ぎたParticleはlistから消す。戻り値が次のイテレータとなる
-			//	particleIterator = group.second.particleList.erase(particleIterator);
-			//	//生存期間を過ぎていたら更新せず描画対象にしない
-			//	continue;
-			//}
+			if ((*particleIterator).lifeTime <= (*particleIterator).currentTime)
+			{
+				//生存期間が過ぎたParticleはlistから消す。戻り値が次のイテレータとなる
+				particleIterator = group.second.particleList.erase(particleIterator);
+				//生存期間を過ぎていたら更新せず描画対象にしない
+				continue;
+			}
 
 			if (group.second.instanceCount < kNumMaxInstance) {
 
