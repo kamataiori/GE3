@@ -172,7 +172,7 @@ private:
 	};
 
 	/// <summary>
-	/// 
+	/// パーティクル生成器
 	/// </summary>
 	/// <param name="randomEngine"></param>
 	/// <param name="translate"></param>
@@ -182,7 +182,7 @@ private:
 public:
 
 	/// <summary>
-	/// 
+	/// エミッター
 	/// </summary>
 	/// <param name="name"></param>
 	/// <param name="position"></param>
