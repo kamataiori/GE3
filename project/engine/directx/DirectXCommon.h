@@ -5,7 +5,6 @@
 #include <dxgidebug.h>
 #include <dxcapi.h>
 #include "StringUtility.h"
-
 #include "WinApp.h"
 #include <chrono>
 #include "externals/imgui/imgui.h"
@@ -165,8 +164,7 @@ public:
 	/// テクスチャデータの転送
 	/// </summary>
 	[[nodiscard]]
-	Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(const Microsoft::WRL::ComPtr<ID3D12Resource>& texture,
-		const DirectX::ScratchImage& mipImages);
+	Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device, ID3D12GraphicsCommandList* commandList);
 
 
 
