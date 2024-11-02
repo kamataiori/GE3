@@ -60,6 +60,7 @@ private:
 		std::string filePath;  //画像のファイルパス
 		DirectX::TexMetadata metadata;  //画像の幅、高さなどの情報
 		Microsoft::WRL::ComPtr<ID3D12Resource> resource;  //テクスチャリソース
+		Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource;  // 中間リソース
 		uint32_t srvIndex;  //SRVインデックス
 		D3D12_CPU_DESCRIPTOR_HANDLE srvHandleCPU;  //SRV作成時に必要なCPUハンドル
 		D3D12_GPU_DESCRIPTOR_HANDLE srvHandleGPU;  //描画コマンドに必要なGPUハンドル

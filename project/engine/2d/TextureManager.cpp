@@ -57,30 +57,9 @@ void TextureManager::LoadTexture(const std::string& filePath)
 	textureData.metadata = mipImages.GetMetadata();
 	textureData.resource = dxCommon_->CreateTextureResource(textureData.metadata);
 	// UploadTextureData を呼び出し、intermediateResource を取得
-	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource = dxCommon_->UploadTextureData(
+	textureData.intermediateResource = dxCommon_->UploadTextureData(
 		textureData.resource.Get(), mipImages, dxCommon_->GetDevice().Get(), dxCommon_->GetCommandList().Get()
 	);
-
-	// commandListをCloseし、commandQueue->ExecuteCommandListsを使いキックする
-	dxCommon_->GetCommandList()->Close();
-	ID3D12CommandList* commandLists[] = { dxCommon_->GetCommandList().Get() };
-	dxCommon_->GetCommandQueue()->ExecuteCommandLists(1, commandLists);
-
-	// 実行を待つ
-	dxCommon_->SetFenceValue(dxCommon_->GetFenceValue() + 1);
-	dxCommon_->GetCommandQueue()->Signal(dxCommon_->GetFence().Get(), dxCommon_->GetFenceValue());
-	if (dxCommon_->GetFence()->GetCompletedValue() < dxCommon_->GetFenceValue()) {
-		dxCommon_->GetFence()->SetEventOnCompletion(dxCommon_->GetFenceValue(), dxCommon_->GetFenceEvent());
-		WaitForSingleObject(dxCommon_->GetFenceEvent(), INFINITE);
-	}
-
-	// 実行が完了したので、allocatorとcommandListをResetして次のコマンドを積めるようにする
-	dxCommon_->GetCommandAllocator()->Reset();
-	dxCommon_->GetCommandList()->Reset(dxCommon_->GetCommandAllocator().Get(), nullptr);
-
-	// intermediateResource はこの時点で解放可能
-	intermediateResource.Reset();
-
 
 	//テクスチャデータの要素数番号をSRVのインデックスを計算する
 	uint32_t srvIndex = static_cast<uint32_t>(textureDatas.size() - 1) + kSRVIndexTop;
