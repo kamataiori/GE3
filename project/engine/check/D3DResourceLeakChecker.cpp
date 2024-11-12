@@ -1,8 +1,6 @@
 #include "D3DResourceLeakChecker.h"
 #include "wrl.h"
-
 #include "ResourceObject.h"
-
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <dxgidebug.h>

@@ -398,12 +398,12 @@ void DirectXCommon::Finalize()
 	instance = nullptr;
 
 	// 順序に沿ってリソースを解放
-	/*if (commandList) {
-		commandList->Release();
-		commandList = nullptr;
-	}
+	//if (commandList) {
+	//	commandList.Reset();
+	//	//commandList = nullptr;
+	//}
 
-	if (commandAllocator) {
+	/*if (commandAllocator) {
 		commandAllocator->Release();
 		commandAllocator = nullptr;
 	}*/
@@ -786,7 +786,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateTextureResource(cons
 	//heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;  // プロセッサの近くに配置
 
 	// 3.Resourceを生成する
-	ID3D12Resource* resource = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
 	HRESULT hr = device->CreateCommittedResource(
 		&heapProperties,  // heapの設定
 		D3D12_HEAP_FLAG_NONE,  // Heapの特殊な設定。特になし。
