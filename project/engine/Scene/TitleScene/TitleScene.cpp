@@ -11,6 +11,9 @@ void TitleScene::Initialize()
 
 	// Lightクラスのデータを初期化
 	BaseScene::GetLight()->Initialize();
+	BaseScene::GetLight()->GetCameraLight();
+	BaseScene::GetLight()->GetDirectionalLight();
+	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
 
 	// 3Dオブジェクトの初期化
 	plane = std::make_unique<Object3d>(this);
