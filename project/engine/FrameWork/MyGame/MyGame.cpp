@@ -11,6 +11,9 @@ void MyGame::Initialize()
 
     SceneManager::GetInstance()->ChangeScene("TITLE");
 
+    offscreenRendering_ = std::make_unique<OffscreenRendering>();
+    offscreenRendering_->Initialize();
+
     // ImGuiManagerの初期化
     imGuiManager_ = std::make_unique<ImGuiManager>();
     imGuiManager_->Initialize(winApp.get(), DirectXCommon::GetInstance());
@@ -47,6 +50,8 @@ void MyGame::Draw()
 
     // ゲームシーンの描画
     SceneManager::GetInstance()->Draw();
+
+    offscreenRendering_->Draw();
 
     // 実際にcommandListのImGuiの描画コマンドを積む
     imGuiManager_->Draw();

@@ -144,6 +144,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\Scene\SceneManager\SceneManager.cpp" />
     <ClCompile Include="engine\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="engine\SRVManager\SrvManager.cpp" />
+    <ClCompile Include="OffscreenRendering.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +188,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Scene\SceneManager\SceneManager.h" />
     <ClInclude Include="engine\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="engine\SRVManager\SrvManager.h" />
+    <ClInclude Include="OffscreenRendering.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="vector\Vector2.h" />
     <ClInclude Include="vector\Vector3.h" />

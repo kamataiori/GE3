@@ -11,6 +11,7 @@
 #include "externals/imgui/imgui_impl_dx12.h"
 #include "externals/imgui/imgui_impl_win32.h"
 #include "externals/DirectXTex/DirectXTex.h"
+#include <Vector4.h>
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -161,6 +162,11 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
 
 	/// <summary>
+	/// レンダーテクスチャの生成
+	/// </summary>
+	Microsoft::WRL::ComPtr<ID3D12Resource> CreateRenderTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor);
+
+	/// <summary>
 	/// テクスチャデータの転送
 	/// </summary>
 	[[nodiscard]]
@@ -192,7 +198,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetCreateBufferResource(size_t sizeInBytes);
 
 	// バックバッファの数を取得
-	size_t GetBackBufferCount() const {return swapChainDesc.BufferCount;}
+	size_t GetBackBufferCount() const { return swapChainDesc.BufferCount; }
 
 	//==========dxcCompiler==========//
 
@@ -209,7 +215,7 @@ public:
 	/// <summary>
 	/// includeHandlerのゲッター
 	/// </summary>
-	IDxcIncludeHandler* GetIncludeHandler() const {return includeHandler;}
+	IDxcIncludeHandler* GetIncludeHandler() const { return includeHandler; }
 
 	/// <summary>
 	/// swapChainのゲッター
@@ -252,6 +258,27 @@ public:
 			throw std::out_of_range("Index out of range for rtvHandles");
 		}
 		return rtvHandles[index];
+	}
+
+	/// <summary>
+	/// レンダーテクスチャのcpuハンドルの取得
+	/// </summary>
+	/// <returns></returns>
+	D3D12_CPU_DESCRIPTOR_HANDLE GetRenderTextureRTVHandle()
+	{
+		// RTVのディスクリプタヒープが存在するか確認
+		if (!rtvDescriptorHeap)
+		{
+			throw std::runtime_error("RTV Descriptor Heap not initialized");
+		}
+
+		// ディスクリプタヒープの先頭ハンドルを取得
+		D3D12_CPU_DESCRIPTOR_HANDLE handle = rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+
+		// 必要なオフセットを適用（ここでは例としてインデックス0を使用）
+		handle.ptr += descriptorSizeRTV * 0; // インデックスを調整する場合はここを変更
+
+		return handle;
 	}
 
 	/// <summary>
