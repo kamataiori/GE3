@@ -18,8 +18,7 @@ void Object3d::Initialize()
     CreateTransformationMatrixData();
 
     // Transform変数を作る
-    transform = { {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f} };
-    cameraTransform = { {1.0f, 1.0f, 1.0f}, {0.0f, 3.14f, 0.0f}, {0.0f, 1.0f, -10.0f} };
+    transform = { {1.0f, 1.0f, 1.0f}, {0.0f, 3.14f, 0.0f}, {0.0f, 0.0f, 0.0f} };
 
     // デフォルトカメラをセット
     this->camera = object3dCommon_->GetDefaultCamera();
@@ -56,8 +55,6 @@ void Object3d::ImGuiUpdate(const std::string& Name)
         ImGui::DragFloat3("translate", &transform.translate.x);
         ImGui::DragFloat3("scale", &transform.scale.x);
         ImGui::DragFloat3("rotate", &transform.rotate.x);
-        ImGui::DragFloat3("CameraRotate", &cameraTransform.rotate.x, 0.01f);
-        ImGui::DragFloat3("CameraTransform", &cameraTransform.translate.x, 0.01f);
 
         ImGui::TreePop();
     }

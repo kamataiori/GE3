@@ -226,7 +226,7 @@ void Object3dCommon::RasterizerState()
 	//三角形の中を塗りつぶす
 	rasterizerDesc_.FillMode = D3D12_FILL_MODE_SOLID;
 	//カリングしない(裏面も表示させる)
-	rasterizerDesc_.CullMode = D3D12_CULL_MODE_NONE;
+	//rasterizerDesc_.CullMode = D3D12_CULL_MODE_NONE;
 }
 
 void Object3dCommon::DepthStencilState()

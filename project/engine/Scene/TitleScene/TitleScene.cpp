@@ -25,7 +25,7 @@ void TitleScene::Initialize()
 
 	// モデルにSRTを設定
 	plane->SetScale({ 1.0f, 1.0f, 1.0f });
-	plane->SetRotate({ 0.0f, 0.0f, 0.0f });
+	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
 	plane->SetTranslate({ 2.0f, 0.0f, 0.0f });
 
 	// 3Dカメラの初期化

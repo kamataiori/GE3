@@ -99,5 +99,4 @@ private:
 
     // Transform関連
     Transform transform;
-    Transform cameraTransform;
 };
