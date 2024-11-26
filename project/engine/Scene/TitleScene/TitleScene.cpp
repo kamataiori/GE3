@@ -1,6 +1,7 @@
 #include "TitleScene.h"
 #include "SceneManager.h"
 #include "Input.h"
+#include "ImGuiManager.h"
 
 void TitleScene::Initialize()
 {
@@ -44,6 +45,8 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
+	BaseScene::ShowFPS();
+
 	// 各3Dオブジェクトの更新
 	plane->Update();
 	// カメラの更新

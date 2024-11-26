@@ -305,6 +305,10 @@ private:
 	//記録時間(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;
 
+	void ShowFPS(); // ImGuiでFPSを表示する関数
+	//std::chrono::steady_clock::time_point reference_ = std::chrono::steady_clock::now();
+	//float fps_ = 0.0f; // 計算されたFPSを格納
+
 
 	///===========================
 	// メンバ変数
