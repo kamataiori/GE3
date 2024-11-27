@@ -23,7 +23,7 @@ void Light::InitializeDirectionalLight()
     // デフォルト値の設定
     directionalLightData->color = { 1.0f, 1.0f, 1.0f, 1.0f };
     directionalLightData->direction = { 0.0f, -1.0f, 0.0f };
-    directionalLightData->intensity = 0.0f;
+    directionalLightData->intensity = 1.0f;
 }
 
 void Light::InitializeCameraLight()
