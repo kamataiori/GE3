@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include "Light.h"
 #include "ParticleManager.h"
+#include "ParticleEmitter.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -64,5 +65,6 @@ private:
 
 
 	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
+	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
 };
 

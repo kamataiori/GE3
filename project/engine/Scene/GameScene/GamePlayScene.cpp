@@ -89,6 +89,9 @@ void GamePlayScene::Initialize()
 	particle->Initialize();
 	particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
 	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
+	// ParticleEmitterの初期化
+	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f,true);
+	emitters.push_back(std::move(emitter));
 }
 
 void GamePlayScene::Finalize()
@@ -199,7 +202,11 @@ void GamePlayScene::Update()
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
-	particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
+	//particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
+	for (auto& emitter : emitters)
+	{
+		emitter->Update();
+	}
 	particle->Update();
 }
 
