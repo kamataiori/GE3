@@ -12,9 +12,16 @@ void TitleScene::Initialize()
 
 	// Lightクラスのデータを初期化
 	BaseScene::GetLight()->Initialize();
-	/*BaseScene::GetLight()->GetCameraLight();
+	BaseScene::GetLight()->GetCameraLight();
 	BaseScene::GetLight()->GetDirectionalLight();
-	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });*/
+	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
+	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	//BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
+	/*BaseScene::GetLight()->GetSpotLight();
+	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
+	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
+	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 	// 3Dオブジェクトの初期化
 	plane = std::make_unique<Object3d>(this);
@@ -27,7 +34,7 @@ void TitleScene::Initialize()
 	// モデルにSRTを設定
 	plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
-	plane->SetTranslate({ 2.0f, 0.0f, 0.0f });
+	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
 	// 3Dカメラの初期化
 	cameraManager = std::make_unique<CameraManager>();
