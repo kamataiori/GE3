@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseScene.h"
 #include "Object3d.h"
+#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 
 class TitleScene : public BaseScene
 {
@@ -35,6 +37,9 @@ private:
 	//3Dカメラの初期化
 	std::unique_ptr<CameraManager> cameraManager = nullptr;
 	std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
+
+	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
+	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
 
 };
 
