@@ -43,6 +43,14 @@ void TitleScene::Initialize()
 
 	// カメラのセット
 	plane->SetCameraManager(cameraManager.get());
+	particle->SetCameraManager(cameraManager.get());
+
+	particle->Initialize();
+	particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
+	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
+	// ParticleEmitterの初期化
+	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
+	emitters.push_back(std::move(emitter));
 
 }
 
@@ -58,6 +66,12 @@ void TitleScene::Update()
 	plane->Update();
 	// カメラの更新
 	camera1->Update();
+
+	for (auto& emitter : emitters)
+	{
+		emitter->Update();
+	}
+	particle->Update();
 
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
@@ -89,6 +103,7 @@ void TitleScene::Draw()
 	// ここからSprite個々の描画
 	// ================================================
 
+	particle->Draw();
 
 	// ================================================
 	// ここまでSprite個々の描画
