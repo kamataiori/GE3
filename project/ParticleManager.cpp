@@ -29,64 +29,86 @@ void ParticleManager::Initialize()
 
 void ParticleManager::Update()
 {
+	// カメラ情報を取得
 	Camera* camera = cameraManager_->GetCurrentCamera();
-
 	Matrix4x4 cameraMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, camera->GetRotate(), camera->GetTranslate());
-
 	Matrix4x4 viewMatrix = Inverse(cameraMatrix);
 	Matrix4x4 projectionMatrix = MakePerspectiveFovMatrix(0.45f, float(kWindowWidth) / float(kWindowHeight), 0.1f, 100.0f);
 	Matrix4x4 viewProjectionMatrix = Multiply(viewMatrix, projectionMatrix);
 
-	//=====常にカメラ目線======//
-	//表面がカメラの方を向くようにする
+	// カメラ目線の設定
 	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
-	//カメラの回転を適用する
 	Matrix4x4 billboardMatrix{};
 	if (usebillboardMatrix)
 	{
 		billboardMatrix = Multiply(backToFrontMatrix, cameraMatrix);
-		billboardMatrix.m[3][0] = 0.0f;  //平行移動成分はいらない
+		billboardMatrix.m[3][0] = 0.0f; // 平行移動成分は無視
 		billboardMatrix.m[3][1] = 0.0f;
 		billboardMatrix.m[3][2] = 0.0f;
 	}
-	else if (usebillboardMatrix == false)
+	else
 	{
 		billboardMatrix = MakeIdentity4x4();
 	}
 
+	// スケール調整用の倍率を設定
+	constexpr float scaleMultiplier = 0.01f; // 必要に応じて調整
 
 	for (auto& group : particleGroups)
 	{
-		for (std::list<Particle>::iterator particleIterator = group.second.particleList.begin(); particleIterator != group.second.particleList.end();)
+		Vector2 textureSize = group.second.textureSize;
+
+		for (auto it = group.second.particleList.begin(); it != group.second.particleList.end();)
 		{
-			if ((*particleIterator).lifeTime <= (*particleIterator).currentTime)
+			Particle& particle = *it;
+
+			// パーティクルの寿命が尽きた場合は削除
+			if (particle.lifeTime <= particle.currentTime)
 			{
-				//生存期間が過ぎたParticleはlistから消す。戻り値が次のイテレータとなる
-				particleIterator = group.second.particleList.erase(particleIterator);
-				//生存期間を過ぎていたら更新せず描画対象にしない
+				it = group.second.particleList.erase(it);
 				continue;
 			}
 
-			if (group.second.instanceCount < kNumMaxInstance) {
+			// スケールをテクスチャサイズに基づいて調整
+			particle.transform.scale.x = textureSize.x * scaleMultiplier;
+			particle.transform.scale.y = textureSize.y * scaleMultiplier;
 
-				//速度を適用
-				(*particleIterator).transform.translate = Add((*particleIterator).transform.translate, Multiply(kDeltaTime, (*particleIterator).velocity));
-				(*particleIterator).currentTime += kDeltaTime; //経過時間を足す
-				Matrix4x4 worldMatrix = Multiply(billboardMatrix, MakeAffineMatrix((*particleIterator).transform.scale, (*particleIterator).transform.rotate, (*particleIterator).transform.translate));
-				Matrix4x4 worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
+			// 位置の更新
+			particle.transform.translate = Add(particle.transform.translate, Multiply(kDeltaTime, particle.velocity));
+
+			// 経過時間を更新
+			particle.currentTime += kDeltaTime;
+
+			// ワールド行列の計算
+			Matrix4x4 worldMatrix = Multiply(
+				billboardMatrix,
+				MakeAffineMatrix(particle.transform.scale, particle.transform.rotate, particle.transform.translate));
+
+			// ビュー・プロジェクションを掛け合わせて最終行列を計算
+			Matrix4x4 worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
+
+			// インスタンシングデータの設定
+			if (group.second.instanceCount < kNumMaxInstance)
+			{
 				group.second.instancingDataPtr[group.second.instanceCount].WVP = worldviewProjectionMatrix;
 				group.second.instancingDataPtr[group.second.instanceCount].World = worldMatrix;
-				//徐々に消す
-				float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
-				alpha = (alpha < 0.0f) ? 0.0f : alpha;  // アルファが0以下にならないようにする
-				group.second.instancingDataPtr[group.second.instanceCount].color = (*particleIterator).color;
-				group.second.instancingDataPtr[group.second.instanceCount].color.w = alpha;
+
+				// カラーを設定し、アルファ値を減衰
+				group.second.instancingDataPtr[group.second.instanceCount].color = particle.color;
+				group.second.instancingDataPtr[group.second.instanceCount].color.w = 1.0f - (particle.currentTime / particle.lifeTime);
+				if (group.second.instancingDataPtr[group.second.instanceCount].color.w < 0.0f)
+				{
+					group.second.instancingDataPtr[group.second.instanceCount].color.w = 0.0f;
+				}
+
 				++group.second.instanceCount;
 			}
-			++particleIterator;
+
+			++it;
 		}
 	}
 }
+
 
 void ParticleManager::Draw()
 {
@@ -106,6 +128,8 @@ void ParticleManager::Draw()
 		}
 	}
 
+
+
 	commandList->SetPipelineState(it->second.Get());
 
 	// プリミティブトポロジ（描画形状）を設定
@@ -120,6 +144,20 @@ void ParticleManager::Draw()
 	// 全てのパーティクルグループについて処理を行う
 	for (auto& group : particleGroups) {
 		if (group.second.instanceCount == 0) continue; // インスタンスが無い場合はスキップ
+
+		Vector2 textureLeftTop = group.second.textureLeftTop;
+		Vector2 textureSize = group.second.textureSize;
+
+		for (auto& particle : group.second.particleList)
+		{
+			// UV座標の計算
+			float uStart = textureLeftTop.x / textureSize.x;
+			float uEnd = (textureLeftTop.x + textureSize.x) / textureSize.x;
+			float vStart = textureLeftTop.y / textureSize.y;
+			float vEnd = (textureLeftTop.y + textureSize.y) / textureSize.y;
+
+			// 必要であればUV座標を設定する処理を追加
+		}
 
 		//マテリアルCBufferの場所を設定
 		commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
@@ -186,6 +224,9 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 	TextureManager::GetInstance()->LoadTexture(textureFilePath);
 
 	newGroup.srvIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
+
+	// テクスチャサイズを設定
+	AdjustTextureSize(newGroup, textureFilePath);
 
 	// インスタンシング用リソースの生成
 	//InstancingResource();
@@ -292,6 +333,17 @@ void ParticleManager::Emit(const std::string name, const Vector3& position, uint
 		group.particleList.push_back(newParticle);*/
 		group.particleList.push_back(MakeNewParticle(randomEngine, position));
 	}
+}
+
+
+void ParticleManager::AdjustTextureSize(ParticleGroup& group, const std::string& textureFilePath)
+{
+	// テクスチャメタデータを取得
+	const DirectX::TexMetadata& metadata = TextureManager::GetInstance()->GetMetaData(textureFilePath);
+
+	// テクスチャサイズを設定
+	group.textureSize.x = static_cast<float>(metadata.width);
+	group.textureSize.y = static_cast<float>(metadata.height);
 }
 
 

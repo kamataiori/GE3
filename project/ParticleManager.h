@@ -167,8 +167,8 @@ private:
 		// インスタンシングデータを書き込むためのポインタ
 		ParticleForGPU* instancingDataPtr = nullptr;
 
-		// スケール
-		Vector3 scale = { 1.0f, 1.0f, 1.0f };
+		Vector2 textureLeftTop = { 0.0f, 0.0f }; // テクスチャ左上座標
+		Vector2 textureSize = { 0.0f, 0.0f }; // テクスチャサイズを追加
 	};
 
 	/// <summary>
@@ -231,7 +231,16 @@ private:
 
 	Matrix4x4 worldviewProjectionMatrix;
 
+	//テクスチャ切り出しサイズ
+	Vector2 textureSize = { 0.0f,0.0f };
+	std::string FilePath = {};
+	//サイズ
+	Vector2 size = { 640.0f,360.0f };
+
 private:
+
+	//テクスチャサイズイメージ合わせ
+	void AdjustTextureSize(ParticleGroup& group, const std::string& textureFilePath);
 
 	/// <summary>
 	/// ルートシグネチャの作成
