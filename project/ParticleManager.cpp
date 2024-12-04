@@ -202,7 +202,7 @@ void ParticleManager::CreateVertexData()
 	modelData.vertices.push_back({ .position = {-1.0f, -1.0f, 0.0f, 1.0f}, .texcoord = {1.0f, 1.0f}, .normal = {0.0f, 0.0f, 1.0f} });
 }
 
-void ParticleManager::CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode)
+void ParticleManager::CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode, const Vector2& customSize)
 {
 	// 登録済みの名前かチェックして assert
 	bool nameExists = false;
@@ -225,8 +225,20 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 
 	newGroup.srvIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 
-	// テクスチャサイズを設定
-	AdjustTextureSize(newGroup, textureFilePath);
+	// テクスチャサイズを取得
+	const DirectX::TexMetadata& metadata = TextureManager::GetInstance()->GetMetaData(textureFilePath);
+	Vector2 textureSize = { static_cast<float>(metadata.width), static_cast<float>(metadata.height) };
+
+	// サイズを設定（指定があればそれを使用、なければテクスチャサイズを使用）
+	if (customSize.x > 0.0f && customSize.y > 0.0f) {
+		newGroup.textureSize = customSize;
+	}
+	else {
+		newGroup.textureSize = textureSize;
+	}
+
+	//// テクスチャサイズを設定
+	//AdjustTextureSize(newGroup, textureFilePath);
 
 	// インスタンシング用リソースの生成
 	//InstancingResource();

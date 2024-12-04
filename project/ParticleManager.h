@@ -59,7 +59,7 @@ public:
 	/// <summary>
 	/// パーティクルグループの生成
 	/// </summary>
-	void CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode = kBlendModeNormal);
+	void CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode = kBlendModeNormal, const Vector2& customSize = { 0.0f, 0.0f });
 
 	// カメラの設定
 	void SetCameraManager(CameraManager* cameraManager);
