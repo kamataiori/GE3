@@ -187,6 +187,9 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 
 	newGroup.srvIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 
+	////画像サイズをテクスチャサイズに合わせる
+	//AdjustTextureSize();
+
 	// インスタンシング用リソースの生成
 	//InstancingResource();
 	newGroup.instancingResource =
@@ -294,6 +297,17 @@ void ParticleManager::Emit(const std::string name, const Vector3& position, uint
 	}
 }
 
+
+void ParticleManager::AdjustTextureSize()
+{
+	//テクスチャメタデータを取得
+	const DirectX::TexMetadata& metadata = TextureManager::GetInstance()->GetMetaData(FilePath);
+
+	textureSize.x = static_cast<float>(metadata.width);
+	textureSize.y = static_cast<float>(metadata.height);
+	//画像サイズをテクスチャサイズに合わせる
+	size = textureSize;
+}
 
 void ParticleManager::RootSignature()
 {
