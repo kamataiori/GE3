@@ -25,9 +25,19 @@ public:
 	void Update() override;
 
 	/// <summary>
+	/// 背景描画
+	/// </summary>
+	void BackGroundDraw() override;
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw() override;
+
+	/// <summary>
+	/// 前景描画
+	/// </summary>
+	void ForeGroundDraw() override;
 
 private:
 

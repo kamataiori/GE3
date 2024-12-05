@@ -52,7 +52,9 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
+	scene_->BackGroundDraw();
 	scene_->Draw();
+	scene_->ForeGroundDraw();
 }
 
 void SceneManager::ChangeScene(const std::string& sceneName)

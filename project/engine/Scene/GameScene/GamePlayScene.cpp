@@ -210,6 +210,27 @@ void GamePlayScene::Update()
 	particle->Update();
 }
 
+void GamePlayScene::BackGroundDraw()
+{
+	// Spriteの描画前処理。Spriteの描画設定に共通のグラフィックスコマンドを積む
+	SpriteCommon::GetInstance()->CommonSetting();
+
+	// ================================================
+	// ここからSprite個々の背景描画
+	// ================================================
+
+	monsterBall->Draw();
+
+	// スプライトを描画する
+	for (const auto& sprite : sprites) {
+		sprite->Draw();
+	}
+
+	// ================================================
+	// ここまでSprite個々の背景描画
+	// ================================================
+}
+
 void GamePlayScene::Draw()
 {
 	// 3Dオブジェクトの描画前処理。3Dオブジェクトの描画設定に共通のグラフィックスコマンドを積む
@@ -226,22 +247,20 @@ void GamePlayScene::Draw()
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
 	// ================================================
+}
 
+void GamePlayScene::ForeGroundDraw()
+{
 	// Spriteの描画前処理。Spriteの描画設定に共通のグラフィックスコマンドを積む
 	SpriteCommon::GetInstance()->CommonSetting();
 
 	// ================================================
-	// ここからSprite個々の描画
+	// ここからSprite個々の前景描画(UIなど)
 	// ================================================
-	monsterBall->Draw();
-
-	// スプライトを描画する
-	for (const auto& sprite : sprites) {
-		sprite->Draw();
-	}
 
 	particle->Draw();
+
 	// ================================================
-	// ここまでSprite個々の描画
+	// ここまでSprite個々の前景描画(UIなど)
 	// ================================================
 }
