@@ -29,9 +29,19 @@ public:
 	virtual void Update() = 0;
 
 	/// <summary>
+	/// 背景描画
+	/// </summary>
+	virtual void BackGroundDraw() = 0;
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	virtual void Draw() = 0;
+
+	/// <summary>
+	/// 前景描画
+	/// </summary>
+	virtual void ForeGroundDraw() = 0;
 
 	/// <summary>
 	/// シーンマネージャーをシーンに貸し出すためのSetter
