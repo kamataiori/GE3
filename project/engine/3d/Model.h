@@ -96,6 +96,12 @@ public:
 	/// <returns></returns>
 	const ModelData& GetModelData() const { return modelData; }
 
+	// materialData->colorのゲッター
+	const Vector4& GetMaterialColor() const { return materialData->color; }
+
+	// materialData->colorのセッター
+	void SetMaterialColor(const Vector4& color) { materialData->color = color; }
+
 private:
 	// ModelCommonの初期化
 	ModelCommon* modelCommon_ = nullptr;

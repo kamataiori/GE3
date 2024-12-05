@@ -62,6 +62,15 @@ void TitleScene::Update()
 {
 	BaseScene::ShowFPS();
 
+	// アルファ値を減少させる
+	Vector4 color = plane->GetMaterialColor();
+	//color.w = 0.5f;
+	color.w -= 0.01f; // アルファ値を減少
+	if (color.w < 0.0f) {
+		color.w = 0.0f; // 最小値を0に制限
+	}
+	plane->SetMaterialColor(color);
+
 	// 各3Dオブジェクトの更新
 	plane->Update();
 	// カメラの更新

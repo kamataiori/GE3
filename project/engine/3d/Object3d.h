@@ -66,6 +66,9 @@ public:
     // ModelのSetter
     void SetModel(const std::string& filePath) { model_ = ModelManager::GetInstance()->FindModel(filePath); }
 
+    // Material colorのセッター
+    void SetMaterialColor(const Vector4& color);
+
     //--------setter--------//
     void SetScale(const Vector3& scale) { this->transform.scale = scale; }
     void SetRotate(const Vector3& rotate) { this->transform.rotate = rotate; }
@@ -78,6 +81,9 @@ public:
     const Vector3& GetScale() const { return transform.scale; }
     const Vector3& GetRotate() const { return transform.rotate; }
     const Vector3& GetTranslate() const { return transform.translate; }
+
+    // Material colorのゲッター
+    const Vector4& GetMaterialColor() const;
 
 private:
     // Object3dCommonの初期化

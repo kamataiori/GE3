@@ -94,7 +94,21 @@ void Object3d::CreateTransformationMatrixData()
     transformationMatrixData->WorldInverseTranspose = MakeIdentity4x4();
 }
 
+void Object3d::SetMaterialColor(const Vector4& color)
+{
+    // model_が存在する場合にのみ設定
+    assert(model_);
+    model_->SetMaterialColor(color);
+}
+
 void Object3d::SetCameraManager(CameraManager* cameraManager)
 {
     this->cameraManager_ = cameraManager;
+}
+
+const Vector4& Object3d::GetMaterialColor() const
+{
+    // model_が存在する場合にのみ取得
+    assert(model_);
+    return model_->GetMaterialColor();
 }
