@@ -16,25 +16,7 @@ void TitleScene::Initialize()
 	BaseScene::GetLight()->GetDirectionalLight();
 	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
 	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	//BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
-	/*BaseScene::GetLight()->GetSpotLight();
-	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
-	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
-	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
-	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
-	plane->Initialize();
-	//// モデル読み込み
-	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
-	ModelManager::GetInstance()->LoadModel("axis.obj");
-	plane->SetModel("uvChecker.gltf");
-
-	// モデルにSRTを設定
-	plane->SetScale({ 1.0f, 1.0f, 1.0f });
-	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
-	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
 	// 3Dカメラの初期化
 	cameraManager = std::make_unique<CameraManager>();
@@ -42,14 +24,29 @@ void TitleScene::Initialize()
 	cameraManager->AddCamera(camera1.get());
 
 	// カメラのセット
-	plane->SetCameraManager(cameraManager.get());
 	particle->SetCameraManager(cameraManager.get());
 
+	// ランダム要素をゼロに設定
+	//particle->translateRange_.min = -0.1f;
+	//particle->translateRange_.max = 0.1f;  // 軽微な位置のばらつき
+	//particle->colorRange_.min = 0.8f;
+	//particle->colorRange_.max = 1.0f;      // 色のばらつきを抑える
+	//particle->lifetimeRange_.min = 2.0f;
+	//particle->lifetimeRange_.max = 3.0f;  // パーティクル寿命を一定範囲に設定
+
+	// パーティクルの初期化
 	particle->Initialize();
-	particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
-	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
-	// ParticleEmitterの初期化
-	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
+	particle->CreateParticleGroup("water", "Resources/water.png", ParticleManager::BlendMode::kBlendModeAdd, { 32.0f, 32.0f });
+
+	// ParticleEmitterの初期化（反時計回り）
+	auto emitter = std::make_unique<ParticleEmitter>(
+		particle.get(),
+		"water",
+		Transform{ {0.0f, 0.0f, -5.0f}, {}, {1.0f, 0.1f, 1.0f} },
+		20, // パーティクル数
+		0.1f, // 発生頻度
+		true // 繰り返し
+	);
 	emitters.push_back(std::move(emitter));
 
 }
@@ -60,28 +57,26 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
-	BaseScene::ShowFPS();
+	//BaseScene::ShowFPS();
 
-	// アルファ値を減少させる
-	Vector4 color = plane->GetMaterialColor();
-	//color.w = 0.5f;
-	color.w -= 0.01f; // アルファ値を減少
-	if (color.w < 0.0f) {
-		color.w = 0.0f; // 最小値を0に制限
-	}
-	plane->SetMaterialColor(color);
-
-	// 各3Dオブジェクトの更新
-	plane->Update();
 	// カメラの更新
 	camera1->Update();
 
+	// パーティクルの更新
 	for (auto& emitter : emitters)
 	{
+		// 反時計回りの回転を加える
+		emitter->transform_.rotate.z += 0.05f;
+		if (emitter->transform_.rotate.z > 360.0f) {
+			emitter->transform_.rotate.z -= 360.0f;
+		}
 		emitter->Update();
 	}
 	particle->Update();
 
+	ImGui::Begin("Editor");
+	ImGui::Text("Enter to go to Editor");
+	ImGui::End();
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
@@ -113,8 +108,7 @@ void TitleScene::Draw()
 	// ここから3Dオブジェクト個々の描画
 	// ================================================
 
-	// 各オブジェクトの描画
-	plane->Draw();
+	
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画

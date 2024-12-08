@@ -17,7 +17,7 @@ public:
     // 繰り返し設定
     void SetRepeat(bool repeat);
 
-private:
+public:
     ParticleManager* particleManager_; // ParticleManagerのインスタンスを保持
     std::string name_;                 // パーティクルグループ名
     Transform transform_;              // エミッターの位置・回転・スケール

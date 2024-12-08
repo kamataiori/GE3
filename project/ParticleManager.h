@@ -41,10 +41,10 @@ public:
 		float frequencyTime;  //頻度用時刻
 	};
 
-    /// <summary>
-    /// 初期化
-    /// </summary>
-    void Initialize();
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
 
 	/// <summary>
 	/// 更新
@@ -63,6 +63,15 @@ public:
 
 	// カメラの設定
 	void SetCameraManager(CameraManager* cameraManager);
+
+	// BlendModeを更新する関数
+	void UpdateBlendMode(const std::string& groupName, BlendMode newBlendMode);
+
+	/// <summary>
+/// 指定された名前のパーティクルグループを削除
+/// </summary>
+	void RemoveParticleGroup(const std::string& name);
+
 
 private:
 
@@ -212,6 +221,18 @@ private:
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine;
 
+public:
+	// 乱数範囲の調整用
+	struct RandomRange {
+		float min;
+		float max;
+	};
+
+	RandomRange translateRange_ = { -1.0f, 1.0f };
+	RandomRange colorRange_ = { 0.0f, 1.0f };
+	RandomRange lifetimeRange_ = { 1.0f, 3.0f };
+
+
 	// パーティクルの最大出力数
 	const uint32_t kNumMaxInstance = 128;
 	//とりあえず60fps固定してあるが、実時間を計測して可変fpsで動かせるようにしておくとなおよい
@@ -227,7 +248,7 @@ private:
 	Camera* camera = nullptr;
 	CameraManager* cameraManager_ = nullptr;
 	//常にカメラ目線
-	Transform cameraTransform{ {1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f},{0.0f,23.0f,10.0f}};
+	Transform cameraTransform{ {1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f},{0.0f,23.0f,10.0f} };
 
 	Matrix4x4 worldviewProjectionMatrix;
 
@@ -285,11 +306,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> PSO();
 
 private:
-    DirectXCommon* dxCommon_ = nullptr;
-    SrvManager* srvManager_ = nullptr;
+	DirectXCommon* dxCommon_ = nullptr;
+	SrvManager* srvManager_ = nullptr;
 	// Modelの初期化
 	Model* model_ = nullptr;
-   
+
 	//--------RootSignature部分--------//
 
 	//DescriptorRange

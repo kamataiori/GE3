@@ -275,6 +275,23 @@ void ParticleManager::SetCameraManager(CameraManager* cameraManager)
 	this->cameraManager_ = cameraManager;
 }
 
+void ParticleManager::UpdateBlendMode(const std::string& groupName, BlendMode newBlendMode) {
+	auto it = particleGroups.find(groupName);
+	if (it != particleGroups.end()) {
+		blendMode_ = newBlendMode; // 新しいブレンドモードを設定
+		GraphicsPipelineState(newBlendMode); // PSOを再構築
+	}
+}
+
+void ParticleManager::RemoveParticleGroup(const std::string& name) {
+	auto it = particleGroups.find(name);
+	if (it != particleGroups.end()) {
+		particleGroups.erase(it); // パーティクルグループを削除
+	}
+}
+
+
+
 void ParticleManager::CreateMaterialData()
 {
 	// マテリアル用のリソースを作成
@@ -304,24 +321,45 @@ void ParticleManager::InstancingMaxResource()
 
 ParticleManager::Particle ParticleManager::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate)
 {
-	//一様分布生成器を使って乱数を生成
-	std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
-	std::uniform_real_distribution<float> distColor(0.0f, 1.0f);
-	std::uniform_real_distribution<float> distTime(1.0f, 3.0f);
+	//// 一様分布生成器を使って乱数を生成
+	//std::uniform_real_distribution<float> distTranslate(translateRange_.min, translateRange_.max);
+	//std::uniform_real_distribution<float> distColor(colorRange_.min, colorRange_.max);
+	//std::uniform_real_distribution<float> distTime(lifetimeRange_.min, lifetimeRange_.max);
+
+	//Particle particle;
+
+	//particle.transform.scale = { 1.0f, 1.0f, 1.0f };
+	//particle.transform.rotate = { 0.0f, 0.0f, 0.0f };
+	//Vector3 randomTranslate{ distTranslate(randomEngine), distTranslate(randomEngine), distTranslate(randomEngine) };
+	//particle.transform.translate = Add(translate, randomTranslate);
+	//particle.velocity = { distTranslate(randomEngine), distTranslate(randomEngine), distTranslate(randomEngine) };
+	//particle.color = { distColor(randomEngine), distColor(randomEngine), distColor(randomEngine), 1.0f };
+	//particle.lifeTime = distTime(randomEngine);
+	//particle.currentTime = 0;
+	//return particle;
+
+	// ランダム分布
+	std::uniform_real_distribution<float> distTranslate(translateRange_.min, translateRange_.max);
+	std::uniform_real_distribution<float> distColor(colorRange_.min, colorRange_.max);
+	std::uniform_real_distribution<float> distTime(lifetimeRange_.min, lifetimeRange_.max);
 
 	Particle particle;
 
-	particle.transform.scale = { 1.0f,1.0f,1.0f };
-	particle.transform.rotate = { 0.0f,0.0f,0.0f };
-	Vector3 randomTranslate{ distribution(randomEngine),distribution(randomEngine) ,distribution(randomEngine) };
+	particle.transform.scale = { 1.0f, 1.0f, 1.0f };
+	particle.transform.rotate = { 0.0f, 0.0f, 0.0f };
+	Vector3 randomTranslate{ distTranslate(randomEngine), distTranslate(randomEngine), 0.0f };
 	particle.transform.translate = Add(translate, randomTranslate);
-	//	particle.transform.translate = { /*index * 0.1f*/distribution(randomEngine),distribution(randomEngine), distribution(randomEngine) };
-	particle.velocity = { distribution(randomEngine),distribution(randomEngine),distribution(randomEngine) };
-	particle.color = { distColor(randomEngine),distColor(randomEngine) ,distColor(randomEngine) ,1.0f };
+
+	// 初期速度を反時計回りに設定 (Z軸回りの回転を考慮)
+	particle.velocity = { -randomTranslate.y, randomTranslate.x, 0.0f };
+
+	particle.color = { distColor(randomEngine), distColor(randomEngine), distColor(randomEngine), 1.0f };
 	particle.lifeTime = distTime(randomEngine);
+	particle.lifeTime = distTime(randomEngine); // 寿命を設定
 	particle.currentTime = 0;
 	return particle;
 }
+
 
 void ParticleManager::Emit(const std::string name, const Vector3& position, uint32_t count)
 {

@@ -41,15 +41,17 @@ public:
 
 private:
 
-	// 3Dオブジェクトの初期化
-	std::unique_ptr<Object3d> plane = nullptr;
-
 	//3Dカメラの初期化
 	std::unique_ptr<CameraManager> cameraManager = nullptr;
 	std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
 
+	// パーティクルマネージャー
 	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
+	std::unique_ptr<ParticleManager> fireParticle = std::make_unique<ParticleManager>();
+
+	// エミッター
 	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
+	std::vector<std::unique_ptr<ParticleEmitter>> fireEmitters;
 
 };
 
