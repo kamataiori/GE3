@@ -26,14 +26,6 @@ void TitleScene::Initialize()
 	// カメラのセット
 	particle->SetCameraManager(cameraManager.get());
 
-	// ランダム要素をゼロに設定
-	//particle->translateRange_.min = -0.1f;
-	//particle->translateRange_.max = 0.1f;  // 軽微な位置のばらつき
-	//particle->colorRange_.min = 0.8f;
-	//particle->colorRange_.max = 1.0f;      // 色のばらつきを抑える
-	//particle->lifetimeRange_.min = 2.0f;
-	//particle->lifetimeRange_.max = 3.0f;  // パーティクル寿命を一定範囲に設定
-
 	// パーティクルの初期化
 	particle->Initialize();
 	particle->CreateParticleGroup("water", "Resources/water.png", ParticleManager::BlendMode::kBlendModeAdd, { 32.0f, 32.0f });
