@@ -5,6 +5,7 @@
 #include <thread>
 #include <externals/DirectXTex/d3dx12.h>
 #include <vector>
+#include <SrvManager.h>
 
 using namespace Microsoft::WRL;
 DirectXCommon* DirectXCommon::instance = nullptr;
@@ -268,7 +269,8 @@ void DirectXCommon::DescriptorHeap()
 
 	//////=========ディスクリプタヒープの生成=========////
 	//RTV
-	rtvDescriptorHeap = CreateDescriptorHeap(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
+	rtvDescriptorHeap = CreateDescriptorHeap(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 3, false);
+	//rtvDescriptorHeap = CreateDescriptorHeap(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
 	////SRV
 	//srvDescriptorHeap = CreateDescriptorHeap(device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, kMaxSRVCount, true);
 	//DSV
@@ -301,7 +303,21 @@ void DirectXCommon::RenderTargetView()
 	//2つ目を作る
 	device->CreateRenderTargetView(swapChainResources[1].Get(), &rtvDesc, rtvHandles[1]);
 
-	
+	const Vector4 kREnderTargetClearValue{ 1.0f,0.0f,0.0f,1.0f };  // 一旦分かりやすいように赤色に設定
+	offscreenResource = CreateRenderTextureResource(device, WinApp::kClientWidth, WinApp::kClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kREnderTargetClearValue);
+	rtvHandles[2].ptr = rtvHandles[1].ptr + device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	device->CreateRenderTargetView(offscreenResource.Get(), &rtvDesc, rtvHandles[2]);
+
+	// SRV用のインデックスを確保
+	uint32_t srvIndex = SrvManager::GetInstance()->Allocate();
+
+	// SRVを作成
+	SrvManager::GetInstance()->CreateSRVforTexture2D(
+		srvIndex,                             // SRVインデックス
+		offscreenResource.Get(),     // 対応するリソース
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,      // フォーマット
+		1                                     // MipLevels
+	);
 
 }
 
@@ -811,6 +827,44 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateTextureResource(cons
 	return resource;
 }
 
+Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateRenderTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor)
+{
+	// ResourceDescの設定
+	D3D12_RESOURCE_DESC resourceDesc{};
+	resourceDesc.Width = width;  // テクスチャの幅
+	resourceDesc.Height = height;  // テクスチャの高さ
+	resourceDesc.DepthOrArraySize = 1;  // 奥行き　or 配列Textureの配列数
+	resourceDesc.MipLevels = 1;  // mipmapの数
+	resourceDesc.Format = format;  // TextureのFormat
+	resourceDesc.SampleDesc.Count = 1;  //サンプリングカウント。1固定。
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;  // 2Dテクスチャ
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;  // レンダーターゲットとして使う
+
+	// ヒープの設定
+	D3D12_HEAP_PROPERTIES heapProperties{};
+	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT; // 当然VRAM上に作る
+
+	// クリア値の設定
+	D3D12_CLEAR_VALUE clearValue{};
+	clearValue.Format = format;
+	clearValue.Color[0] = clearColor.x;
+	clearValue.Color[1] = clearColor.y;
+	clearValue.Color[2] = clearColor.z;
+	clearValue.Color[3] = clearColor.w;
+
+	// Resourceの生成
+	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
+	HRESULT hr = device->CreateCommittedResource(
+		&heapProperties, // ヒープの設定
+		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし
+		&resourceDesc, // リソースの設定
+		D3D12_RESOURCE_STATE_RENDER_TARGET, // 
+		&clearValue, // Clear最適値。ClearRenderTargetをこの色でClearするようにする。最適化されているので高速である。
+		IID_PPV_ARGS(&resource)); // 生成したリソースのpointerへのpointerを取得
+	assert(SUCCEEDED(hr));
+	return resource;
+}
+
 // テクスチャデータの転送
 //Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(const Microsoft::WRL::ComPtr<ID3D12Resource>& texture, const DirectX::ScratchImage& mipImages)
 //{
@@ -853,6 +907,35 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
 	commandList->ResourceBarrier(1, &barrier);
 	return intermediateResource;
+}
+
+void DirectXCommon::PreDrawForRenderTexture()
+{
+	// RenderTextureへの描画設定
+	commandList->OMSetRenderTargets(1, &rtvHandles[2], false, &dsvHandle);
+
+	// RenderTextureをクリア
+	float clearColor[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // 例: 赤色
+	commandList->ClearRenderTargetView(rtvHandles[2], clearColor, 0, nullptr);
+	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
+	// ビューポート設定
+	commandList->RSSetViewports(1, &viewport);
+
+	// シザーレクト設定
+	commandList->RSSetScissorRects(1, &scissorRect);
+}
+
+void DirectXCommon::PostDrawForRenderTexture()
+{
+	// RenderTexture用のリソースバリア設定
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.Transition.pResource = offscreenResource.Get();
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+	commandList->ResourceBarrier(1, &barrier);
 }
 
 

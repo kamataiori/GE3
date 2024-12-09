@@ -39,19 +39,42 @@ void MyGame::Update()
 }
 
 
+//void MyGame::Draw()
+//{
+//    // DirectXの描画前処理。全ての描画に共通のグラフィックスコマンドを積む
+//    dxCommon->PreDraw();
+//    SrvManager::GetInstance()->PreDraw();
+//
+//    // ゲームシーンの描画
+//    SceneManager::GetInstance()->Draw();
+//
+//    // 実際にcommandListのImGuiの描画コマンドを積む
+//    imGuiManager_->Draw();
+//
+//    // 描画後処理
+//    dxCommon->PostDraw();
+//}
+
 void MyGame::Draw()
 {
-    // DirectXの描画前処理。全ての描画に共通のグラフィックスコマンドを積む
+    // RenderTextureへの描画前処理
+    dxCommon->PreDrawForRenderTexture();
+    SrvManager::GetInstance()->PreDraw();
+
+    // ゲームシーンの描画 (RenderTextureに対して)
+    SceneManager::GetInstance()->Draw();
+
+    // RenderTextureの描画後処理
+    dxCommon->PostDrawForRenderTexture();
+
+    // スワップチェーンへの描画前処理
     dxCommon->PreDraw();
     SrvManager::GetInstance()->PreDraw();
 
-    // ゲームシーンの描画
-    SceneManager::GetInstance()->Draw();
-
-    // 実際にcommandListのImGuiの描画コマンドを積む
+    // ImGuiの描画 (スワップチェーンに対して)
     imGuiManager_->Draw();
 
-    // 描画後処理
+    // スワップチェーンの描画後処理
     dxCommon->PostDraw();
 }
 
