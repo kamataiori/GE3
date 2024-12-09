@@ -30,6 +30,10 @@ void ImGuiManager::Initialize(WinApp* winApp, DirectXCommon* dxCommon)
 		srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 		srvHeap_->GetGPUDescriptorHandleForHeapStart()
 	);
+
+	// エディター同士をドッキング
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
 void ImGuiManager::Finalize()
