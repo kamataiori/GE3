@@ -50,22 +50,6 @@ void SpriteCommon::RootSignature()
 	rootParameters_[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters_[2].DescriptorTable.pDescriptorRanges = descriptorRange_;
 	rootParameters_[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_);
-	////=========平行光源をShaderで使う=========////
-	rootParameters_[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  //CBVを使う
-	rootParameters_[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  //PixelShaderで使う
-	rootParameters_[3].Descriptor.ShaderRegister = 1;  //レジスタ番号1を使う
-	////=========光源のカメラの位置をShaderで使う=========////
-	rootParameters_[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  //CBVを使う
-	rootParameters_[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  //PixelShaderで使う
-	rootParameters_[4].Descriptor.ShaderRegister = 2;  //レジスタ番号1を使う
-	////========ポイントライトをShaderで使う========////
-	rootParameters_[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  //CBVを使う
-	rootParameters_[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  //PixelShaderで使う
-	rootParameters_[5].Descriptor.ShaderRegister = 3;  //レジスタ番号3を使う
-	////========スポットライトをShaderで使う========////
-	rootParameters_[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  //CBVを使う
-	rootParameters_[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  //PixelShaderで使う
-	rootParameters_[6].Descriptor.ShaderRegister = 4;  //レジスタ番号4を使う
 
 	descriptionRootSignature_.pParameters = rootParameters_;    //ルートパラメータ配列へのポインタ
 	descriptionRootSignature_.NumParameters = _countof(rootParameters_);    //配列の長さ
@@ -126,10 +110,10 @@ void SpriteCommon::GraphicsPipelineState()
 
 	////=========ShaderをCompileする=========////
 
-	vertexShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/Object3d.VS.hlsl",
+	vertexShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/Sprite.VS.hlsl",
 		L"vs_6_0"/*, dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler()*/);
 	assert(vertexShaderBlob_ != nullptr);
-	pixelShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/Object3d.PS.hlsl",
+	pixelShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/Sprite.PS.hlsl",
 		L"ps_6_0"/*, dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler()*/);
 	assert(pixelShaderBlob_ != nullptr);
 

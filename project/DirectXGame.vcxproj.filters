@@ -324,10 +324,13 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="Resources\shaders\Particle.hlsli" />
+    <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\Particle.VS.hlsl" />
     <FxCompile Include="Resources\shaders\Particle.PS.hlsl" />
+    <FxCompile Include="Resources\shaders\Sprite.VS.hlsl" />
+    <FxCompile Include="Resources\shaders\Sprite.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectXGame.rc">

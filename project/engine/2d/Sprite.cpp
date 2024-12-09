@@ -71,8 +71,6 @@ void Sprite::Update()
 	vertexData[3].position = { right,top,0.0f,1.0f };
 	vertexData[3].texcoord = { tex_right,tex_top };
 
-	vertexData[0].normal = { 0.0f,0.0f,-1.0f };
-
 
 	indexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
 	indexData[0] = 0;
@@ -91,8 +89,6 @@ void Sprite::Update()
 	uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(uvTransform.rotate.z));
 	uvTransformMatrix = Multiply(uvTransformMatrix, MakeTranslateMatrix(uvTransform.translate));
 
-	materialDataSprite->uvTransform = uvTransformMatrix;
-
 	//Sprite用のWorldViewProjectionMatrixを作る
 	Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 viewMatrixSprite = MakeIdentity4x4();
@@ -100,7 +96,6 @@ void Sprite::Update()
 	Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
 
 	transformationMatrixDataSprite->WVP = worldViewProjectionMatrixSprite;
-	transformationMatrixDataSprite->World = worldMatrixSprite;
 
 }
 
@@ -189,9 +184,6 @@ void Sprite::CreateMaterialData()
 	//書き込むためのアドレスを取得
 	materialResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&materialDataSprite));
 	materialDataSprite->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	//SpriteはLightingしないのfalseを設定する
-	materialDataSprite->enableLighting = false;
-	materialDataSprite->uvTransform = MakeIdentity4x4();
 }
 
 void Sprite::CreateTransformationMatrixData()
@@ -203,8 +195,6 @@ void Sprite::CreateTransformationMatrixData()
 	transformationMatrixResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixDataSprite));
 	//単位行列を書き込んでおく
 	transformationMatrixDataSprite->WVP = MakeIdentity4x4();
-	transformationMatrixDataSprite->World = MakeIdentity4x4();
-
 }
 
 void Sprite::AdjustTextureSize()
