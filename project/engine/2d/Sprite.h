@@ -77,22 +77,16 @@ public:
 	struct VertexData {
 		Vector4 position;
 		Vector2 texcoord;
-		Vector3 normal;
 	};
 
 	//マテリアルを拡張する
 	struct Material {
 		Vector4 color;
-		int32_t enableLighting;
-		float padding[3];
-		Matrix4x4 uvTransform;
 	};
 
 	//TransformationMatrixを拡張する
 	struct TransformationMatrix {
 		Matrix4x4 WVP;
-		Matrix4x4 World;
-		Matrix4x4 WorldInverseTranspose;
 	};
 
 
