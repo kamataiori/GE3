@@ -14,6 +14,8 @@ void MyGame::Initialize()
     // ImGuiManagerの初期化
     imGuiManager_ = std::make_unique<ImGuiManager>();
     imGuiManager_->Initialize(winApp.get(), DirectXCommon::GetInstance());
+
+    offscreenRendering->Initialize();
 }
 
 
@@ -59,17 +61,22 @@ void MyGame::Draw()
 {
     // RenderTextureへの描画前処理
     dxCommon->PreDrawForRenderTexture();
+
+    // RenderTexture用SRVの準備
     SrvManager::GetInstance()->PreDraw();
 
     // ゲームシーンの描画 (RenderTextureに対して)
     SceneManager::GetInstance()->Draw();
 
-    // RenderTextureの描画後処理
-    //dxCommon->PostDrawForRenderTexture();
-
     // スワップチェーンへの描画前処理
     dxCommon->PreDraw();
+
+    // RenderTextureの描画後処理
+    dxCommon->PostDrawForRenderTexture();
+
     SrvManager::GetInstance()->PreDraw();
+
+    offscreenRendering->Draw();
 
     // ImGuiの描画 (スワップチェーンに対して)
     imGuiManager_->Draw();

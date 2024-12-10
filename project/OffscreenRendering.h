@@ -1,7 +1,7 @@
 #pragma once
 #include "DirectXCommon.h"
 
-class DirectXCommon;
+//class DirectXCommon;
 
 class OffscreenRendering
 {
@@ -84,7 +84,7 @@ private:  // privateメンバ変数
 
 	// RootSignature
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
-	D3D12_ROOT_PARAMETER rootParameters_[7] = {};
+	D3D12_ROOT_PARAMETER rootParameters_[3] = {};
 
 	// バイナリを元に生成
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;

@@ -51,8 +51,6 @@ void TitleScene::Initialize()
 	// ParticleEmitterの初期化
 	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
 	emitters.push_back(std::move(emitter));
-
-	offscreenRendering->Initialize();
 }
 
 void TitleScene::Finalize()

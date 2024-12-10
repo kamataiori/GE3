@@ -3,7 +3,6 @@
 #include "Object3d.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
-#include "OffscreenRendering.h"
 
 class TitleScene : public BaseScene
 {
@@ -51,8 +50,6 @@ private:
 
 	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
 	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
-
-	std::unique_ptr<OffscreenRendering> offscreenRendering = std::make_unique<OffscreenRendering>();
 
 };
 

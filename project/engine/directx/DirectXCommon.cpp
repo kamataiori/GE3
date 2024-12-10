@@ -28,32 +28,31 @@ void DirectXCommon::Initialize(WinApp* winApp)
 	//FPS固定初期化
 	InitializeFixFPS();
 
-	//デバイスの初期化
+	// デバイスの初期化
 	Device();
-	//コマンド関連の生成
+	// コマンド関連の生成
 	Command();
-	//スワップチェーンの生成
+	// スワップチェーンの生成
 	SwapChain();
-
+	// SrvManagerの初期化
 	SrvManager::GetInstance()->Initialize();
-
-	//深度バッファの生成
+	// 深度バッファの生成
 	DepthBuffer();
-	//各種ディスクリプタヒープの生成
+	// 各種ディスクリプタヒープの生成
 	DescriptorHeap();
-	//レンダーターゲットビューの初期化
+	// レンダーターゲットビューの初期化
 	RenderTargetView();
-	//深度ステンシルビューの初期化
+	// 深度ステンシルビューの初期化
 	DepthStencilView();
-	//フェンスの生成
+	// フェンスの生成
 	Fence();
-	//ビューポート矩形の初期化
+	// ビューポート矩形の初期化
 	ViewportRectangle();
-	//シザリング矩形の生成
+	// シザリング矩形の生成
 	ScissoringRectangle();
-	//DCXコンパイラの生成
+	// DCXコンパイラの生成
 	DXCCompiler();
-	//ImGuiの初期化
+	// ImGuiの初期化
 	ImGui();
 
 }
@@ -916,6 +915,15 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(
 
 void DirectXCommon::PreDrawForRenderTexture()
 {
+	//// RenderTexture用のリソースバリア設定
+	//D3D12_RESOURCE_BARRIER barrier{};
+	//barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	//barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	//barrier.Transition.pResource = offscreenResource.Get();
+	//barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	//barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//commandList->ResourceBarrier(1, &barrier);
+
 	// RenderTextureへの描画設定
 	commandList->OMSetRenderTargets(1, &rtvHandles[2], false, &dsvHandle);
 
