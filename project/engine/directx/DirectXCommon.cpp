@@ -34,6 +34,9 @@ void DirectXCommon::Initialize(WinApp* winApp)
 	Command();
 	//スワップチェーンの生成
 	SwapChain();
+
+	SrvManager::GetInstance()->Initialize();
+
 	//深度バッファの生成
 	DepthBuffer();
 	//各種ディスクリプタヒープの生成
@@ -327,11 +330,13 @@ void DirectXCommon::DepthStencilView()
 
 	////=========DSVの設定=========////
 
+	dsvHandle = dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;  //Format。基本的にはResourceに合わせる
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;  //2dTexture
 	//DSVHeapの先頭にDSVをつくる
-	device->CreateDepthStencilView(depthStencilResource.Get(), &dsvDesc, dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	device->CreateDepthStencilView(depthStencilResource.Get(), &dsvDesc, dsvHandle);
 	
 }
 
@@ -934,7 +939,7 @@ void DirectXCommon::PostDrawForRenderTexture()
 	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 	barrier.Transition.pResource = offscreenResource.Get();
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
 	commandList->ResourceBarrier(1, &barrier);
 }
 

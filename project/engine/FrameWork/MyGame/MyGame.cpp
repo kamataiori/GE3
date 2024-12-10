@@ -65,7 +65,7 @@ void MyGame::Draw()
     SceneManager::GetInstance()->Draw();
 
     // RenderTextureの描画後処理
-    dxCommon->PostDrawForRenderTexture();
+    //dxCommon->PostDrawForRenderTexture();
 
     // スワップチェーンへの描画前処理
     dxCommon->PreDraw();
