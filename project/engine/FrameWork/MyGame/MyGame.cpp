@@ -14,6 +14,12 @@ void MyGame::Initialize()
     // ImGuiManagerの初期化
     imGuiManager_ = std::make_unique<ImGuiManager>();
     imGuiManager_->Initialize(winApp.get(), DirectXCommon::GetInstance());
+
+    // デフォルトカメラの初期化
+    defaultCamera_ = new Camera();
+    defaultCamera_->SetRotate(Vector3(0.3f, 0.0f, 0.0f));
+    defaultCamera_->SetTranslate(Vector3(0.0f,2.0f,-10.0f));
+    Object3dCommon::GetInstance()->SetDefaultCamera(defaultCamera_);
 }
 
 

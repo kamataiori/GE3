@@ -37,10 +37,6 @@ public:
         float padding[2];  //!< パディング
     };
 
-    DirectionalLight* directionalLightData;
-    CameraForGPU* cameraLightData;
-    PointLight* pointLightData;
-    SpotLight* spotLightData;
 
     ~Light() = default;
 
@@ -92,4 +88,9 @@ private:
     Microsoft::WRL::ComPtr<ID3D12Resource> cameraLightResource;        // カメラ位置用
     Microsoft::WRL::ComPtr<ID3D12Resource> pointLightResource;         // ポイントライト用
     Microsoft::WRL::ComPtr<ID3D12Resource> spotLightResource;          // スポットライト用
+
+    DirectionalLight* directionalLightData;
+    CameraForGPU* cameraLightData;
+    PointLight* pointLightData;
+    SpotLight* spotLightData;
 };

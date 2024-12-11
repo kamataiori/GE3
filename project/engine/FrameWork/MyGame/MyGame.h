@@ -31,4 +31,6 @@ private:
 
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
 
+	Camera* defaultCamera_ = nullptr;
+
 };

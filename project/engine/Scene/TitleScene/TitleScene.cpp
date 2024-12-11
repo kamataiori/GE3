@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "ImGuiManager.h"
+#include <SpriteCommon.h>
 
 void TitleScene::Initialize()
 {
@@ -16,6 +17,7 @@ void TitleScene::Initialize()
 	BaseScene::GetLight()->GetDirectionalLight();
 	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
 	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
+	light->
 	//BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
 	/*BaseScene::GetLight()->GetSpotLight();
 	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
@@ -27,6 +29,7 @@ void TitleScene::Initialize()
 	plane = std::make_unique<Object3d>(this);
 	plane->Initialize();
 	//// モデル読み込み
+	TextureManager::GetInstance()->LoadTexture("Resources/uvChecker.png");
 	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
 	plane->SetModel("uvChecker.gltf");
@@ -62,14 +65,14 @@ void TitleScene::Update()
 {
 	BaseScene::ShowFPS();
 
-	// アルファ値を減少させる
-	Vector4 color = plane->GetMaterialColor();
-	//color.w = 0.5f;
-	color.w -= 0.01f; // アルファ値を減少
-	if (color.w < 0.0f) {
-		color.w = 0.0f; // 最小値を0に制限
-	}
-	plane->SetMaterialColor(color);
+	//// アルファ値を減少させる
+	//Vector4 color = plane->GetMaterialColor();
+	////color.w = 0.5f;
+	//color.w -= 0.01f; // アルファ値を減少
+	//if (color.w < 0.0f) {
+	//	color.w = 0.0f; // 最小値を0に制限
+	//}
+	//plane->SetMaterialColor(color);
 
 	// 各3Dオブジェクトの更新
 	plane->Update();

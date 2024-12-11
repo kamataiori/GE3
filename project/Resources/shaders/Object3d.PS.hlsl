@@ -83,7 +83,7 @@ PixelShaderOutput main(VertexShaderOutput input)
 
     PixelShaderOutput output;
 
-    //////=========Lightingの計算を行う=========////
+    ////=========Lightingの計算を行う=========////
 
     if (gMaterial.enableLighting != 0)
     {

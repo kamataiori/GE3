@@ -79,12 +79,15 @@ public:
 		ImGui::End();
 	}
 
+protected:
+
+	// ライトの初期化
+	std::unique_ptr<Light> light = std::make_unique<Light>();
+
 private:
 	// シーンマネージャー (借りてくる)
 	SceneManager* sceneManager_ = nullptr;
 
-	// ライトの初期化
-	std::unique_ptr<Light> light = std::make_unique<Light>();
 
 	// FPS計測用の変数
 	std::chrono::steady_clock::time_point lastFrameTime_ = std::chrono::steady_clock::now();

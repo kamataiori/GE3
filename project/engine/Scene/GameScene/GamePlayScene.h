@@ -2,13 +2,9 @@
 #include <Vector2.h>
 #include <vector>
 #include <memory>
-#include <Sprite.h>
-#include <Object3d.h>
 #include "BaseScene.h"
-#include "Audio.h"
-#include "Light.h"
-#include "ParticleManager.h"
-#include "ParticleEmitter.h"
+#include "Skydome.h"
+#include "Ground.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -47,34 +43,13 @@ public:
 
 private:
 
-	float offsetX = 100.0f;  //各スプライトのX座標をずらすオフセット値
-	float initialX = 100.0f; //初期X座標
-
-	// Spriteの初期化
-	// 小さく描画するための初期スケールを設定
-	Vector2 initialSize = { 80.0f,80.0f };
-	std::vector<std::unique_ptr<Sprite>> sprites;
-
-	std::unique_ptr<Sprite> monsterBall = std::make_unique<Sprite>();
-
-	// 3Dオブジェクトの初期化
-	std::unique_ptr<Object3d> plane = nullptr;
-	std::unique_ptr<Object3d> axis = nullptr;
-
 	//3Dカメラの初期化
-	std::unique_ptr<CameraManager> cameraManager = nullptr;
-	std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
-	std::unique_ptr<Camera> camera2 = std::make_unique<Camera>();
-	bool cameraFlag = false;  //ImGuiで制御するカメラの切り替えフラグ
+	/*std::unique_ptr<CameraManager> cameraManager_ = std::make_unique<CameraManager>();
+	std::unique_ptr<Camera> camera1_ = std::make_unique<Camera>();
+	Transform cameraTransform;*/
 
-	std::unique_ptr<Audio> audio = std::make_unique<Audio>();
-	Audio::SoundData sound = {};
-	bool isAudio = false;
+	std::unique_ptr<Skydome> skyDome_ = std::make_unique<Skydome>(this);
 
-	Vector2 MonsterPosition;
-
-
-	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
-	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
+	std::unique_ptr<Ground> ground_ = std::make_unique<Ground>(this);
 };
 

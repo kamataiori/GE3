@@ -33,12 +33,9 @@ void Object3d::Update()
     Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 
     // カメラTransformからカメラ行列を作る
-    if (cameraManager_) {
-        Camera* camera = cameraManager_->GetCurrentCamera();
-        if (camera) {
-            Matrix4x4 viewProjectionMatrix = camera->GetViewProjectionMatrix();
-            worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
-        }
+    if (camera) {
+        const Matrix4x4& viewProjectionMatrix = camera->GetViewProjectionMatrix();
+        worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
     }
     else {
         worldviewProjectionMatrix = worldMatrix;
@@ -104,6 +101,23 @@ void Object3d::SetMaterialColor(const Vector4& color)
 void Object3d::SetCameraManager(CameraManager* cameraManager)
 {
     this->cameraManager_ = cameraManager;
+}
+
+void Object3d::SetEnableLighting(bool enable)
+{
+    assert(model_); // model_ が初期化されていることを確認
+    Model::Material* material = nullptr;
+
+    // materialData を取得
+    model_->CreateMaterialData(); // 必要に応じてマテリアルデータの初期化を呼び出す
+    material = model_->GetMaterial(); // Model 側で materialData を取得するゲッターを用意
+
+    if (material) {
+        material->enableLighting = enable ? 1 : 0; // bool を int32_t に変換
+    }
+    else {
+        assert(false && "Material data is null");
+    }
 }
 
 const Vector4& Object3d::GetMaterialColor() const

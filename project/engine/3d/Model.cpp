@@ -32,8 +32,9 @@ void Model::Draw()
 	//マテリアルCBufferの場所を設定
 	modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定
-	modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, modelCommon_->GetDxCommon()->GetGPUDescriptorHandle(SrvManager::GetInstance()->GetSrvDescriptorHeap().Get(), SrvManager::GetInstance()->GetDescriptorSizeSRV(), 1));
-
+	//modelCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, modelCommon_->GetDxCommon()->GetGPUDescriptorHandle(SrvManager::GetInstance()->GetSrvDescriptorHeap().Get(), SrvManager::GetInstance()->GetDescriptorSizeSRV(), ));
+	// SRVのDescriptorTableを設定,テクスチャを指定
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, modelData.material.textureIndex);
 	//描画!（DrawCall/ドローコール）
 	modelCommon_->GetDxCommon()->GetCommandList()->DrawInstanced(UINT(modelData.vertices.size()), 1, 0, 0);
 }
@@ -186,6 +187,25 @@ Model::ModelData Model::LoadModelFile(const std::string& directoryPath, const st
 		}
 	}
 
+	//// Materialを解析する
+	//std::string materialFilename = filename.substr(0, filename.find_last_of('.')) + ".mtl";
+	//MaterialData materialData = LoadMaterialTemplateFile(directoryPath, materialFilename);
+
+	//// MaterialDataをModelDataに設定
+	//if (!materialData.textureFilePath.empty()) {
+	//	modelData.material.textureFilePath = materialData.textureFilePath;
+
+	//	// テクスチャをロードし、インデックスを取得
+	//	TextureManager::GetInstance()->LoadTexture(materialData.textureFilePath);
+	//	modelData.material.textureIndex =
+	//		TextureManager::GetInstance()->GetTextureIndexByFilePath(materialData.textureFilePath);
+	//}
+
+	//// ルートノードを解析してモデルデータに設定
+	//modelData.rootNode = ReadNode(scene->mRootNode);
+
+	//return modelData;
+
 	// Materialを解析する
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
 		aiMaterial* material = scene->mMaterials[materialIndex];
@@ -202,3 +222,11 @@ Model::ModelData Model::LoadModelFile(const std::string& directoryPath, const st
 
 	return modelData;
 }
+
+bool Model::GetEnableLighting() const
+{
+	assert(materialData); // materialData が null でないことを確認
+	return materialData->enableLighting != 0; // enableLighting が 0 でなければ true を返す
+}
+
+
