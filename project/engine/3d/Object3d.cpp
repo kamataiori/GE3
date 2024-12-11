@@ -106,6 +106,23 @@ void Object3d::SetCameraManager(CameraManager* cameraManager)
     this->cameraManager_ = cameraManager;
 }
 
+void Object3d::SetEnableLighting(bool enable)
+{
+    assert(model_); // model_ が初期化されていることを確認
+    Model::Material* material = nullptr;
+
+    // materialData を取得
+    model_->CreateMaterialData(); // 必要に応じてマテリアルデータの初期化を呼び出す
+    material = model_->GetMaterial(); // Model 側で materialData を取得するゲッターを用意
+
+    if (material) {
+        material->enableLighting = enable ? 1 : 0; // bool を int32_t に変換
+    }
+    else {
+        assert(false && "Material data is null");
+    }
+}
+
 const Vector4& Object3d::GetMaterialColor() const
 {
     // model_が存在する場合にのみ取得

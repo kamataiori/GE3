@@ -205,3 +205,9 @@ Model::ModelData Model::LoadModelFile(const std::string& directoryPath, const st
 
 	return modelData;
 }
+
+bool Model::GetEnableLighting() const
+{
+	assert(materialData); // materialData が null でないことを確認
+	return materialData->enableLighting != 0; // enableLighting が 0 でなければ true を返す
+}

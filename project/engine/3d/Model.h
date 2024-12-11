@@ -102,6 +102,12 @@ public:
 	// materialData->colorのセッター
 	void SetMaterialColor(const Vector4& color) { materialData->color = color; }
 
+	// materialData->enableLightingのゲッター
+		bool GetEnableLighting() const;
+
+	// materialDataのゲッター
+	Model::Material* GetMaterial() const { return materialData; }
+
 private:
 	// ModelCommonの初期化
 	ModelCommon* modelCommon_ = nullptr;

@@ -76,6 +76,8 @@ public:
     void SetCamera(Camera* camera) { this->camera = camera; }
     // カメラの設定
     void SetCameraManager(CameraManager* cameraManager);
+    // enableLightingのセッター
+    void SetEnableLighting(bool enable);
 
     //--------getter--------//
     const Vector3& GetScale() const { return transform.scale; }
