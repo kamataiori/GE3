@@ -14,6 +14,11 @@ void MyGame::Initialize()
     // ImGuiManagerの初期化
     imGuiManager_ = std::make_unique<ImGuiManager>();
     imGuiManager_->Initialize(winApp.get(), DirectXCommon::GetInstance());
+
+    defaultCamera_ = new Camera();
+    defaultCamera_->SetRotate(Vector3(0.0f, 0.0f, 0.0f));
+    defaultCamera_->SetTranslate(Vector3(0.0f, 0.0f, -10.0f));
+    Object3dCommon::GetInstance()->SetDefaultCamera(defaultCamera_);
 }
 
 
@@ -36,6 +41,8 @@ void MyGame::Update()
 
     // ImGuiの内部コマンドを生成する
     ImGui::Render();
+
+    defaultCamera_->Update();
 }
 
 

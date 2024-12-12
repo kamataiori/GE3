@@ -25,12 +25,12 @@ void ParticleManager::Initialize()
 	//頂点データをリソースにコピー
 	std::memcpy(vertexData, modelData.vertices.data(), sizeof(VertexData) * modelData.vertices.size());
 
+	camera = new Camera();
 }
 
 void ParticleManager::Update()
 {
 	// カメラ情報を取得
-	Camera* camera = cameraManager_->GetCurrentCamera();
 	Matrix4x4 cameraMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, camera->GetRotate(), camera->GetTranslate());
 	Matrix4x4 viewMatrix = Inverse(cameraMatrix);
 	Matrix4x4 projectionMatrix = MakePerspectiveFovMatrix(0.45f, float(kWindowWidth) / float(kWindowHeight), 0.1f, 100.0f);
@@ -268,11 +268,6 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 	// 新しいブレンドモードを設定
 	blendMode_ = blendMode;
 	//GraphicsPipelineState(blendMode);  // 再生成
-}
-
-void ParticleManager::SetCameraManager(CameraManager* cameraManager)
-{
-	this->cameraManager_ = cameraManager;
 }
 
 void ParticleManager::CreateMaterialData()

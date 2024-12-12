@@ -50,18 +50,18 @@ void GamePlayScene::Initialize()
 	axis->SetRotate({ 0.0f, 0.0f, 0.0f });
 	axis->SetTranslate({ 2.0f, 0.0f, 0.0f });
 
-	// 3Dカメラの初期化
-	cameraManager = std::make_unique<CameraManager>();
-	camera1->SetTranslate({ 0.0f, 0.0f, -20.0f });
-	cameraManager->AddCamera(camera1.get());
+	//// 3Dカメラの初期化
+	//cameraManager = std::make_unique<CameraManager>();
+	//camera1->SetTranslate({ 0.0f, 0.0f, -20.0f });
+	//cameraManager->AddCamera(camera1.get());
 
-	camera2->SetTranslate({ 5.0f, 1.0f, -40.0f });
-	cameraManager->AddCamera(camera2.get());
+	//camera2->SetTranslate({ 5.0f, 1.0f, -40.0f });
+	//cameraManager->AddCamera(camera2.get());
 
-	// カメラのセット
-	plane->SetCameraManager(cameraManager.get());
-	axis->SetCameraManager(cameraManager.get());
-	particle->SetCameraManager(cameraManager.get());
+	//// カメラのセット
+	//plane->SetCameraManager(cameraManager.get());
+	//axis->SetCameraManager(cameraManager.get());
+	//particle->SetCameraManager(cameraManager.get());
 
 	// Audioの初期化
 	audio->Initialize();
@@ -79,18 +79,18 @@ void GamePlayScene::Initialize()
 	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
 	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
 	//BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
-	BaseScene::GetLight()->GetSpotLight();
+	/*BaseScene::GetLight()->GetSpotLight();
 	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
 	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
 	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
-	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });
+	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 
 	particle->Initialize();
 	particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
 	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
 	// ParticleEmitterの初期化
-	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f,true);
+	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, 0.0f} }, 10, 0.5f,true);
 	emitters.push_back(std::move(emitter));
 }
 
@@ -114,24 +114,24 @@ void GamePlayScene::Update()
 	plane->ImGuiUpdate("plane");
 	axis->ImGuiUpdate("axis");
 
-	// カメラの更新
-	camera1->Update();
-	Vector3 cameraRotate = camera2->GetRotate();
-	cameraRotate.x = 0.0f;
-	cameraRotate.y += 0.1f;
-	cameraRotate.z = 0.0f;
-	camera2->SetRotate(cameraRotate);
-	camera2->Update();
+	//// カメラの更新
+	//camera1->Update();
+	//Vector3 cameraRotate = camera2->GetRotate();
+	//cameraRotate.x = 0.0f;
+	//cameraRotate.y += 0.1f;
+	//cameraRotate.z = 0.0f;
+	//camera2->SetRotate(cameraRotate);
+	//camera2->Update();
 
-	// カメラコントロール用のウィンドウを作成
-	ImGui::Begin("Camera Control");
+	//// カメラコントロール用のウィンドウを作成
+	//ImGui::Begin("Camera Control");
 
-	// カメラの切り替え
-	if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
-		cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
-	}
+	//// カメラの切り替え
+	//if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
+	//	cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
+	//}
 
-	ImGui::End();
+	//ImGui::End();
 
 	// モンスターボール
 	monsterBall->SetPosition(MonsterPosition);

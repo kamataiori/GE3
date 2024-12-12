@@ -8,7 +8,6 @@
 #include <Model.h>
 #include "TextureManager.h"
 #include "WinApp.h"
-#include <CameraManager.h>
 #include "MathFunctions.h"
 #include <algorithm>
 
@@ -60,9 +59,6 @@ public:
 	/// パーティクルグループの生成
 	/// </summary>
 	void CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode = kBlendModeNormal, const Vector2& customSize = { 0.0f, 0.0f });
-
-	// カメラの設定
-	void SetCameraManager(CameraManager* cameraManager);
 
 private:
 
@@ -225,7 +221,6 @@ private:
 
 	// Cameraの初期化
 	Camera* camera = nullptr;
-	CameraManager* cameraManager_ = nullptr;
 	//常にカメラ目線
 	Transform cameraTransform{ {1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f},{0.0f,23.0f,10.0f}};
 

@@ -36,14 +36,13 @@ void TitleScene::Initialize()
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
 	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
-	// 3Dカメラの初期化
-	cameraManager = std::make_unique<CameraManager>();
-	camera1->SetTranslate({ 0.0f, 0.0f, -15.0f });
-	cameraManager->AddCamera(camera1.get());
+	//// 3Dカメラの初期化
+	//cameraManager = std::make_unique<CameraManager>();
+	//camera1->SetTranslate({ 0.0f, 0.0f, -15.0f });
+	//cameraManager->AddCamera(camera1.get());
 
 	// カメラのセット
-	plane->SetCameraManager(cameraManager.get());
-	particle->SetCameraManager(cameraManager.get());
+	//particle->SetCameraManager(cameraManager.get());
 
 	particle->Initialize();
 	particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
@@ -62,19 +61,19 @@ void TitleScene::Update()
 {
 	BaseScene::ShowFPS();
 
-	// アルファ値を減少させる
-	Vector4 color = plane->GetMaterialColor();
-	//color.w = 0.5f;
-	color.w -= 0.01f; // アルファ値を減少
-	if (color.w < 0.0f) {
-		color.w = 0.0f; // 最小値を0に制限
-	}
-	plane->SetMaterialColor(color);
+	//// アルファ値を減少させる
+	//Vector4 color = plane->GetMaterialColor();
+	////color.w = 0.5f;
+	//color.w -= 0.01f; // アルファ値を減少
+	//if (color.w < 0.0f) {
+	//	color.w = 0.0f; // 最小値を0に制限
+	//}
+	//plane->SetMaterialColor(color);
 
 	// 各3Dオブジェクトの更新
 	plane->Update();
 	// カメラの更新
-	camera1->Update();
+	//camera->Update();
 
 	for (auto& emitter : emitters)
 	{

@@ -33,12 +33,9 @@ void Object3d::Update()
     Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 
     // カメラTransformからカメラ行列を作る
-    if (cameraManager_) {
-        Camera* camera = cameraManager_->GetCurrentCamera();
-        if (camera) {
-            Matrix4x4 viewProjectionMatrix = camera->GetViewProjectionMatrix();
-            worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
-        }
+    if (camera) {
+        const Matrix4x4& viewProjectionMatrix = camera->GetViewProjectionMatrix();
+        worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
     }
     else {
         worldviewProjectionMatrix = worldMatrix;
@@ -99,11 +96,6 @@ void Object3d::SetMaterialColor(const Vector4& color)
     // model_が存在する場合にのみ設定
     assert(model_);
     model_->SetMaterialColor(color);
-}
-
-void Object3d::SetCameraManager(CameraManager* cameraManager)
-{
-    this->cameraManager_ = cameraManager;
 }
 
 void Object3d::SetEnableLighting(bool enable)
