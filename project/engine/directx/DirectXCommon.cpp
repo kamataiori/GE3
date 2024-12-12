@@ -862,7 +862,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateRenderTextureResourc
 		&heapProperties, // ヒープの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし
 		&resourceDesc, // リソースの設定
-		D3D12_RESOURCE_STATE_RENDER_TARGET, // 
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, // 
 		&clearValue, // Clear最適値。ClearRenderTargetをこの色でClearするようにする。最適化されているので高速である。
 		IID_PPV_ARGS(&resource)); // 生成したリソースのpointerへのpointerを取得
 	assert(SUCCEEDED(hr));
@@ -915,14 +915,14 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(
 
 void DirectXCommon::PreDrawForRenderTexture()
 {
-	//// RenderTexture用のリソースバリア設定
-	//D3D12_RESOURCE_BARRIER barrier{};
-	//barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	//barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	//barrier.Transition.pResource = offscreenResource.Get();
-	//barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-	//barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	//commandList->ResourceBarrier(1, &barrier);
+	// RenderTexture用のリソースバリア設定
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.Transition.pResource = offscreenResource.Get();
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	commandList->ResourceBarrier(1, &barrier);
 
 	// RenderTextureへの描画設定
 	commandList->OMSetRenderTargets(1, &rtvHandles[2], false, &dsvHandle);
