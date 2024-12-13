@@ -20,8 +20,8 @@ void Object3d::Initialize()
     // Transform変数を作る
     transform = { {1.0f, 1.0f, 1.0f}, {0.0f, 3.14f, 0.0f}, {0.0f, 0.0f, 0.0f} };
 
-    // デフォルトカメラをセット
-    this->camera = object3dCommon_->GetDefaultCamera();
+    // CameraManagerから現在のカメラを取得
+    this->camera = object3dCommon_->GetCurrentCamera();
 }
 
 void Object3d::Update()

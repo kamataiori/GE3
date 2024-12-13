@@ -1,6 +1,7 @@
 #pragma once
 #include "DirectXCommon.h"
 #include "Camera.h"
+#include <CameraManager.h>
 
 //BlendMode
 enum BlendMode {
@@ -92,17 +93,23 @@ public:
 
 public:
 	//------Getter------//
-	//DirectXCommongetter
+	// DirectXCommongetter
 	DirectXCommon* GetDxCommon() const { return dxCommon_; }
 	Camera* GetDefaultCamera() const { return defaultCamera; }
+	Camera* GetCurrentCamera() const {
+		return cameraManager_ ? cameraManager_->GetCurrentCamera() : nullptr;
+	}
 
 	//------Setter------//
 	void SetDefaultCamera(Camera* camera) { this->defaultCamera = camera; }
-
+	void SetCameraManager(CameraManager* cameraManager) {
+		this->cameraManager_ = cameraManager;
+	}
 
 private:
 	//DirectXCommonの初期化
 	DirectXCommon* dxCommon_;
+	CameraManager* cameraManager_ = nullptr;
 
 	//--------RootSignature部分--------//
 

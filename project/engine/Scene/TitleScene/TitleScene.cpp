@@ -23,6 +23,32 @@ void TitleScene::Initialize()
 	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
 	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
+	// CameraManagerを初期化
+	cameraManager_ = std::make_unique<CameraManager>();
+	// カメラ1: メインカメラ
+	auto mainCamera = new Camera();
+	mainCamera->SetTranslate({ 0.0f, 0.0f, -20.0f });
+	mainCamera->Update();
+	cameraManager_->AddCamera(mainCamera);
+
+	// カメラ2: 上からの視点
+	auto topCamera = new Camera();
+	topCamera->SetTranslate({ 0.0f, 0.0f, -10.0f });
+	topCamera->Update();
+	cameraManager_->AddCamera(topCamera);
+
+	// カメラ3: 斜め視点
+	auto diagonalCamera = new Camera();
+	diagonalCamera->SetTranslate({ 0.0f, 0.0f, -5.0f });
+	diagonalCamera->Update();
+	cameraManager_->AddCamera(diagonalCamera);
+
+	// 最初のカメラを設定
+	cameraManager_->SetCurrentCamera(0);
+
+	// Object3dCommon に CameraManager を設定
+	Object3dCommon::GetInstance()->SetCameraManager(cameraManager_.get());
+
 	// 3Dオブジェクトの初期化
 	plane = std::make_unique<Object3d>(this);
 	plane->Initialize();
@@ -36,20 +62,12 @@ void TitleScene::Initialize()
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
 	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
-	//// 3Dカメラの初期化
-	//cameraManager = std::make_unique<CameraManager>();
-	//camera1->SetTranslate({ 0.0f, 0.0f, -15.0f });
-	//cameraManager->AddCamera(camera1.get());
-
-	// カメラのセット
-	//particle->SetCameraManager(cameraManager.get());
-
-	particle->Initialize();
-	particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
-	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
-	// ParticleEmitterの初期化
-	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
-	emitters.push_back(std::move(emitter));
+	//particle->Initialize();
+	//particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
+	////particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
+	//// ParticleEmitterの初期化
+	//auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
+	//emitters.push_back(std::move(emitter));
 
 }
 
@@ -75,12 +93,38 @@ void TitleScene::Update()
 	// カメラの更新
 	//camera->Update();
 
-	for (auto& emitter : emitters)
+	/*for (auto& emitter : emitters)
 	{
 		emitter->Update();
 	}
-	particle->Update();
+	particle->Update();*/
 
+	// カメラの名前を画面に表示
+	ImGui::Begin("Camera Info");
+	ImGui::Text("Current Camera: %d", cameraManager_->GetCurrentCameraIndex());
+	ImGui::End();
+
+	// 入力でカメラを切り替え
+	if (Input::GetInstance()->TriggerKey(DIK_1)) {
+		cameraManager_->SetCurrentCamera(0);  // メインカメラ
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_2)) {
+		cameraManager_->SetCurrentCamera(1);  // 上からの視点
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_3)) {
+		cameraManager_->SetCurrentCamera(2);  // 斜め視点
+	}
+
+	// カメラの移動例
+	if (cameraManager_->GetCurrentCamera()) {
+		Camera* currentCamera = cameraManager_->GetCurrentCamera();
+		Vector3 position = currentCamera->GetTranslate();
+		position.z += 0.1f;  // 毎フレーム前進
+		currentCamera->SetTranslate(position);
+	}
+
+	// 全カメラの更新
+	cameraManager_->UpdateAllCameras();
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
@@ -129,7 +173,7 @@ void TitleScene::ForeGroundDraw()
 	// ここからSprite個々の前景描画(UIなど)
 	// ================================================
 
-	particle->Draw();
+	/*particle->Draw();*/
 
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)
