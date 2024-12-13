@@ -45,15 +45,15 @@ private:
 	std::unique_ptr<Object3d> plane = nullptr;
 
 	////3Dカメラの初期化
-	//std::unique_ptr<CameraManager> cameraManager_ = nullptr;
+	std::unique_ptr<CameraManager> cameraManager_ = nullptr;
 	//std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
-	// カメラ
-	Camera mainCamera_;
-	Camera topCamera_;
-	Camera diagonalCamera_;
+	//// カメラ
+	//Camera mainCamera_;
+	//Camera topCamera_;
+	//Camera diagonalCamera_;
 
-	// 現在のカメラ
-	Camera* currentCamera_ = nullptr;
+	//// 現在のカメラ
+	//Camera* currentCamera_ = nullptr;
 
 	/*std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
 	std::vector<std::unique_ptr<ParticleEmitter>> emitters;*/

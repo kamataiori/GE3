@@ -24,38 +24,38 @@ void TitleScene::Initialize()
 	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 	// CameraManagerを初期化
-	//cameraManager_ = std::make_unique<CameraManager>();
-	//// カメラ1: メインカメラ
-	//auto mainCamera = new Camera();
-	//mainCamera->SetTranslate({ 0.0f, 0.0f, -20.0f });
-	//mainCamera->Update();
-	//cameraManager_->AddCamera(mainCamera);
+	cameraManager_ = std::make_unique<CameraManager>();
+	// カメラ1: メインカメラ
+	auto mainCamera = new Camera();
+	mainCamera->SetTranslate({ 0.0f, 0.0f, -20.0f });
+	mainCamera->Update();
+	cameraManager_->AddCamera(mainCamera);
 
-	//// カメラ2: 上からの視点
-	//auto topCamera = new Camera();
-	//topCamera->SetTranslate({ 0.0f, 0.0f, -10.0f });
-	//topCamera->Update();
-	//cameraManager_->AddCamera(topCamera);
+	// カメラ2: 上からの視点
+	auto topCamera = new Camera();
+	topCamera->SetTranslate({ 0.0f, 0.0f, -10.0f });
+	topCamera->Update();
+	cameraManager_->AddCamera(topCamera);
 
-	//// カメラ3: 斜め視点
-	//auto diagonalCamera = new Camera();
-	//diagonalCamera->SetTranslate({ 0.0f, 0.0f, -5.0f });
-	//diagonalCamera->Update();
-	//cameraManager_->AddCamera(diagonalCamera);
-
-	//// 最初のカメラを設定
-	//cameraManager_->SetCurrentCamera(0);
-
-	//// Object3dCommon に CameraManager を設定
-	//Object3dCommon::GetInstance()->SetCameraManager(cameraManager_.get());
-
-	// カメラの初期化
-	mainCamera_.SetTranslate({ 0.0f, 0.0f, -20.0f });
-	topCamera_.SetTranslate({ 0.0f, 0.0f, -10.0f });
-	diagonalCamera_.SetTranslate({ 0.0f, 0.0f, -5.0f });
+	// カメラ3: 斜め視点
+	auto diagonalCamera = new Camera();
+	diagonalCamera->SetTranslate({ 0.0f, 0.0f, -5.0f });
+	diagonalCamera->Update();
+	cameraManager_->AddCamera(diagonalCamera);
 
 	// 最初のカメラを設定
-	currentCamera_ = &mainCamera_;
+	cameraManager_->SetCurrentCamera(0);
+
+	// Object3dCommon に CameraManager を設定
+	Object3dCommon::GetInstance()->SetCameraManager(cameraManager_.get());
+
+	//// カメラの初期化
+	//mainCamera_.SetTranslate({ 0.0f, 0.0f, -20.0f });
+	//topCamera_.SetTranslate({ 0.0f, 0.0f, -10.0f });
+	//diagonalCamera_.SetTranslate({ 0.0f, 0.0f, -5.0f });
+
+	//// 最初のカメラを設定
+	//currentCamera_ = &mainCamera_;
 
 	// 3Dオブジェクトの初期化
 	plane = std::make_unique<Object3d>(this);
@@ -107,21 +107,21 @@ void TitleScene::Update()
 	}
 	particle->Update();*/
 
-	//// カメラの名前を画面に表示
-	//ImGui::Begin("Camera Info");
-	//ImGui::Text("Current Camera: %d", cameraManager_->GetCurrentCameraIndex());
-	//ImGui::End();
+	// カメラの名前を画面に表示
+	ImGui::Begin("Camera Info");
+	ImGui::Text("Current Camera: %d", cameraManager_->GetCurrentCameraIndex());
+	ImGui::End();
 
-	//// 入力でカメラを切り替え
-	//if (Input::GetInstance()->TriggerKey(DIK_1)) {
-	//	cameraManager_->SetCurrentCamera(0);  // メインカメラ
-	//}
-	//if (Input::GetInstance()->TriggerKey(DIK_2)) {
-	//	cameraManager_->SetCurrentCamera(1);  // 上からの視点
-	//}
-	//if (Input::GetInstance()->TriggerKey(DIK_3)) {
-	//	cameraManager_->SetCurrentCamera(2);  // 斜め視点
-	//}
+	// 入力でカメラを切り替え
+	if (Input::GetInstance()->TriggerKey(DIK_1)) {
+		cameraManager_->SetCurrentCamera(0);  // メインカメラ
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_2)) {
+		cameraManager_->SetCurrentCamera(1);  // 上からの視点
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_3)) {
+		cameraManager_->SetCurrentCamera(2);  // 斜め視点
+	}
 
 	//// カメラの移動例
 	//if (cameraManager_->GetCurrentCamera()) {
@@ -131,10 +131,10 @@ void TitleScene::Update()
 	//	currentCamera->SetTranslate(position);
 	//}
 
-	//// 全カメラの更新
-	//cameraManager_->UpdateAllCameras();
+	// 全カメラの更新
+	cameraManager_->UpdateAllCameras();
 
-	ImGui::Begin("Camera Info");
+	/*ImGui::Begin("Camera Info");
 	if (currentCamera_ == &mainCamera_) {
 		ImGui::Text("Current Camera: Main Camera");
 	}
@@ -144,26 +144,26 @@ void TitleScene::Update()
 	else if (currentCamera_ == &diagonalCamera_) {
 		ImGui::Text("Current Camera: Diagonal Camera");
 	}
-	ImGui::End();
+	ImGui::End();*/
 
-	// 全カメラの更新
-	mainCamera_.Update();
-	topCamera_.Update();
-	diagonalCamera_.Update();
+	//// 全カメラの更新
+	//mainCamera_.Update();
+	//topCamera_.Update();
+	//diagonalCamera_.Update();
 
-	// 入力でカメラを切り替え
-	if (Input::GetInstance()->TriggerKey(DIK_1)) {
-		currentCamera_ = &mainCamera_;
-	}
-	if (Input::GetInstance()->TriggerKey(DIK_2)) {
-		currentCamera_ = &topCamera_;
-	}
-	if (Input::GetInstance()->TriggerKey(DIK_3)) {
-		currentCamera_ = &diagonalCamera_;
-	}
+	//// 入力でカメラを切り替え
+	//if (Input::GetInstance()->TriggerKey(DIK_1)) {
+	//	currentCamera_ = &mainCamera_;
+	//}
+	//if (Input::GetInstance()->TriggerKey(DIK_2)) {
+	//	currentCamera_ = &topCamera_;
+	//}
+	//if (Input::GetInstance()->TriggerKey(DIK_3)) {
+	//	currentCamera_ = &diagonalCamera_;
+	//}
 
-	// 3Dオブジェクトのカメラを設定
-	plane->SetCamera(currentCamera_);
+	//// 3Dオブジェクトのカメラを設定
+	//plane->SetCamera(currentCamera_);
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
