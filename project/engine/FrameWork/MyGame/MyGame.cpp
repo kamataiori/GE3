@@ -17,7 +17,7 @@ void MyGame::Initialize()
 
     defaultCamera_ = new Camera();
     defaultCamera_->SetRotate(Vector3(0.0f, 0.0f, 0.0f));
-    defaultCamera_->SetTranslate(Vector3(0.0f, 0.0f, -10.0f));
+    defaultCamera_->SetTranslate(Vector3(0.0f, 0.0f, -20.0f));
     Object3dCommon::GetInstance()->SetDefaultCamera(defaultCamera_);
 }
 

@@ -10,6 +10,7 @@
 #include "WinApp.h"
 #include "MathFunctions.h"
 #include <algorithm>
+#include <Object3dCommon.h>
 
 class ParticleManager
 {
@@ -284,6 +285,9 @@ private:
     SrvManager* srvManager_ = nullptr;
 	// Modelの初期化
 	Model* model_ = nullptr;
+
+	// Object3dCommonの初期化
+	Object3dCommon* object3dCommon_ = nullptr;
    
 	//--------RootSignature部分--------//
 

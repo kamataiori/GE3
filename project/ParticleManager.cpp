@@ -25,7 +25,11 @@ void ParticleManager::Initialize()
 	//頂点データをリソースにコピー
 	std::memcpy(vertexData, modelData.vertices.data(), sizeof(VertexData) * modelData.vertices.size());
 
-	camera = new Camera();
+	// 引数で受け取ってメンバ変数に記録する
+	this->object3dCommon_ = Object3dCommon::GetInstance();
+
+	// デフォルトカメラをセット
+	this->camera = object3dCommon_->GetDefaultCamera();
 }
 
 void ParticleManager::Update()
