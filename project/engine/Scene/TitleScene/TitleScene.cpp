@@ -47,7 +47,7 @@ void TitleScene::Initialize()
 	cameraManager_->SetCurrentCamera(1);
 
 	// Object3dCommon に CameraManager を設定
-	Object3dCommon::GetInstance()->SetCameraManager(cameraManager_.get());
+	//Object3dCommon::GetInstance()->SetCameraManager(cameraManager_.get());
 
 	//// カメラの初期化
 	//mainCamera_.SetTranslate({ 0.0f, 0.0f, -20.0f });
