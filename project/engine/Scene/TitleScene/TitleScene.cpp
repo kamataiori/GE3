@@ -26,25 +26,25 @@ void TitleScene::Initialize()
 	// CameraManagerを初期化
 	cameraManager_ = std::make_unique<CameraManager>();
 	// カメラ1: メインカメラ
-	auto mainCamera = new Camera();
+	mainCamera = new Camera();
 	mainCamera->SetTranslate({ 0.0f, 0.0f, -20.0f });
 	mainCamera->Update();
 	cameraManager_->AddCamera(mainCamera);
 
 	// カメラ2: 上からの視点
-	auto topCamera = new Camera();
+	topCamera = new Camera();
 	topCamera->SetTranslate({ 0.0f, 0.0f, -10.0f });
 	topCamera->Update();
 	cameraManager_->AddCamera(topCamera);
 
 	// カメラ3: 斜め視点
-	auto diagonalCamera = new Camera();
+	diagonalCamera = new Camera();
 	diagonalCamera->SetTranslate({ 0.0f, 0.0f, -5.0f });
 	diagonalCamera->Update();
 	cameraManager_->AddCamera(diagonalCamera);
 
 	// 最初のカメラを設定
-	cameraManager_->SetCurrentCamera(0);
+	cameraManager_->SetCurrentCamera(1);
 
 	// Object3dCommon に CameraManager を設定
 	Object3dCommon::GetInstance()->SetCameraManager(cameraManager_.get());
@@ -58,7 +58,7 @@ void TitleScene::Initialize()
 	//currentCamera_ = &mainCamera_;
 
 	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
+	plane = std::make_unique<Object3d>(this, cameraManager_.get());
 	plane->Initialize();
 	//// モデル読み込み
 	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
@@ -98,6 +98,8 @@ void TitleScene::Update()
 
 	// 各3Dオブジェクトの更新
 	plane->Update();
+	// **現在のカメラをObject3dに反映**
+	/*plane->SetCamera(cameraManager_->GetCurrentCamera());*/
 	// カメラの更新
 	//camera->Update();
 
@@ -114,12 +116,15 @@ void TitleScene::Update()
 
 	// 入力でカメラを切り替え
 	if (Input::GetInstance()->TriggerKey(DIK_1)) {
+		cameraManager_->GetCurrentCamera();
 		cameraManager_->SetCurrentCamera(0);  // メインカメラ
 	}
 	if (Input::GetInstance()->TriggerKey(DIK_2)) {
+		cameraManager_->GetCurrentCamera();
 		cameraManager_->SetCurrentCamera(1);  // 上からの視点
 	}
 	if (Input::GetInstance()->TriggerKey(DIK_3)) {
+		cameraManager_->GetCurrentCamera();
 		cameraManager_->SetCurrentCamera(2);  // 斜め視点
 	}
 
@@ -132,6 +137,9 @@ void TitleScene::Update()
 	//}
 
 	// 全カメラの更新
+	/*mainCamera->Update();
+	topCamera->Update();
+	diagonalCamera->Update();*/
 	cameraManager_->UpdateAllCameras();
 
 	/*ImGui::Begin("Camera Info");

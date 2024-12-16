@@ -4,10 +4,8 @@
 #define _USE_MATH_DEFINES
 #include "GamePlayScene.h"
 
-Object3d::Object3d(BaseScene* scene)
-{
-    baseScene_ = scene;
-}
+Object3d::Object3d(BaseScene* scene, CameraManager* cameraManager)
+    : baseScene_(scene), cameraManager_(cameraManager) {}
 
 void Object3d::Initialize()
 {
@@ -20,12 +18,19 @@ void Object3d::Initialize()
     // Transform変数を作る
     transform = { {1.0f, 1.0f, 1.0f}, {0.0f, 3.14f, 0.0f}, {0.0f, 0.0f, 0.0f} };
 
-    // CameraManagerから現在のカメラを取得
-    this->camera = object3dCommon_->GetCurrentCamera();
+    // 初期カメラを設定
+    if (cameraManager_) {
+        this->camera = cameraManager_->GetCurrentCamera();
+    }
 }
 
 void Object3d::Update()
 {
+    // カメラを更新（現在のカメラを常に取得）
+    if (cameraManager_) {
+        camera = cameraManager_->GetCurrentCamera();
+    }
+
     // model_ から modelData を取得
     const Model::ModelData& modelData = model_->GetModelData();
 

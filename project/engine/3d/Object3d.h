@@ -11,6 +11,7 @@
 #include "Transform.h"
 #include <numbers>
 #include "Light.h"
+#include "CameraManager.h"
 
 //---前方宣言---//
 class Object3dCommon;
@@ -33,7 +34,7 @@ public:
         Matrix4x4 WorldInverseTranspose;
     };
 
-    Object3d(BaseScene* scene);
+    Object3d(BaseScene* scene, CameraManager* cameraManager);
     ~Object3d() = default;
 
     /// <summary>
@@ -92,12 +93,16 @@ private:
 
     BaseScene* baseScene_ = nullptr;
 
+    // **カメラ管理**
+    CameraManager* cameraManager_ = nullptr;
+    Camera* camera = nullptr;
+
     // バッファリソース
     Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  // TransformMatrix用Matrix4x4 1つ分のサイズを用意する
     TransformationMatrix* transformationMatrixData = nullptr;
 
-    // Cameraの初期化
-    Camera* camera = nullptr;
+    //// Cameraの初期化
+    //Camera* camera = nullptr;
 
     Matrix4x4 worldviewProjectionMatrix;
 

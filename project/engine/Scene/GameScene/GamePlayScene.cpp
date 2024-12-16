@@ -28,9 +28,36 @@ void GamePlayScene::Initialize()
 	MonsterPosition = monsterBall->GetPosition();
 	MonsterPosition = { 100.0f,100.0f };
 
+
+	// CameraManagerを初期化
+	cameraManager_ = std::make_unique<CameraManager>();
+	// カメラ1: メインカメラ
+	mainCamera = new Camera();
+	mainCamera->SetTranslate({ 0.0f, 0.0f, -20.0f });
+	mainCamera->Update();
+	cameraManager_->AddCamera(mainCamera);
+
+	// カメラ2: 上からの視点
+	topCamera = new Camera();
+	topCamera->SetTranslate({ 0.0f, 0.0f, -10.0f });
+	topCamera->Update();
+	cameraManager_->AddCamera(topCamera);
+
+	// カメラ3: 斜め視点
+	diagonalCamera = new Camera();
+	diagonalCamera->SetTranslate({ 0.0f, 0.0f, -5.0f });
+	diagonalCamera->Update();
+	cameraManager_->AddCamera(diagonalCamera);
+
+	// 最初のカメラを設定
+	cameraManager_->SetCurrentCamera(1);
+
+	// Object3dCommon に CameraManager を設定
+	Object3dCommon::GetInstance()->SetCameraManager(cameraManager_.get());
+
 	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
-	axis = std::make_unique<Object3d>(this);
+	plane = std::make_unique<Object3d>(this, cameraManager_.get());
+	axis = std::make_unique<Object3d>(this, cameraManager_.get());
 
 	plane->Initialize();
 	axis->Initialize();
@@ -86,12 +113,12 @@ void GamePlayScene::Initialize()
 	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 
-	particle->Initialize();
-	particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
-	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
-	// ParticleEmitterの初期化
-	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, 0.0f} }, 10, 0.5f,true);
-	emitters.push_back(std::move(emitter));
+	//particle->Initialize();
+	//particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
+	////particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
+	//// ParticleEmitterの初期化
+	//auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, 0.0f} }, 10, 0.5f,true);
+	//emitters.push_back(std::move(emitter));
 }
 
 void GamePlayScene::Finalize()
@@ -109,6 +136,7 @@ void GamePlayScene::Update()
 	plane->Update();
 	axis->Update();
 
+	cameraManager_->UpdateAllCameras();
 
 	// ImGuiでオブジェクトの情報を表示
 	plane->ImGuiUpdate("plane");
@@ -202,12 +230,12 @@ void GamePlayScene::Update()
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
-	//particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
-	for (auto& emitter : emitters)
-	{
-		emitter->Update();
-	}
-	particle->Update();
+	////particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
+	//for (auto& emitter : emitters)
+	//{
+	//	emitter->Update();
+	//}
+	//particle->Update();
 }
 
 void GamePlayScene::BackGroundDraw()
@@ -258,7 +286,7 @@ void GamePlayScene::ForeGroundDraw()
 	// ここからSprite個々の前景描画(UIなど)
 	// ================================================
 
-	particle->Draw();
+	/*particle->Draw();*/
 
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)

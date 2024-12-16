@@ -44,13 +44,13 @@ private:
 	// 3Dオブジェクトの初期化
 	std::unique_ptr<Object3d> plane = nullptr;
 
-	////3Dカメラの初期化
+	//3Dカメラの初期化
 	std::unique_ptr<CameraManager> cameraManager_ = nullptr;
 	//std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
-	//// カメラ
-	//Camera mainCamera_;
-	//Camera topCamera_;
-	//Camera diagonalCamera_;
+	// カメラ
+	Camera* mainCamera;
+	Camera* topCamera;
+	Camera* diagonalCamera;
 
 	//// 現在のカメラ
 	//Camera* currentCamera_ = nullptr;
