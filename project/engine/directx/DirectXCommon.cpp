@@ -453,18 +453,6 @@ void DirectXCommon::Finalize()
 		device = nullptr;
 	}*/
 
-#ifdef _DEBUG
-	IDXGIDebug1* dxgiDebug = nullptr;
-	HRESULT hr = DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiDebug));
-	if (SUCCEEDED(hr)) {
-		dxgiDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_DETAIL);
-		dxgiDebug->Release();
-	}
-	else {
-		// エラーが発生した場合の処理
-		OutputDebugStringA("Failed to get DXGI debug interface.\n");
-	}
-#endif
 }
 
 
