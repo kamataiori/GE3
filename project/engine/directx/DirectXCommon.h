@@ -11,6 +11,7 @@
 #include "externals/imgui/imgui_impl_dx12.h"
 #include "externals/imgui/imgui_impl_win32.h"
 #include "externals/DirectXTex/DirectXTex.h"
+#include <Vector4.h>
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -161,6 +162,11 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
 
 	/// <summary>
+	/// レンダーテクスチャの生成
+	/// </summary>
+	Microsoft::WRL::ComPtr<ID3D12Resource> CreateRenderTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor);
+
+	/// <summary>
 	/// テクスチャデータの転送
 	/// </summary>
 	[[nodiscard]]
@@ -169,6 +175,16 @@ public:
 
 
 	////===============描画系===============////
+
+	/// <summary>
+	/// OffscreenRenderingのPreDraw
+	/// </summary>
+	void PreDrawForRenderTexture();
+
+	/// <summary>
+	/// OffscreenRenderingのPostDraw
+	/// </summary>
+	void PostDrawForRenderTexture();
 
 	/// <summary>
 	/// 描画前処理
@@ -253,6 +269,28 @@ public:
 		}
 		return rtvHandles[index];
 	}
+
+	/// <summary>
+	/// レンダーテクスチャのcpuハンドルの取得
+	/// </summary>
+	/// <returns></returns>
+	D3D12_CPU_DESCRIPTOR_HANDLE GetRenderTextureRTVHandle()
+	{
+		// RTVのディスクリプタヒープが存在するか確認
+		if (!rtvDescriptorHeap)
+		{
+			throw std::runtime_error("RTV Descriptor Heap not initialized");
+		}
+
+		// ディスクリプタヒープの先頭ハンドルを取得
+		D3D12_CPU_DESCRIPTOR_HANDLE handle = rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+
+		// 必要なオフセットを適用（ここでは例としてインデックス0を使用）
+		handle.ptr += descriptorSizeRTV * 0; // インデックスを調整する場合はここを変更
+
+		return handle;
+	}
+
 
 	/// <summary>
 	/// commandQueueのゲッター
@@ -346,7 +384,7 @@ private:
 
 
 	//RTVを2つ作るのでディスクリプタを2つ用意
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2]{};
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[3]{};
 
 	//RTV用のヒープディスクリプタの数は2。RTVはShader内で触るものではないので、ShaderVisibleはfalse
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap = nullptr;
@@ -367,6 +405,9 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvStarHandle{};
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> swapChainResources[2] = { nullptr };
+
+	// オフスクリーンリソースの作成
+	Microsoft::WRL::ComPtr<ID3D12Resource> offscreenResource = nullptr;
 
 	//DescriptorHeapの作成
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap = nullptr;

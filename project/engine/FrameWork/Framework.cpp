@@ -18,7 +18,7 @@ void Framework::Initialize()
 	dxCommon->Initialize(winApp.get());
 
 	// SrvManagerの初期化
-	SrvManager::GetInstance()->Initialize();
+	//SrvManager::GetInstance()->Initialize();
 
 	// Sprite共通部の初期化
 	SpriteCommon::GetInstance()->Initialize();

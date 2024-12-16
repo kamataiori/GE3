@@ -51,7 +51,6 @@ void TitleScene::Initialize()
 	// ParticleEmitterの初期化
 	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
 	emitters.push_back(std::move(emitter));
-
 }
 
 void TitleScene::Finalize()
@@ -62,14 +61,14 @@ void TitleScene::Update()
 {
 	BaseScene::ShowFPS();
 
-	// アルファ値を減少させる
-	Vector4 color = plane->GetMaterialColor();
-	//color.w = 0.5f;
-	color.w -= 0.01f; // アルファ値を減少
-	if (color.w < 0.0f) {
-		color.w = 0.0f; // 最小値を0に制限
-	}
-	plane->SetMaterialColor(color);
+	//// アルファ値を減少させる
+	//Vector4 color = plane->GetMaterialColor();
+	////color.w = 0.5f;
+	//color.w -= 0.01f; // アルファ値を減少
+	//if (color.w < 0.0f) {
+	//	color.w = 0.0f; // 最小値を0に制限
+	//}
+	//plane->SetMaterialColor(color);
 
 	// 各3Dオブジェクトの更新
 	plane->Update();
@@ -131,6 +130,8 @@ void TitleScene::ForeGroundDraw()
 	// ================================================
 
 	particle->Draw();
+
+	//offscreenRendering->Draw();
 
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)

@@ -1,6 +1,7 @@
 #include "Framework.h"
 #include "SceneFactory.h"
 #include "ImGuiManager.h"
+#include "OffscreenRendering.h"
 
 class MyGame : public Framework
 {
@@ -30,5 +31,7 @@ public:
 private:
 
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
+
+	std::unique_ptr<OffscreenRendering> offscreenRendering = std::make_unique<OffscreenRendering>();
 
 };
