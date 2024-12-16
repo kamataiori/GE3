@@ -49,7 +49,7 @@ void Model::CreateVertexData()
 	//リソースの先頭のアドレスから使う
 	vertexBufferView.BufferLocation = vertexResource->GetGPUVirtualAddress();
 	//使用するリソースのサイズは頂点6つ分のサイズ
-	vertexBufferView.SizeInBytes = sizeof(VertexData) * modelData.vertices.size();
+	vertexBufferView.SizeInBytes = static_cast<UINT>(sizeof(VertexData) * modelData.vertices.size());
 	//頂点あたりのサイズ
 	vertexBufferView.StrideInBytes = sizeof(VertexData);
 
