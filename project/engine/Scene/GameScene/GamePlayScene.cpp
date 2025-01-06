@@ -50,18 +50,13 @@ void GamePlayScene::Initialize()
 	axis->SetRotate({ 0.0f, 0.0f, 0.0f });
 	axis->SetTranslate({ 2.0f, 0.0f, 0.0f });
 
-	//// 3Dカメラの初期化
-	//cameraManager = std::make_unique<CameraManager>();
-	//camera1->SetTranslate({ 0.0f, 0.0f, -20.0f });
-	//cameraManager->AddCamera(camera1.get());
+	// カメラの初期化
+	mainCamera_.SetTranslate({ 0.0f, 0.0f, -20.0f });
+	topCamera_.SetTranslate({ 0.0f, 10.0f, -20.0f });
+	diagonalCamera_.SetTranslate({ 5.0f, 5.0f, -20.0f });
 
-	//camera2->SetTranslate({ 5.0f, 1.0f, -40.0f });
-	//cameraManager->AddCamera(camera2.get());
-
-	//// カメラのセット
-	//plane->SetCameraManager(cameraManager.get());
-	//axis->SetCameraManager(cameraManager.get());
-	//particle->SetCameraManager(cameraManager.get());
+	// 現在のカメラを設定
+	currentCamera_ = &mainCamera_;
 
 	// Audioの初期化
 	audio->Initialize();
@@ -86,12 +81,12 @@ void GamePlayScene::Initialize()
 	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 
-	particle->Initialize();
-	particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
-	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
-	// ParticleEmitterの初期化
-	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, 0.0f} }, 10, 0.5f,true);
-	emitters.push_back(std::move(emitter));
+	//particle->Initialize();
+	//particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
+	////particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
+	//// ParticleEmitterの初期化
+	//auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, 0.0f} }, 10, 0.5f,true);
+	//emitters.push_back(std::move(emitter));
 }
 
 void GamePlayScene::Finalize()
@@ -203,11 +198,21 @@ void GamePlayScene::Update()
 	}
 
 	//particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
-	for (auto& emitter : emitters)
+	/*for (auto& emitter : emitters)
 	{
 		emitter->Update();
-	}
-	particle->Update();
+	}*/
+	//particle->Update();
+	// カメラの更新
+	mainCamera_.Update();
+	topCamera_.Update();
+	diagonalCamera_.Update();
+
+	// 3Dオブジェクトにカメラを設定
+	plane->SetCamera(currentCamera_);
+	axis->SetCamera(currentCamera_);
+
+	
 }
 
 void GamePlayScene::BackGroundDraw()
@@ -258,7 +263,7 @@ void GamePlayScene::ForeGroundDraw()
 	// ここからSprite個々の前景描画(UIなど)
 	// ================================================
 
-	particle->Draw();
+	//particle->Draw();
 
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)

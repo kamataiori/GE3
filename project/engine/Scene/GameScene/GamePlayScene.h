@@ -62,10 +62,11 @@ private:
 	std::unique_ptr<Object3d> axis = nullptr;
 
 	////3Dカメラの初期化
-	//std::unique_ptr<CameraManager> cameraManager = nullptr;
-	//std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
-	//std::unique_ptr<Camera> camera2 = std::make_unique<Camera>();
-	//bool cameraFlag = false;  //ImGuiで制御するカメラの切り替えフラグ
+	// カメラを追加
+	Camera mainCamera_;
+	Camera topCamera_;
+	Camera diagonalCamera_;
+	Camera* currentCamera_ = nullptr; // 現在のカメラ
 
 	std::unique_ptr<Audio> audio = std::make_unique<Audio>();
 	Audio::SoundData sound = {};
@@ -74,7 +75,7 @@ private:
 	Vector2 MonsterPosition;
 
 
-	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
-	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
+	/*std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
+	std::vector<std::unique_ptr<ParticleEmitter>> emitters;*/
 };
 
