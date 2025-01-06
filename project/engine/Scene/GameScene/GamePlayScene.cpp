@@ -23,32 +23,9 @@ void GamePlayScene::Initialize()
 		sprites.push_back(std::move(sprite));
 	}
 
-	monsterBall = std::make_unique<Sprite>();
-	monsterBall->Initialize("Resources/monsterBall.png");
-	MonsterPosition = monsterBall->GetPosition();
-	MonsterPosition = { 100.0f,100.0f };
 
-	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
-	axis = std::make_unique<Object3d>(this);
 
-	plane->Initialize();
-	axis->Initialize();
-
-	// モデル読み込み
-	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
-	ModelManager::GetInstance()->LoadModel("axis.obj");
-	plane->SetModel("uvChecker.gltf");
-	axis->SetModel("axis.obj");
-
-	// モデルにSRTを設定
-	plane->SetScale({ 1.0f, 1.0f, 1.0f });
-	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
-	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
-
-	axis->SetScale({ 1.0f, 1.0f, 1.0f });
-	axis->SetRotate({ 0.0f, 0.0f, 0.0f });
-	axis->SetTranslate({ 2.0f, 0.0f, 0.0f });
+	skyDome_->Initialize();
 
 	// カメラの初期化
 	mainCamera_.SetTranslate({ 0.0f, 0.0f, -20.0f });
@@ -58,12 +35,6 @@ void GamePlayScene::Initialize()
 	// 現在のカメラを設定
 	currentCamera_ = &mainCamera_;
 
-	// Audioの初期化
-	audio->Initialize();
-	sound = audio->SoundLoadWave("Resources/fanfare.wav");
-	//audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
-	//audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);
-	isAudio = false;
 
 
 	// ライト
@@ -73,29 +44,12 @@ void GamePlayScene::Initialize()
 	BaseScene::GetLight()->GetDirectionalLight();
 	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
 	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	//BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
-	/*BaseScene::GetLight()->GetSpotLight();
-	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
-	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
-	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
-
-
-	//particle->Initialize();
-	//particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
-	////particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
-	//// ParticleEmitterの初期化
-	//auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, 0.0f} }, 10, 0.5f,true);
-	//emitters.push_back(std::move(emitter));
+	
 }
 
 void GamePlayScene::Finalize()
 {
-	// 音声データの解放
-	audio->SoundUnload(&sound);
 
-	// Audioの終了処理
-	audio->Finalize();
 }
 
 void GamePlayScene::Update()
@@ -109,33 +63,7 @@ void GamePlayScene::Update()
 	plane->ImGuiUpdate("plane");
 	axis->ImGuiUpdate("axis");
 
-	//// カメラの更新
-	//camera1->Update();
-	//Vector3 cameraRotate = camera2->GetRotate();
-	//cameraRotate.x = 0.0f;
-	//cameraRotate.y += 0.1f;
-	//cameraRotate.z = 0.0f;
-	//camera2->SetRotate(cameraRotate);
-	//camera2->Update();
-
-	//// カメラコントロール用のウィンドウを作成
-	//ImGui::Begin("Camera Control");
-
-	//// カメラの切り替え
-	//if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
-	//	cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
-	//}
-
-	//ImGui::End();
-
-	// モンスターボール
-	monsterBall->SetPosition(MonsterPosition);
-	monsterBall->SetSize({ 100.0f,100.0f });
-	monsterBall->Update();
-
-	ImGui::Begin("monsterBall");
-	ImGui::DragFloat2("transformation", &MonsterPosition.x);
-	ImGui::End();
+	
 
 	// 各スプライトの更新処理
 	for (size_t i = 0; i < sprites.size(); ++i) {
@@ -180,37 +108,23 @@ void GamePlayScene::Update()
 		sprite->Update();
 	}
 
-	/*ImGui::Begin("light");
-	ImGui::DragFloat3("transform", &BaseScene::GetLight()->cameraLightData->worldPosition.x, 0.01f);
-	ImGui::DragFloat3("DirectionalDirection", &BaseScene::GetLight()->directionalLightData->direction.x, 0.01f);
-	ImGui::DragFloat("DirectionalIntensity", &BaseScene::GetLight()->directionalLightData->intensity, 0.01f);
-	ImGui::DragFloat3("SpotPosition", &BaseScene::GetLight()->spotLightData->position.x, 0.01f);
-	ImGui::DragFloat("SpotIntensity", &BaseScene::GetLight()->spotLightData->intensity, 0.01f);
-	ImGui::End();*/
-
-	// 音声再生を無限ループで呼び出す
-	//audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
-   /* audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);*/
-
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		// シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
-	//particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
-	/*for (auto& emitter : emitters)
-	{
-		emitter->Update();
-	}*/
-	//particle->Update();
+	
 	// カメラの更新
 	mainCamera_.Update();
 	topCamera_.Update();
 	diagonalCamera_.Update();
 
+	skyDome_->Update();
+
 	// 3Dオブジェクトにカメラを設定
-	plane->SetCamera(currentCamera_);
-	axis->SetCamera(currentCamera_);
+	plane->InitializeDefaultCamera({ 0.0f, 5.0f, -10.0f }, { 0.0f, 0.0f, 0.0f });
+	axis->InitializeDefaultCamera({ 0.0f, 3.0f, -8.0f }, { 0.0f, 45.0f, 0.0f });
+
 
 	
 }
@@ -223,8 +137,6 @@ void GamePlayScene::BackGroundDraw()
 	// ================================================
 	// ここからSprite個々の背景描画
 	// ================================================
-
-	monsterBall->Draw();
 
 	// スプライトを描画する
 	for (const auto& sprite : sprites) {
@@ -246,8 +158,10 @@ void GamePlayScene::Draw()
 	// ================================================
 
 	// 各オブジェクトの描画
-	plane->Draw();
-	axis->Draw();
+	/*plane->Draw();
+	axis->Draw();*/
+
+	//skyDome_->Draw();
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画

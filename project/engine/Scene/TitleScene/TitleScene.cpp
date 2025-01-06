@@ -57,18 +57,18 @@ void TitleScene::Initialize()
 	// 最初のカメラを設定
 	currentCamera_ = &mainCamera_;
 
-	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
-	plane->Initialize();
-	//// モデル読み込み
-	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
-	ModelManager::GetInstance()->LoadModel("axis.obj");
-	plane->SetModel("uvChecker.gltf");
+	//// 3Dオブジェクトの初期化
+	//plane = std::make_unique<Object3d>(this);
+	//plane->Initialize();
+	////// モデル読み込み
+	//ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
+	//ModelManager::GetInstance()->LoadModel("axis.obj");
+	//plane->SetModel("uvChecker.gltf");
 
-	// モデルにSRTを設定
-	plane->SetScale({ 1.0f, 1.0f, 1.0f });
-	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
-	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
+	//// モデルにSRTを設定
+	//plane->SetScale({ 1.0f, 1.0f, 1.0f });
+	//plane->SetRotate({ 0.0f, 3.14f, 0.0f });
+	//plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
 	//particle->Initialize();
 	//particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
@@ -97,7 +97,7 @@ void TitleScene::Update()
 	//plane->SetMaterialColor(color);
 
 	// 各3Dオブジェクトの更新
-	plane->Update();
+	//plane->Update();
 	// カメラの更新
 	//camera->Update();
 
@@ -163,7 +163,7 @@ void TitleScene::Update()
 	}
 
 	// 3Dオブジェクトのカメラを設定
-	plane->SetCamera(currentCamera_);
+	//plane->SetCamera(currentCamera_);
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
@@ -195,8 +195,7 @@ void TitleScene::Draw()
 	// ここから3Dオブジェクト個々の描画
 	// ================================================
 
-	// 各オブジェクトの描画
-	plane->Draw();
+	
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画

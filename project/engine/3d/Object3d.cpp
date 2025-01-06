@@ -32,14 +32,9 @@ void Object3d::Update()
     // TransformからworldMatrixを作る
     Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 
-    // カメラTransformからカメラ行列を作る
-    if (camera) {
-        const Matrix4x4& viewProjectionMatrix = camera->GetViewProjectionMatrix();
-        worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
-    }
-    else {
-        worldviewProjectionMatrix = worldMatrix;
-    }
+    // デフォルトカメラを使用してビュー・プロジェクション行列を計算
+    const Matrix4x4& viewProjectionMatrix = defaultCamera_.GetViewProjectionMatrix();
+    worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
 
     transformationMatrixData->WVP = Multiply(modelData.rootNode.localMatrix, worldviewProjectionMatrix);
     transformationMatrixData->World = Multiply(modelData.rootNode.localMatrix, worldMatrix);
@@ -96,6 +91,13 @@ void Object3d::SetMaterialColor(const Vector4& color)
     // model_が存在する場合にのみ設定
     assert(model_);
     model_->SetMaterialColor(color);
+}
+
+void Object3d::InitializeDefaultCamera(const Vector3& position, const Vector3& rotation)
+{
+    defaultCamera_.SetTranslate(position);
+    defaultCamera_.SetRotate(rotation);
+    defaultCamera_.Update();
 }
 
 void Object3d::SetEnableLighting(bool enable)

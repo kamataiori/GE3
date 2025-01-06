@@ -68,6 +68,11 @@ public:
     // Material colorのセッター
     void SetMaterialColor(const Vector4& color);
 
+    /// <summary>
+    /// カメラの初期設定
+    /// </summary>
+    void InitializeDefaultCamera(const Vector3& position, const Vector3& rotation);
+
     //--------setter--------//
     void SetScale(const Vector3& scale) { this->transform.scale = scale; }
     void SetRotate(const Vector3& rotate) { this->transform.rotate = rotate; }
@@ -103,4 +108,6 @@ private:
 
     // Transform関連
     Transform transform;
+
+    Camera defaultCamera_; // 内部カメラ
 };

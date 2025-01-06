@@ -9,6 +9,7 @@
 #include "Light.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include "SkyDome.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -55,8 +56,6 @@ private:
 	Vector2 initialSize = { 80.0f,80.0f };
 	std::vector<std::unique_ptr<Sprite>> sprites;
 
-	std::unique_ptr<Sprite> monsterBall = std::make_unique<Sprite>();
-
 	// 3Dオブジェクトの初期化
 	std::unique_ptr<Object3d> plane = nullptr;
 	std::unique_ptr<Object3d> axis = nullptr;
@@ -68,12 +67,7 @@ private:
 	Camera diagonalCamera_;
 	Camera* currentCamera_ = nullptr; // 現在のカメラ
 
-	std::unique_ptr<Audio> audio = std::make_unique<Audio>();
-	Audio::SoundData sound = {};
-	bool isAudio = false;
-
-	Vector2 MonsterPosition;
-
+	std::unique_ptr<SkyDome> skyDome_ = std::make_unique<SkyDome>();
 
 	/*std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
 	std::vector<std::unique_ptr<ParticleEmitter>> emitters;*/

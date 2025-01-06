@@ -41,8 +41,8 @@ public:
 
 private:
 
-	// 3Dオブジェクトの初期化
-	std::unique_ptr<Object3d> plane = nullptr;
+	//// 3Dオブジェクトの初期化
+	//std::unique_ptr<Object3d> plane = nullptr;
 
 	////3Dカメラの初期化
 	//std::unique_ptr<CameraManager> cameraManager_ = nullptr;
