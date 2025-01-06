@@ -58,9 +58,14 @@ private:
 	std::unique_ptr<Sprite> monsterBall = std::make_unique<Sprite>();
 
 	// 3Dオブジェクトの初期化
-	std::unique_ptr<Object3d> plane = nullptr;
-	std::unique_ptr<Object3d> axis = nullptr;
+	/*std::unique_ptr<Object3d> plane = nullptr;
+	std::unique_ptr<Object3d> axis = nullptr;*/
 	std::unique_ptr<Object3d> skyDome = nullptr;
+	std::unique_ptr<Object3d> ground = nullptr;
+	std::unique_ptr<Object3d> playerBase = nullptr;
+	std::unique_ptr<Object3d> playerHead = nullptr;
+	std::unique_ptr<Object3d> playerLeft = nullptr;
+	std::unique_ptr<Object3d> playerRight = nullptr;
 
 	////3Dカメラの初期化
 	// カメラを追加

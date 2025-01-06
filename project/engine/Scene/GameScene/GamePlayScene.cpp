@@ -29,38 +29,80 @@ void GamePlayScene::Initialize()
 	MonsterPosition = { 100.0f,100.0f };
 
 	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
-	axis = std::make_unique<Object3d>(this);
+	/*plane = std::make_unique<Object3d>(this);
+	axis = std::make_unique<Object3d>(this);*/
 	skyDome = std::make_unique<Object3d>(this);
+	ground = std::make_unique<Object3d>(this);
+	playerBase = std::make_unique<Object3d>(this);
+	playerHead = std::make_unique<Object3d>(this);
+	playerLeft = std::make_unique<Object3d>(this);
+	playerRight = std::make_unique<Object3d>(this);
 
-	plane->Initialize();
-	axis->Initialize();
+	/*plane->Initialize();
+	axis->Initialize();*/
 	skyDome->Initialize();
+	ground->Initialize();
+	playerBase->Initialize();
+	playerHead->Initialize();
+	playerLeft->Initialize();
+	playerRight->Initialize();
 
 	// モデル読み込み
-	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
+	/*ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
 	plane->SetModel("uvChecker.gltf");
-	axis->SetModel("axis.obj");
+	axis->SetModel("axis.obj");*/
 	TextureManager::GetInstance()->LoadTexture("Resources/Sky.png");
 	ModelManager::GetInstance()->LoadModel("Sky.obj");
 	skyDome->SetModel("Sky.obj");
+	TextureManager::GetInstance()->LoadTexture("Resources/graund.png");
+	ModelManager::GetInstance()->LoadModel("graund.obj");
+	ground->SetModel("graund.obj");
+	/*TextureManager::GetInstance()->LoadTexture("Resources/player.png");*/
+	ModelManager::GetInstance()->LoadModel("playerBase.obj");
+	playerBase->SetModel("playerBase.obj");
+	ModelManager::GetInstance()->LoadModel("playerHead.obj");
+	playerHead->SetModel("playerHead.obj");
+	ModelManager::GetInstance()->LoadModel("playerLeft.obj");
+	playerLeft->SetModel("playerLeft.obj");
+	ModelManager::GetInstance()->LoadModel("playerRight.obj");
+	playerRight->SetModel("playerRight.obj");
 
 	// モデルにSRTを設定
 	skyDome->SetScale({ 1.0f, 1.0f, 1.0f });
 	skyDome->SetRotate({ 0.0f, 3.14f, 0.0f });
 	skyDome->SetTranslate({ 0.0f, 0.0f, 0.0f });
 
-	plane->SetScale({ 1.0f, 1.0f, 1.0f });
+	ground->SetScale({ 1.0f, 1.0f, 1.0f });
+	ground->SetRotate({ 0.0f, 3.14f, 0.0f });
+	ground->SetTranslate({ 0.0f, -2.0f, 0.0f });
+
+	playerBase->SetScale({ 1.0f, 1.0f, 1.0f });
+	playerBase->SetRotate({ 0.0f, 3.14f, 0.0f });
+	playerBase->SetTranslate({ 0.0f, 0.0f, 0.0f });
+
+	playerHead->SetScale({ 1.0f, 1.0f, 1.0f });
+	playerHead->SetRotate({ 0.0f, 3.14f, 0.0f });
+	playerHead->SetTranslate({ 0.0f, 1.4f, 0.0f });
+
+	playerLeft->SetScale({ 1.0f, 1.0f, 1.0f });
+	playerLeft->SetRotate({ 0.0f, 3.14f, 0.0f });
+	playerLeft->SetTranslate({ -0.8f, 1.0f, 0.0f });
+
+	playerRight->SetScale({ 1.0f, 1.0f, 1.0f });
+	playerRight->SetRotate({ 0.0f, 3.14f, 0.0f });
+	playerRight->SetTranslate({ 0.8f, 1.0f, 0.0f });
+
+	/*plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
 	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
 	axis->SetScale({ 1.0f, 1.0f, 1.0f });
 	axis->SetRotate({ 0.0f, 0.0f, 0.0f });
-	axis->SetTranslate({ 2.0f, 0.0f, 0.0f });
+	axis->SetTranslate({ 2.0f, 0.0f, 0.0f });*/
 
 	// カメラの初期化
-	mainCamera_.SetTranslate({ 0.0f, 0.0f, -20.0f });
+	mainCamera_.SetTranslate({ 0.0f, 0.0f, -30.0f });
 	topCamera_.SetTranslate({ 0.0f, 10.0f, -20.0f });
 	diagonalCamera_.SetTranslate({ 5.0f, 5.0f, -20.0f });
 
@@ -90,12 +132,7 @@ void GamePlayScene::Initialize()
 	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 
-	//particle->Initialize();
-	//particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
-	////particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
-	//// ParticleEmitterの初期化
-	//auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, 0.0f} }, 10, 0.5f,true);
-	//emitters.push_back(std::move(emitter));
+	skyDome->SetEnableLighting(false);
 }
 
 void GamePlayScene::Finalize()
@@ -110,13 +147,18 @@ void GamePlayScene::Finalize()
 void GamePlayScene::Update()
 {
 	// 各3Dオブジェクトの更新
-	plane->Update();
-	axis->Update();
+	/*plane->Update();
+	axis->Update();*/
 	skyDome->Update();
+	ground->Update();
+	playerBase->Update();
+	playerHead->Update();
+	playerLeft->Update();
+	playerRight->Update();
 
 	// ImGuiでオブジェクトの情報を表示
-	plane->ImGuiUpdate("plane");
-	axis->ImGuiUpdate("axis");
+	/*plane->ImGuiUpdate("plane");
+	axis->ImGuiUpdate("axis");*/
 
 	//// カメラの更新
 	//camera1->Update();
@@ -218,10 +260,15 @@ void GamePlayScene::Update()
 	diagonalCamera_.Update();
 
 	// 3Dオブジェクトにカメラを設定
-	plane->SetCamera(currentCamera_);
-	axis->SetCamera(currentCamera_);
+	/*plane->SetCamera(currentCamera_);
+	axis->SetCamera(currentCamera_);*/
 	skyDome->SetCamera(currentCamera_);
-	
+	ground->SetCamera(currentCamera_);
+	playerBase->SetCamera(currentCamera_);
+	playerHead->SetCamera(currentCamera_);
+	playerLeft->SetCamera(currentCamera_);
+	playerRight->SetCamera(currentCamera_);
+
 }
 
 void GamePlayScene::BackGroundDraw()
@@ -255,9 +302,14 @@ void GamePlayScene::Draw()
 	// ================================================
 
 	// 各オブジェクトの描画
-	plane->Draw();
-	axis->Draw();
+	/*plane->Draw();
+	axis->Draw();*/
 	skyDome->Draw();
+	ground->Draw();
+	playerBase->Draw();
+	playerHead->Draw();
+	playerLeft->Draw();
+	playerRight->Draw();
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
