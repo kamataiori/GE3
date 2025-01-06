@@ -60,6 +60,7 @@ private:
 	// 3Dオブジェクトの初期化
 	std::unique_ptr<Object3d> plane = nullptr;
 	std::unique_ptr<Object3d> axis = nullptr;
+	std::unique_ptr<Object3d> skyDome = nullptr;
 
 	////3Dカメラの初期化
 	// カメラを追加

@@ -31,17 +31,26 @@ void GamePlayScene::Initialize()
 	// 3Dオブジェクトの初期化
 	plane = std::make_unique<Object3d>(this);
 	axis = std::make_unique<Object3d>(this);
+	skyDome = std::make_unique<Object3d>(this);
 
 	plane->Initialize();
 	axis->Initialize();
+	skyDome->Initialize();
 
 	// モデル読み込み
 	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
 	plane->SetModel("uvChecker.gltf");
 	axis->SetModel("axis.obj");
+	TextureManager::GetInstance()->LoadTexture("Resources/Sky.png");
+	ModelManager::GetInstance()->LoadModel("Sky.obj");
+	skyDome->SetModel("Sky.obj");
 
 	// モデルにSRTを設定
+	skyDome->SetScale({ 1.0f, 1.0f, 1.0f });
+	skyDome->SetRotate({ 0.0f, 3.14f, 0.0f });
+	skyDome->SetTranslate({ 0.0f, 0.0f, 0.0f });
+
 	plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
 	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
@@ -103,7 +112,7 @@ void GamePlayScene::Update()
 	// 各3Dオブジェクトの更新
 	plane->Update();
 	axis->Update();
-
+	skyDome->Update();
 
 	// ImGuiでオブジェクトの情報を表示
 	plane->ImGuiUpdate("plane");
@@ -211,7 +220,7 @@ void GamePlayScene::Update()
 	// 3Dオブジェクトにカメラを設定
 	plane->SetCamera(currentCamera_);
 	axis->SetCamera(currentCamera_);
-
+	skyDome->SetCamera(currentCamera_);
 	
 }
 
@@ -248,6 +257,7 @@ void GamePlayScene::Draw()
 	// 各オブジェクトの描画
 	plane->Draw();
 	axis->Draw();
+	skyDome->Draw();
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
