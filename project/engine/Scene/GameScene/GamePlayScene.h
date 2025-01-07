@@ -47,14 +47,6 @@ public:
 
 private:
 
-	float offsetX = 100.0f;  //各スプライトのX座標をずらすオフセット値
-	float initialX = 100.0f; //初期X座標
-
-	// Spriteの初期化
-	// 小さく描画するための初期スケールを設定
-	Vector2 initialSize = { 80.0f,80.0f };
-	std::vector<std::unique_ptr<Sprite>> sprites;
-
 	std::unique_ptr<Sprite> monsterBall = std::make_unique<Sprite>();
 
 	// 3Dオブジェクトの初期化
@@ -63,9 +55,6 @@ private:
 	std::unique_ptr<Object3d> skyDome = nullptr;
 	std::unique_ptr<Object3d> ground = nullptr;
 	std::unique_ptr<Object3d> playerBase = nullptr;
-	std::unique_ptr<Object3d> playerHead = nullptr;
-	std::unique_ptr<Object3d> playerLeft = nullptr;
-	std::unique_ptr<Object3d> playerRight = nullptr;
 
 	////3Dカメラの初期化
 	// カメラを追加
@@ -74,14 +63,16 @@ private:
 	Camera diagonalCamera_;
 	Camera* currentCamera_ = nullptr; // 現在のカメラ
 
-	std::unique_ptr<Audio> audio = std::make_unique<Audio>();
-	Audio::SoundData sound = {};
-	bool isAudio = false;
-
 	Vector2 MonsterPosition;
 
+private:
+	bool isJumping = false; // ジャンプ中かどうかを判定
+	float jumpVelocity = 0.0f; // ジャンプの垂直速度
+	const float gravity = -0.2f; // 重力
+	const float jumpPower = 1.5f; // ジャンプの初速度
 
-	/*std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
-	std::vector<std::unique_ptr<ParticleEmitter>> emitters;*/
+private:
+	void UpdatePlayerMovement(); // プレイヤー移動処理
+
 };
 
