@@ -55,6 +55,7 @@ private:
 	std::unique_ptr<Object3d> skyDome = nullptr;
 	std::unique_ptr<Object3d> ground = nullptr;
 	std::unique_ptr<Object3d> playerBase = nullptr;
+	std::unique_ptr<Object3d> playerWeapon = nullptr;
 
 	////3Dカメラの初期化
 	// カメラを追加
@@ -69,10 +70,15 @@ private:
 	bool isJumping = false; // ジャンプ中かどうかを判定
 	float jumpVelocity = 0.0f; // ジャンプの垂直速度
 	const float gravity = -0.2f; // 重力
-	const float jumpPower = 1.5f; // ジャンプの初速度
+	const float jumpPower = 2.5f; // ジャンプの初速度
+
+	bool isAttacking = false; // 攻撃中かどうか
+	float attackTimer = 0.0f; // 攻撃状態のタイマー
+	const float attackDuration = 0.5f; // 攻撃状態の持続時間
 
 private:
 	void UpdatePlayerMovement(); // プレイヤー移動処理
+	void UpdateCamera();         // カメラ追従処理
 
 };
 

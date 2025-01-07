@@ -65,6 +65,28 @@ public:
 	/// <returns>トリガーか</returns>
 	bool TriggerKey(BYTE keyNumber);
 
+	/// <summary>
+   /// マウスの移動量を取得
+   /// </summary>
+   /// <param name="deltaX">X方向の移動量</param>
+   /// <param name="deltaY">Y方向の移動量</param>
+	void GetMouseDelta(int& deltaX, int& deltaY);
+
+	/// <summary>
+	/// マウスボタンが押されているかチェック
+	/// </summary>
+	/// <param name="button">ボタン番号(0:左, 1:右, 2:中央)</param>
+	/// <returns>押されているか</returns>
+	bool PushMouseButton(int button);
+
+	/// <summary>
+	/// マウスボタンがクリックされたかチェック
+	/// </summary>
+	/// <param name="button">ボタン番号(0:左, 1:右, 2:中央)</param>
+	/// <returns>クリックされたか</returns>
+	bool TriggerMouseButton(int button);
+
+
 private:
 
 	///========================
@@ -86,6 +108,14 @@ private:
 
 	//WindowsAPI
 	WinApp* winApp_ = nullptr;
+
+	// マウスデバイス
+	Microsoft::WRL::ComPtr<IDirectInputDevice8> mouse;
+
+	// 現在のマウス状態
+	DIMOUSESTATE mouseState = {};
+	// 前回のマウス状態
+	DIMOUSESTATE mouseStatePre = {};
 
 };
 

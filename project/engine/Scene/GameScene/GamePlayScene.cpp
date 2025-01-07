@@ -16,12 +16,14 @@ void GamePlayScene::Initialize()
 	skyDome = std::make_unique<Object3d>(this);
 	ground = std::make_unique<Object3d>(this);
 	playerBase = std::make_unique<Object3d>(this);
+	playerWeapon = std::make_unique<Object3d>(this);
 
 	/*plane->Initialize();
 	axis->Initialize();*/
 	skyDome->Initialize();
 	ground->Initialize();
 	playerBase->Initialize();
+	playerWeapon->Initialize();
 
 	// モデル読み込み
 	/*ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
@@ -37,6 +39,8 @@ void GamePlayScene::Initialize()
 	/*TextureManager::GetInstance()->LoadTexture("Resources/player.png");*/
 	ModelManager::GetInstance()->LoadModel("playerBase.obj");
 	playerBase->SetModel("playerBase.obj");
+	ModelManager::GetInstance()->LoadModel("playerWeapon.obj");
+	playerWeapon->SetModel("playerWeapon.obj");
 
 	// モデルにSRTを設定
 	skyDome->SetScale({ 1.0f, 1.0f, 1.0f });
@@ -50,6 +54,10 @@ void GamePlayScene::Initialize()
 	playerBase->SetScale({ 1.0f, 1.0f, 1.0f });
 	playerBase->SetRotate({ 0.0f, 3.14f, 0.0f });
 	playerBase->SetTranslate({ 0.0f, 0.0f, 0.0f });
+
+	playerWeapon->SetScale({ 1.5f, 1.0f, 1.0f });
+	playerWeapon->SetRotate({ 0.0f, 3.14f, 0.0f });
+	playerWeapon->SetTranslate({ 1.0f, 0.0f, 0.0f });
 
 	/*plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
@@ -99,9 +107,12 @@ void GamePlayScene::Update()
 	skyDome->Update();
 	ground->Update();
 	playerBase->Update();
+	playerWeapon->Update();
 
 	// プレイヤーの移動処理
 	UpdatePlayerMovement();
+	// カメラの追従処理
+	UpdateCamera();
 
 
 	// モンスターボール
@@ -115,7 +126,7 @@ void GamePlayScene::Update()
 
 	
 
-	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
+	if (Input::GetInstance()->TriggerKey(DIK_L)) {
 		// シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
@@ -129,6 +140,7 @@ void GamePlayScene::Update()
 	skyDome->SetCamera(currentCamera_);
 	ground->SetCamera(currentCamera_);
 	playerBase->SetCamera(currentCamera_);
+	playerWeapon->SetCamera(currentCamera_);
 
 }
 
@@ -163,6 +175,7 @@ void GamePlayScene::Draw()
 	skyDome->Draw();
 	ground->Draw();
 	playerBase->Draw();
+	playerWeapon->Draw();
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
@@ -187,40 +200,114 @@ void GamePlayScene::ForeGroundDraw()
 
 void GamePlayScene::UpdatePlayerMovement()
 {
-	Vector3 playerPosition = playerBase->GetTranslate(); // 現在の位置を取得
-	const float velocity = 0.5f; // 移動速度
+	Vector3 playerPosition = playerBase->GetTranslate(); // 現在のプレイヤー位置を取得
+	Vector3 playerRotation = playerBase->GetRotate();    // 現在のプレイヤー回転を取得
+	const float velocity = 1.0f;                         // 移動速度
+	const float rotationSpeed = 0.008f;                   // 回転速度（感度）
 
-	// 移動処理
-	if (Input::GetInstance()->TriggerKey(DIK_W)) {
-		playerPosition.z += velocity; // 前方に移動
-	}
-	if (Input::GetInstance()->TriggerKey(DIK_S)) {
-		playerPosition.z -= velocity; // 後方に移動
-	}
-	if (Input::GetInstance()->TriggerKey(DIK_A)) {
-		playerPosition.x -= velocity; // 左に移動
-	}
-	if (Input::GetInstance()->TriggerKey(DIK_D)) {
-		playerPosition.x += velocity; // 右に移動
+	// 攻撃中でない場合のみ移動や回転を許可
+	if (!isAttacking) {
+		// キー入力による移動処理
+		if (Input::GetInstance()->PushKey(DIK_W)) {
+			playerPosition.z += velocity; // 前方に移動
+		}
+		if (Input::GetInstance()->PushKey(DIK_S)) {
+			playerPosition.z -= velocity; // 後方に移動
+		}
+		if (Input::GetInstance()->PushKey(DIK_A)) {
+			playerPosition.x -= velocity; // 左に移動
+		}
+		if (Input::GetInstance()->PushKey(DIK_D)) {
+			playerPosition.x += velocity; // 右に移動
+		}
+
+		// ジャンプ処理
+		if (Input::GetInstance()->TriggerKey(DIK_SPACE) && !isJumping) {
+			isJumping = true;
+			jumpVelocity = jumpPower; // ジャンプ初速度を設定
+		}
+
+		if (isJumping) {
+			playerPosition.y += jumpVelocity; // Y座標を更新
+			jumpVelocity += gravity;          // 重力を適用
+
+			// 地面に着地した場合
+			if (playerPosition.y <= 0.0f) {
+				playerPosition.y = 0.0f; // 地面の高さにリセット
+				isJumping = false;      // ジャンプ状態を解除
+				jumpVelocity = 0.0f;    // 垂直速度をリセット
+			}
+		}
+
+		// マウス入力による回転処理
+		int deltaX, deltaY;
+		Input::GetInstance()->GetMouseDelta(deltaX, deltaY); // マウスの移動量を取得
+		playerRotation.y += deltaX * rotationSpeed;         // マウスの横移動でY軸回転を調整
 	}
 
-	// ジャンプ処理
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE) && !isJumping) {
-		isJumping = true;
-		jumpVelocity = jumpPower; // ジャンプ初速度を設定
+	// 左クリックで攻撃
+	if (Input::GetInstance()->TriggerMouseButton(0) && !isAttacking) {
+		isAttacking = true;
+		attackTimer = 0.0f; // 攻撃状態を開始
 	}
 
-	if (isJumping) {
-		playerPosition.y += jumpVelocity; // Y座標を更新
-		jumpVelocity += gravity; // 重力を適用
-
-		// 地面に着地した場合
-		if (playerPosition.y <= 0.0f) {
-			playerPosition.y = 0.0f; // 地面の高さにリセット
-			isJumping = false; // ジャンプ状態を解除
-			jumpVelocity = 0.0f; // 垂直速度をリセット
+	// 攻撃中の武器の回転を設定
+	if (isAttacking) {
+		attackTimer += 0.016f; // フレーム単位でタイマーを増加
+		if (attackTimer < attackDuration) {
+			// 攻撃中は武器を前に倒す（X軸を回転）
+			playerWeapon->SetRotate({ 90.0f, playerRotation.y, playerRotation.z });
+		}
+		else {
+			// 攻撃状態を終了
+			isAttacking = false;
+			playerWeapon->SetRotate(playerRotation); // 元の回転に戻す
 		}
 	}
+	else {
+		// 通常時の武器の回転
+		playerWeapon->SetRotate(playerRotation);
+	}
 
-	playerBase->SetTranslate(playerPosition); // 新しい位置を設定
+	// プレイヤーと武器の位置を更新
+	playerBase->SetTranslate(playerPosition);
+	playerBase->SetRotate(playerRotation);
+
+	// 武器の位置をプレイヤーに追従させる
+	Vector3 weaponOffset = { 1.5f, 0.0f, 0.0f };          // 武器のオフセット
+	Vector3 weaponPosition = playerPosition;            // プレイヤーの位置を基準に計算
+
+	// 武器のオフセットをプレイヤーの回転に合わせて適用
+	float cosY = cos(playerRotation.y);
+	float sinY = sin(playerRotation.y);
+	weaponPosition.x += weaponOffset.x * cosY - weaponOffset.z * sinY;
+	weaponPosition.z += weaponOffset.x * sinY + weaponOffset.z * cosY;
+
+	playerWeapon->SetTranslate(weaponPosition);
+}
+
+
+
+
+
+void GamePlayScene::UpdateCamera()
+{
+	// プレイヤーの位置を取得
+	Vector3 playerPosition = playerBase->GetTranslate();
+
+	// カメラの初期位置
+	static Vector3 initialCameraOffset = { 0.0f, 0.0f, -30.0f };
+
+	// プレイヤー位置に基づいてカメラを移動
+	Vector3 cameraPosition;
+	cameraPosition.x = playerPosition.x + initialCameraOffset.x; // 初期オフセットを適用
+	cameraPosition.y = playerPosition.y + initialCameraOffset.y; // 高さはオフセット分
+	cameraPosition.z = playerPosition.z + initialCameraOffset.z; // プレイヤーの後方に配置
+
+	// カメラの回転角度（プレイヤーの動きに合わせる場合）
+	Vector3 cameraRotation = { 0.0f, 0.0f, 0.0f }; // 必要に応じて調整
+
+	// カメラの位置と回転を設定
+	mainCamera_.SetTranslate(cameraPosition);
+	mainCamera_.SetRotate(cameraRotation);
 }
