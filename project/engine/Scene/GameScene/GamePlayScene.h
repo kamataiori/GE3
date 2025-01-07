@@ -49,6 +49,12 @@ private:
 
 	std::unique_ptr<Sprite> monsterBall = std::make_unique<Sprite>();
 
+	std::unique_ptr<Sprite> WASD = std::make_unique<Sprite>();
+
+	std::unique_ptr<Sprite> exp = std::make_unique<Sprite>();
+
+	std::unique_ptr<Sprite> expJamp = std::make_unique<Sprite>();
+
 	// 3Dオブジェクトの初期化
 	/*std::unique_ptr<Object3d> plane = nullptr;
 	std::unique_ptr<Object3d> axis = nullptr;*/

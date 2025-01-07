@@ -108,6 +108,16 @@ void GamePlayScene::Initialize()
 
 
 	skyDome->SetEnableLighting(false);
+
+	WASD->Initialize("Resources/WASD.png");
+
+	exp->Initialize("Resources/exp.png");
+	exp->GetPosition();
+	exp->SetPosition({ 0.0f,120.0f });
+
+	expJamp->Initialize("Resources/expJamp.png");
+	expJamp->GetPosition();
+	expJamp->SetPosition({ 0.0f,220.0f });
 }
 
 void GamePlayScene::Finalize()
@@ -161,11 +171,13 @@ void GamePlayScene::Update()
 	monsterBall->SetSize({ 100.0f,100.0f });
 	monsterBall->Update();
 
-	ImGui::Begin("monsterBall");
+	/*ImGui::Begin("monsterBall");
 	ImGui::DragFloat2("transformation", &MonsterPosition.x);
-	ImGui::End();
+	ImGui::End();*/
 
-	
+	WASD->Update();
+	exp->Update();
+	expJamp->Update();
 
 	if (Input::GetInstance()->TriggerKey(DIK_L)) {
 		// シーン切り替え
@@ -198,7 +210,7 @@ void GamePlayScene::BackGroundDraw()
 	// ここからSprite個々の背景描画
 	// ================================================
 
-	monsterBall->Draw();
+	//monsterBall->Draw();
 
 	// ================================================
 	// ここまでSprite個々の背景描画
@@ -241,7 +253,9 @@ void GamePlayScene::ForeGroundDraw()
 	// ここからSprite個々の前景描画(UIなど)
 	// ================================================
 
-	
+	WASD->Draw();
+	exp->Draw();
+	expJamp->Draw();
 
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)
@@ -420,11 +434,11 @@ bool GamePlayScene::CheckSphereCollision(const Vector3& center1, float radius1, 
 	float radiusSum = radius1 + radius2;
 	float radiusSumSquared = radiusSum * radiusSum;
 
-	// デバッグ表示
-	ImGui::Begin("Collision Debug");
-	ImGui::Text("distanceSquared: %.2f", distanceSquared);
-	ImGui::Text("radiusSumSquared: %.2f", radiusSumSquared);
-	ImGui::End();
+	//// デバッグ表示
+	//ImGui::Begin("Collision Debug");
+	//ImGui::Text("distanceSquared: %.2f", distanceSquared);
+	//ImGui::Text("radiusSumSquared: %.2f", radiusSumSquared);
+	//ImGui::End();
 
 	// 衝突判定
 	return distanceSquared <= radiusSumSquared;
@@ -460,13 +474,13 @@ void GamePlayScene::HandleCollisions()
 
 	float enemyRadius = 1.0f; // 固定の半径
 
-	// デバッグ表示
-	ImGui::Begin("Collision Debug");
-	ImGui::Text("Weapon Position: X=%.2f, Y=%.2f, Z=%.2f", weaponPosition.x, weaponPosition.y, weaponPosition.z);
-	ImGui::Text("Enemy Position: X=%.2f, Y=%.2f, Z=%.2f", enemyPosition.x, enemyPosition.y, enemyPosition.z);
-	//ImGui::Text("distanceSquared: %.2f", (weaponPosition - enemyPosition).LengthSquared());
-	ImGui::Text("radiusSumSquared: %.2f", (weaponRadius + enemyRadius) * (weaponRadius + enemyRadius));
-	ImGui::End();
+	//// デバッグ表示
+	//ImGui::Begin("Collision Debug");
+	//ImGui::Text("Weapon Position: X=%.2f, Y=%.2f, Z=%.2f", weaponPosition.x, weaponPosition.y, weaponPosition.z);
+	//ImGui::Text("Enemy Position: X=%.2f, Y=%.2f, Z=%.2f", enemyPosition.x, enemyPosition.y, enemyPosition.z);
+	////ImGui::Text("distanceSquared: %.2f", (weaponPosition - enemyPosition).LengthSquared());
+	//ImGui::Text("radiusSumSquared: %.2f", (weaponRadius + enemyRadius) * (weaponRadius + enemyRadius));
+	//ImGui::End();
 
 	// 当たり判定
 	if (CheckSphereCollision(weaponPosition, weaponRadius, enemyPosition, enemyRadius)) {
@@ -478,10 +492,10 @@ void GamePlayScene::HandleCollisions()
 		// 衝突回数を増やす
 		collisionCount++;
 
-		// デバッグ表示
-		ImGui::Begin("Collision Debug");
-		ImGui::Text("Collision Count: %d", collisionCount);
-		ImGui::End();
+		//// デバッグ表示
+		//ImGui::Begin("Collision Debug");
+		//ImGui::Text("Collision Count: %d", collisionCount);
+		//ImGui::End();
 
 		// 最大回数に達したらシーン切り替え
 		if (collisionCount >= maxCollisions) {

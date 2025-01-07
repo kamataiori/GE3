@@ -3,6 +3,7 @@
 #include "Object3d.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include <Sprite.h>
 
 class TitleScene : public BaseScene
 {
@@ -42,7 +43,9 @@ public:
 private:
 
 	// 3Dオブジェクトの初期化
-	std::unique_ptr<Object3d> plane = nullptr;
+	//std::unique_ptr<Object3d> plane = nullptr;
+
+	std::unique_ptr<Sprite> title = std::make_unique<Sprite>();
 
 	////3Dカメラの初期化
 	//std::unique_ptr<CameraManager> cameraManager_ = nullptr;

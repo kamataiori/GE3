@@ -58,17 +58,17 @@ void TitleScene::Initialize()
 	currentCamera_ = &mainCamera_;
 
 	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
-	plane->Initialize();
-	//// モデル読み込み
-	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
-	ModelManager::GetInstance()->LoadModel("axis.obj");
-	plane->SetModel("uvChecker.gltf");
+	//plane = std::make_unique<Object3d>(this);
+	//plane->Initialize();
+	////// モデル読み込み
+	//ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
+	//ModelManager::GetInstance()->LoadModel("axis.obj");
+	//plane->SetModel("uvChecker.gltf");
 
-	// モデルにSRTを設定
-	plane->SetScale({ 1.0f, 1.0f, 1.0f });
-	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
-	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
+	//// モデルにSRTを設定
+	//plane->SetScale({ 1.0f, 1.0f, 1.0f });
+	//plane->SetRotate({ 0.0f, 3.14f, 0.0f });
+	//plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
 	//particle->Initialize();
 	//particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
@@ -76,6 +76,9 @@ void TitleScene::Initialize()
 	//// ParticleEmitterの初期化
 	//auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
 	//emitters.push_back(std::move(emitter));
+
+	title = std::make_unique<Sprite>();
+	title->Initialize("Resources/title.png");
 
 }
 
@@ -85,7 +88,9 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
-	BaseScene::ShowFPS();
+	//BaseScene::ShowFPS();
+
+	title->Update();
 
 	//// アルファ値を減少させる
 	//Vector4 color = plane->GetMaterialColor();
@@ -97,7 +102,7 @@ void TitleScene::Update()
 	//plane->SetMaterialColor(color);
 
 	// 各3Dオブジェクトの更新
-	plane->Update();
+	//plane->Update();
 	// カメラの更新
 	//camera->Update();
 
@@ -134,7 +139,7 @@ void TitleScene::Update()
 	//// 全カメラの更新
 	//cameraManager_->UpdateAllCameras();
 
-	ImGui::Begin("Camera Info");
+	/*ImGui::Begin("Camera Info");
 	if (currentCamera_ == &mainCamera_) {
 		ImGui::Text("Current Camera: Main Camera");
 	}
@@ -144,7 +149,7 @@ void TitleScene::Update()
 	else if (currentCamera_ == &diagonalCamera_) {
 		ImGui::Text("Current Camera: Diagonal Camera");
 	}
-	ImGui::End();
+	ImGui::End();*/
 
 	// 全カメラの更新
 	mainCamera_.Update();
@@ -163,9 +168,9 @@ void TitleScene::Update()
 	}
 
 	// 3Dオブジェクトのカメラを設定
-	plane->SetCamera(currentCamera_);
+	//plane->SetCamera(currentCamera_);
 
-	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		// シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAMEPLAY");
 	}
@@ -196,7 +201,7 @@ void TitleScene::Draw()
 	// ================================================
 
 	// 各オブジェクトの描画
-	plane->Draw();
+	//plane->Draw();
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
@@ -213,6 +218,8 @@ void TitleScene::ForeGroundDraw()
 	// ================================================
 
 	/*particle->Draw();*/
+
+	title->Draw();
 
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)
