@@ -56,6 +56,7 @@ private:
 	std::unique_ptr<Object3d> ground = nullptr;
 	std::unique_ptr<Object3d> playerBase = nullptr;
 	std::unique_ptr<Object3d> playerWeapon = nullptr;
+	std::unique_ptr<Object3d> enemy = nullptr;
 
 	////3Dカメラの初期化
 	// カメラを追加
@@ -76,9 +77,14 @@ private:
 	float attackTimer = 0.0f; // 攻撃状態のタイマー
 	const float attackDuration = 0.5f; // 攻撃状態の持続時間
 
+	Vector3 enemyMinBounds = { -10.0f, 0.0f, -10.0f }; // 敵の移動範囲の最小値
+	Vector3 enemyMaxBounds = { 10.0f, 0.0f, 10.0f };   // 敵の移動範囲の最大値
+	Vector3 enemyVelocity = { 0.1f, 0.0f, 0.1f };     // 敵の移動速度
+
 private:
 	void UpdatePlayerMovement(); // プレイヤー移動処理
 	void UpdateCamera();         // カメラ追従処理
+	void UpdateEnemyMovement();                      // 敵の移動処理
 
 };
 

@@ -17,6 +17,7 @@ void GamePlayScene::Initialize()
 	ground = std::make_unique<Object3d>(this);
 	playerBase = std::make_unique<Object3d>(this);
 	playerWeapon = std::make_unique<Object3d>(this);
+	enemy = std::make_unique<Object3d>(this);
 
 	/*plane->Initialize();
 	axis->Initialize();*/
@@ -24,6 +25,7 @@ void GamePlayScene::Initialize()
 	ground->Initialize();
 	playerBase->Initialize();
 	playerWeapon->Initialize();
+	enemy->Initialize();
 
 	// モデル読み込み
 	/*ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
@@ -41,6 +43,8 @@ void GamePlayScene::Initialize()
 	playerBase->SetModel("playerBase.obj");
 	ModelManager::GetInstance()->LoadModel("playerWeapon.obj");
 	playerWeapon->SetModel("playerWeapon.obj");
+	ModelManager::GetInstance()->LoadModel("enemy.obj");
+	enemy->SetModel("enemy.obj");
 
 	// モデルにSRTを設定
 	skyDome->SetScale({ 1.0f, 1.0f, 1.0f });
@@ -58,6 +62,10 @@ void GamePlayScene::Initialize()
 	playerWeapon->SetScale({ 1.5f, 1.0f, 1.0f });
 	playerWeapon->SetRotate({ 0.0f, 3.14f, 0.0f });
 	playerWeapon->SetTranslate({ 1.0f, 0.0f, 0.0f });
+
+	enemy->SetScale({ 1.0f, 1.0f, 1.0f });
+	enemy->SetRotate({ 0.0f, 3.14f, 0.0f });
+	enemy->SetTranslate({ 10.0f, 0.0f, 4.0f });
 
 	/*plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
@@ -108,11 +116,14 @@ void GamePlayScene::Update()
 	ground->Update();
 	playerBase->Update();
 	playerWeapon->Update();
+	enemy->Update();
 
 	// プレイヤーの移動処理
 	UpdatePlayerMovement();
 	// カメラの追従処理
 	UpdateCamera();
+	// 敵の移動処理
+	UpdateEnemyMovement();
 
 
 	// モンスターボール
@@ -141,6 +152,7 @@ void GamePlayScene::Update()
 	ground->SetCamera(currentCamera_);
 	playerBase->SetCamera(currentCamera_);
 	playerWeapon->SetCamera(currentCamera_);
+	enemy->SetCamera(currentCamera_);
 
 }
 
@@ -176,6 +188,7 @@ void GamePlayScene::Draw()
 	ground->Draw();
 	playerBase->Draw();
 	playerWeapon->Draw();
+	enemy->Draw();
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
@@ -202,7 +215,7 @@ void GamePlayScene::UpdatePlayerMovement()
 {
 	Vector3 playerPosition = playerBase->GetTranslate(); // 現在のプレイヤー位置を取得
 	Vector3 playerRotation = playerBase->GetRotate();    // 現在のプレイヤー回転を取得
-	const float velocity = 1.0f;                         // 移動速度
+	const float velocity = 0.4f;                         // 移動速度
 	const float rotationSpeed = 0.008f;                   // 回転速度（感度）
 
 	// 攻撃中でない場合のみ移動や回転を許可
@@ -288,8 +301,6 @@ void GamePlayScene::UpdatePlayerMovement()
 
 
 
-
-
 void GamePlayScene::UpdateCamera()
 {
 	// プレイヤーの位置を取得
@@ -310,4 +321,40 @@ void GamePlayScene::UpdateCamera()
 	// カメラの位置と回転を設定
 	mainCamera_.SetTranslate(cameraPosition);
 	mainCamera_.SetRotate(cameraRotation);
+}
+
+void GamePlayScene::UpdateEnemyMovement()
+{
+	// 現在の敵の位置を取得
+	Vector3 enemyPosition = enemy->GetTranslate();
+
+	// ランダム移動のための値を計算
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	static std::uniform_real_distribution<float> dis(-0.01f, 0.01f);
+
+	// ランダムな速度を適用
+	enemyVelocity.x += dis(gen);
+	enemyVelocity.z += dis(gen);
+
+	// 敵の移動範囲を制限
+	enemyPosition.x += enemyVelocity.x;
+	enemyPosition.z += enemyVelocity.z;
+
+	if (enemyPosition.x < enemyMinBounds.x || enemyPosition.x > enemyMaxBounds.x) {
+		enemyVelocity.x = -enemyVelocity.x; // 壁で反射
+	}
+	if (enemyPosition.z < enemyMinBounds.z || enemyPosition.z > enemyMaxBounds.z) {
+		enemyVelocity.z = -enemyVelocity.z; // 壁で反射
+	}
+
+	// Y軸は固定
+	enemyPosition.y = enemyMinBounds.y;
+
+	// 敵の速度を減衰させる（より滑らかにするため）
+	/*enemyVelocity.x *= 0.95f;
+	enemyVelocity.z *= 0.95f;*/
+
+	// 敵の位置を更新
+	enemy->SetTranslate(enemyPosition);
 }
