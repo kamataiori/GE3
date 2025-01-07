@@ -18,6 +18,7 @@ void GamePlayScene::Initialize()
 	playerBase = std::make_unique<Object3d>(this);
 	playerWeapon = std::make_unique<Object3d>(this);
 	enemy = std::make_unique<Object3d>(this);
+	effect = std::make_unique<Object3d>(this);
 
 	/*plane->Initialize();
 	axis->Initialize();*/
@@ -26,6 +27,7 @@ void GamePlayScene::Initialize()
 	playerBase->Initialize();
 	playerWeapon->Initialize();
 	enemy->Initialize();
+	effect->Initialize();
 
 	// モデル読み込み
 	/*ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
@@ -45,6 +47,8 @@ void GamePlayScene::Initialize()
 	playerWeapon->SetModel("playerWeapon.obj");
 	ModelManager::GetInstance()->LoadModel("enemy.obj");
 	enemy->SetModel("enemy.obj");
+	ModelManager::GetInstance()->LoadModel("effect.obj");
+	effect->SetModel("effect.obj");
 
 	// モデルにSRTを設定
 	skyDome->SetScale({ 1.0f, 1.0f, 1.0f });
@@ -66,6 +70,10 @@ void GamePlayScene::Initialize()
 	enemy->SetScale({ 1.0f, 1.0f, 1.0f });
 	enemy->SetRotate({ 0.0f, 3.14f, 0.0f });
 	enemy->SetTranslate({ 10.0f, 0.0f, 4.0f });
+
+	/*effect->SetScale({ 1.0f, 1.0f, 1.0f });
+	effect->SetRotate({ 0.0f, 3.14f, 0.0f });
+	effect->SetTranslate({ 1000.0f, 100.0f, 4.0f });*/
 
 	/*plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
@@ -109,6 +117,14 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
+	// クールダウンタイマーの更新
+	if (isCollisionCooldown) {
+		collisionCooldownTimer += 0.016f; // フレームごとにタイマーを増加
+		if (collisionCooldownTimer >= collisionCooldownTime) {
+			isCollisionCooldown = false; // クールダウン終了
+		}
+	}
+
 	// 各3Dオブジェクトの更新
 	/*plane->Update();
 	axis->Update();*/
@@ -117,6 +133,9 @@ void GamePlayScene::Update()
 	playerBase->Update();
 	playerWeapon->Update();
 	enemy->Update();
+	if (effectActive) {
+		effect->Update();
+	}
 
 	// プレイヤーの移動処理
 	UpdatePlayerMovement();
@@ -124,6 +143,17 @@ void GamePlayScene::Update()
 	UpdateCamera();
 	// 敵の移動処理
 	UpdateEnemyMovement();
+
+	// 衝突処理
+	HandleCollisions();
+
+	// エフェクトの表示時間を管理
+	if (effectActive) {
+		effectTimer += 0.016f; // フレームごとにタイマーを増加
+		if (effectTimer > effectDuration) {
+			effectActive = false; // 表示時間を超えたらエフェクトを非アクティブ化
+		}
+	}
 
 
 	// モンスターボール
@@ -153,6 +183,9 @@ void GamePlayScene::Update()
 	playerBase->SetCamera(currentCamera_);
 	playerWeapon->SetCamera(currentCamera_);
 	enemy->SetCamera(currentCamera_);
+	if (effectActive) {
+		effect->SetCamera(currentCamera_);
+	}
 
 }
 
@@ -189,6 +222,10 @@ void GamePlayScene::Draw()
 	playerBase->Draw();
 	playerWeapon->Draw();
 	enemy->Draw();
+
+	if (effectActive) {
+		effect->Draw(); // エフェクトの描画
+	}
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
@@ -357,4 +394,102 @@ void GamePlayScene::UpdateEnemyMovement()
 
 	// 敵の位置を更新
 	enemy->SetTranslate(enemyPosition);
+}
+
+bool GamePlayScene::CheckSphereCollision(const Vector3& center1, float radius1, const Vector3& center2, float radius2)
+{
+	//// 球の中心間距離を計算
+	//float distanceSquared = (center1.x - center2.x) * (center1.x - center2.x) +
+	//	(center1.y - center2.y) * (center1.y - center2.y) +
+	//	(center1.z - center2.z) * (center1.z - center2.z);
+
+	//// 半径の合計の2乗と比較
+	//float radiusSum = radius1 + radius2;
+	//float radiusSumSquared = radiusSum * radiusSum;
+	//return distanceSquared <= radiusSumSquared;
+
+	 // 中心間の距離を計算
+	float dx = center1.x - center2.x;
+	float dy = center1.y - center2.y;
+	float dz = center1.z - center2.z;
+
+	// 距離の平方
+	float distanceSquared = dx * dx + dy * dy + dz * dz;
+
+	// 半径の合計の平方
+	float radiusSum = radius1 + radius2;
+	float radiusSumSquared = radiusSum * radiusSum;
+
+	// デバッグ表示
+	ImGui::Begin("Collision Debug");
+	ImGui::Text("distanceSquared: %.2f", distanceSquared);
+	ImGui::Text("radiusSumSquared: %.2f", radiusSumSquared);
+	ImGui::End();
+
+	// 衝突判定
+	return distanceSquared <= radiusSumSquared;
+}
+
+void GamePlayScene::HandleCollisions()
+{
+	//// プレイヤーの武器と敵の位置・半径を取得
+	//Vector3 weaponPosition = playerWeapon->GetTranslate();
+	//float weaponRadius = playerWeapon->GetScale().x / 2.0f; // 武器のスケールから半径を推定
+	//Vector3 enemyPosition = enemy->GetTranslate();
+	//float enemyRadius = enemy->GetScale().x / 2.0f;         // 敵のスケールから半径を推定
+
+	//// 当たり判定
+	//if (CheckSphereCollision(weaponPosition, weaponRadius, enemyPosition, enemyRadius)) {
+	//	// 衝突時の処理: エフェクトを敵の位置に表示
+	//	effect->SetTranslate(enemyPosition); // 敵の位置にエフェクトを配置
+	//	effectActive = true;                 // エフェクトをアクティブに
+	//	effectTimer = 0.0f;                  // エフェクトタイマーをリセット
+	//}
+
+	  // プレイヤーの武器の位置を取得
+	Vector3 weaponPosition = playerWeapon->GetTranslate();
+	float weaponRadius = 1.0f; // 固定の半径
+
+	// 敵の位置を取得
+	Vector3 enemyPosition = enemy->GetTranslate();
+
+	// 必要に応じてオフセットを適用
+	// 敵モデルの中心が正しくない場合、オフセットを加える
+	float offsetZ = 1.0f; // 必要に応じて調整
+	enemyPosition.z += offsetZ;
+
+	float enemyRadius = 1.0f; // 固定の半径
+
+	// デバッグ表示
+	ImGui::Begin("Collision Debug");
+	ImGui::Text("Weapon Position: X=%.2f, Y=%.2f, Z=%.2f", weaponPosition.x, weaponPosition.y, weaponPosition.z);
+	ImGui::Text("Enemy Position: X=%.2f, Y=%.2f, Z=%.2f", enemyPosition.x, enemyPosition.y, enemyPosition.z);
+	//ImGui::Text("distanceSquared: %.2f", (weaponPosition - enemyPosition).LengthSquared());
+	ImGui::Text("radiusSumSquared: %.2f", (weaponRadius + enemyRadius) * (weaponRadius + enemyRadius));
+	ImGui::End();
+
+	// 当たり判定
+	if (CheckSphereCollision(weaponPosition, weaponRadius, enemyPosition, enemyRadius)) {
+		// 衝突時の処理: 敵の位置にエフェクトを表示
+		effect->SetTranslate(enemyPosition); // 敵の位置にエフェクトを配置
+		effectActive = true;                 // エフェクトをアクティブに
+		effectTimer = 0.0f;                  // エフェクトタイマーをリセット
+
+		// 衝突回数を増やす
+		collisionCount++;
+
+		// デバッグ表示
+		ImGui::Begin("Collision Debug");
+		ImGui::Text("Collision Count: %d", collisionCount);
+		ImGui::End();
+
+		// 最大回数に達したらシーン切り替え
+		if (collisionCount >= maxCollisions) {
+			SceneManager::GetInstance()->ChangeScene("TITLE");
+		}
+
+		// クールダウン開始
+		isCollisionCooldown = true;
+		collisionCooldownTimer = 0.0f; // タイマーリセット
+	}
 }

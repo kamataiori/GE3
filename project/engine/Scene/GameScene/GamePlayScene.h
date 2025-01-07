@@ -57,6 +57,7 @@ private:
 	std::unique_ptr<Object3d> playerBase = nullptr;
 	std::unique_ptr<Object3d> playerWeapon = nullptr;
 	std::unique_ptr<Object3d> enemy = nullptr;
+	std::unique_ptr<Object3d> effect = nullptr;
 
 	////3Dカメラの初期化
 	// カメラを追加
@@ -81,10 +82,28 @@ private:
 	Vector3 enemyMaxBounds = { 10.0f, 0.0f, 10.0f };   // 敵の移動範囲の最大値
 	Vector3 enemyVelocity = { 0.1f, 0.0f, 0.1f };     // 敵の移動速度
 
+	bool effectActive = false;     // エフェクトがアクティブかどうか
+	float effectTimer = 0.0f;      // エフェクトの表示時間タイマー
+	const float effectDuration = 1.0f; // エフェクトの表示時間（秒）
+
+	const float weaponRadius = 1.0f; // 武器の半径
+	const float enemyRadius = 2.0f;  // 敵の半径
+
+	int collisionCount = 0;         // 当たり判定が発生した回数
+	const int maxCollisions = 3;    // シーン切り替えが発生する最大回数
+	bool isCollisionCooldown = false; // クールダウン中かどうか
+	const float collisionCooldownTime = 0.5f; // クールダウンの時間（秒）
+	float collisionCooldownTimer = 0.0f; // クールダウンのタイマー
+
 private:
 	void UpdatePlayerMovement(); // プレイヤー移動処理
 	void UpdateCamera();         // カメラ追従処理
 	void UpdateEnemyMovement();                      // 敵の移動処理
+
+private:
+	bool CheckSphereCollision(const Vector3& center1, float radius1, const Vector3& center2, float radius2);
+	void HandleCollisions();
+
 
 };
 
