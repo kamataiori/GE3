@@ -73,11 +73,12 @@ public:
     void SetScale(const Vector3& scale) { this->transform.scale = scale; }
     void SetRotate(const Vector3& rotate) { this->transform.rotate = rotate; }
     void SetTranslate(const Vector3& translate) { this->transform.translate = translate; }
-    void SetCamera(Camera* camera) { this->camera = camera; }
     // カメラの設定
-    void SetCameraManager(CameraManager* cameraManager);
+    void SetCamera(Camera* camera) { this->camera_ = camera; } // Cameraを直接設定
+
     // enableLightingのセッター
     void SetEnableLighting(bool enable);
+
 
     //--------getter--------//
     const Vector3& GetScale() const { return transform.scale; }
@@ -100,8 +101,7 @@ private:
     TransformationMatrix* transformationMatrixData = nullptr;
 
     // Cameraの初期化
-    Camera* camera = nullptr;
-    CameraManager* cameraManager_ = nullptr;
+    Camera* camera_ = nullptr;
 
     Matrix4x4 worldviewProjectionMatrix;
 

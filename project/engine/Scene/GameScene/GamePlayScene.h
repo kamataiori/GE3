@@ -62,7 +62,6 @@ private:
 	std::unique_ptr<Object3d> axis = nullptr;
 
 	//3Dカメラの初期化
-	std::unique_ptr<CameraManager> cameraManager = nullptr;
 	std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();
 	std::unique_ptr<Camera> camera2 = std::make_unique<Camera>();
 	bool cameraFlag = false;  //ImGuiで制御するカメラの切り替えフラグ

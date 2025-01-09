@@ -37,13 +37,13 @@ void TitleScene::Initialize()
 	plane->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
 	// 3Dカメラの初期化
-	cameraManager = std::make_unique<CameraManager>();
+	camera1 = std::make_unique<Camera>();
 	camera1->SetTranslate({ 0.0f, 0.0f, -15.0f });
-	cameraManager->AddCamera(camera1.get());
+	camera1->SetRotate({ 0.0f, 0.0f, 0.0f });
 
 	// カメラのセット
-	plane->SetCameraManager(cameraManager.get());
-	particle->SetCameraManager(cameraManager.get());
+	plane->SetCamera(camera1.get());
+	particle->SetCamera(camera1.get());
 
 	particle->Initialize();
 	particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});

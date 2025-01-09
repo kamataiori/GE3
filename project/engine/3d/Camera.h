@@ -14,7 +14,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	virtual void Update();
 
 public:
 	//------setter------//
@@ -34,7 +34,7 @@ public:
 	const Vector3& GetTranslate() const { return transform.translate; }
 
 
-private:
+protected:
 
 	//------ビュー行列関連データ------//
 	Transform transform;

@@ -62,7 +62,7 @@ public:
 	void CreateParticleGroup(const std::string name, const std::string textureFilePath, BlendMode blendMode = kBlendModeNormal, const Vector2& customSize = { 0.0f, 0.0f });
 
 	// カメラの設定
-	void SetCameraManager(CameraManager* cameraManager);
+	void SetCamera(Camera* camera) { this->camera_ = camera; }
 
 private:
 
@@ -224,8 +224,7 @@ private:
 	bool usebillboardMatrix = true;
 
 	// Cameraの初期化
-	Camera* camera = nullptr;
-	CameraManager* cameraManager_ = nullptr;
+	Camera* camera_ = nullptr;
 	//常にカメラ目線
 	Transform cameraTransform{ {1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f},{0.0f,23.0f,10.0f}};
 

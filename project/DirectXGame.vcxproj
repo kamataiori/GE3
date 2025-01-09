@@ -105,6 +105,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="CharacterBase.cpp" />
     <ClCompile Include="engine\Scene\SceneManager\AbstractSceneFactory\AbstractSceneFactory.cpp" />
     <ClCompile Include="engine\Scene\SceneManager\BaseScene\BaseScene.cpp" />
     <ClCompile Include="engine\3d\CameraManager.cpp" />
@@ -122,6 +123,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="engine\Scene\GameScene\GamePlayScene.cpp" />
+    <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -151,6 +153,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="CharacterBase.h" />
     <ClInclude Include="engine\Scene\SceneManager\AbstractSceneFactory\AbstractSceneFactory.h" />
     <ClInclude Include="engine\Scene\SceneManager\BaseScene\BaseScene.h" />
     <ClInclude Include="engine\3d\CameraManager.h" />
@@ -170,6 +173,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\math\MathFunctions.h" />
     <ClInclude Include="engine\FrameWork\Framework.h" />
     <ClInclude Include="engine\Scene\GameScene\GamePlayScene.h" />
+    <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />

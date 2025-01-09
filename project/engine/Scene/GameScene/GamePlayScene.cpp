@@ -51,17 +51,14 @@ void GamePlayScene::Initialize()
 	axis->SetTranslate({ 2.0f, 0.0f, 0.0f });
 
 	// 3Dカメラの初期化
-	cameraManager = std::make_unique<CameraManager>();
 	camera1->SetTranslate({ 0.0f, 0.0f, -20.0f });
-	cameraManager->AddCamera(camera1.get());
 
 	camera2->SetTranslate({ 5.0f, 1.0f, -40.0f });
-	cameraManager->AddCamera(camera2.get());
 
 	// カメラのセット
-	plane->SetCameraManager(cameraManager.get());
-	axis->SetCameraManager(cameraManager.get());
-	particle->SetCameraManager(cameraManager.get());
+	plane->SetCamera(camera1.get());
+	axis->SetCamera(camera1.get());
+	particle->SetCamera(camera1.get());
 
 	// Audioの初期化
 	audio->Initialize();
@@ -122,16 +119,6 @@ void GamePlayScene::Update()
 	cameraRotate.z = 0.0f;
 	camera2->SetRotate(cameraRotate);
 	camera2->Update();
-
-	// カメラコントロール用のウィンドウを作成
-	ImGui::Begin("Camera Control");
-
-	// カメラの切り替え
-	if (ImGui::Checkbox("Use Second Camera", &cameraFlag)) {
-		cameraManager->SetCurrentCamera(cameraFlag ? 1 : 0);
-	}
-
-	ImGui::End();
 
 	// モンスターボール
 	monsterBall->SetPosition(MonsterPosition);
