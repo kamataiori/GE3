@@ -44,12 +44,6 @@ public:
 	virtual void ForeGroundDraw() = 0;
 
 	/// <summary>
-	/// シーンマネージャーをシーンに貸し出すためのSetter
-	/// </summary>
-	/// <param name="sceneManager"></param>
-	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
-
-	/// <summary>
 	/// Lightのゲッター
 	/// </summary>
 	Light* GetLight() const {
@@ -80,8 +74,6 @@ public:
 	}
 
 private:
-	// シーンマネージャー (借りてくる)
-	SceneManager* sceneManager_ = nullptr;
 
 	// ライトの初期化
 	std::unique_ptr<Light> light = std::make_unique<Light>();
