@@ -4,11 +4,6 @@
 #define _USE_MATH_DEFINES
 #include "GamePlayScene.h"
 
-Object3d::Object3d(BaseScene* scene)
-{
-    baseScene_ = scene;
-}
-
 void Object3d::Initialize()
 {
     // 引数で受け取ってメンバ変数に記録する
@@ -22,6 +17,10 @@ void Object3d::Initialize()
 
     // デフォルトカメラをセット
     this->camera_ = object3dCommon_->GetDefaultCamera();
+
+    // ライトの初期化
+    LightManager::GetInstance()->Initialize(); // 必要に応じて初期化
+    light_ = LightManager::GetInstance()->GetLight(); // ライトを取得
 }
 
 void Object3d::Update()
@@ -64,13 +63,13 @@ void Object3d::Draw()
     // 座標変換行列CBufferの場所を設定
     object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, baseScene_->GetLight()->GetDirectionalLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(3, light_->GetDirectionalLightGPUAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, baseScene_->GetLight()->GetCameraLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(4, light_->GetCameraLightGPUAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(5, baseScene_->GetLight()->GetPointLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(5, light_->GetPointLightGPUAddress());
 
-    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(6, baseScene_->GetLight()->GetSpotLightGPUAddress());
+    object3dCommon_->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(6, light_->GetSpotLightGPUAddress());
 
     // 3Dモデルが割り当てられていたら描画する
     if (model_) {
@@ -98,6 +97,7 @@ void Object3d::SetMaterialColor(const Vector4& color)
     assert(model_);
     model_->SetMaterialColor(color);
 }
+
 
 void Object3d::SetEnableLighting(bool enable)
 {

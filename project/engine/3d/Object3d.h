@@ -12,11 +12,11 @@
 #include "Transform.h"
 #include <numbers>
 #include "Light.h"
+#include "LightManager.h"
 
 //---前方宣言---//
 class Object3dCommon;
 class Camera;
-class BaseScene;
 
 class Object3d
 {
@@ -34,8 +34,8 @@ public:
         Matrix4x4 WorldInverseTranspose;
     };
 
-    Object3d(BaseScene* scene);
-    ~Object3d() = default;
+    /*Object3d();
+    ~Object3d() = default;*/
 
     /// <summary>
     /// 初期化
@@ -75,7 +75,6 @@ public:
     void SetTranslate(const Vector3& translate) { this->transform.translate = translate; }
     // カメラの設定
     void SetCamera(Camera* camera) { this->camera_ = camera; } // Cameraを直接設定
-
     // enableLightingのセッター
     void SetEnableLighting(bool enable);
 
@@ -88,13 +87,14 @@ public:
     // Material colorのゲッター
     const Vector4& GetMaterialColor() const;
 
+
 private:
     // Object3dCommonの初期化
     Object3dCommon* object3dCommon_ = nullptr;
     // Modelの初期化
     Model* model_ = nullptr;
 
-    BaseScene* baseScene_ = nullptr;
+    Light* light_ = nullptr; // Light クラスへの参照を保持
 
     // バッファリソース
     Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource;  // TransformMatrix用Matrix4x4 1つ分のサイズを用意する

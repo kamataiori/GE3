@@ -29,8 +29,8 @@ void GamePlayScene::Initialize()
 	MonsterPosition = { 100.0f,100.0f };
 
 	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
-	axis = std::make_unique<Object3d>(this);
+	plane = std::make_unique<Object3d>();
+	axis = std::make_unique<Object3d>();
 
 	plane->Initialize();
 	axis->Initialize();
@@ -66,21 +66,6 @@ void GamePlayScene::Initialize()
 	//audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
 	//audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);
 	isAudio = false;
-
-
-	// ライト
-	// Lightクラスのデータを初期化
-	BaseScene::GetLight()->Initialize();
-	BaseScene::GetLight()->GetCameraLight();
-	BaseScene::GetLight()->GetDirectionalLight();
-	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
-	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	//BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
-	BaseScene::GetLight()->GetSpotLight();
-	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
-	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
-	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });
 
 
 	particle->Initialize();

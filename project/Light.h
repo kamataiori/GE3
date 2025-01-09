@@ -51,10 +51,10 @@ public:
     void InitializeSpotLight();
 
     // Getter
-    DirectionalLight* GetDirectionalLight();
-    CameraForGPU* GetCameraLight();
-    PointLight* GetPointLight();
-    SpotLight* GetSpotLight();
+    const DirectionalLight* GetDirectionalLight();
+    const CameraForGPU* GetCameraLight();
+    const PointLight* GetPointLight();
+    const SpotLight* GetSpotLight();
 
     // Setter
     void SetDirectionalLightColor(const Vector4& color);

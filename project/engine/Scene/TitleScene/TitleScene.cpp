@@ -5,26 +5,9 @@
 
 void TitleScene::Initialize()
 {
-	// ==============================================
-	//    BaseSceneがLightを持っているため
-	//    LightのInitialize()は必ず必要
-	// ==============================================
-
-	// Lightクラスのデータを初期化
-	BaseScene::GetLight()->Initialize();
-	BaseScene::GetLight()->GetCameraLight();
-	BaseScene::GetLight()->GetDirectionalLight();
-	BaseScene::GetLight()->SetDirectionalLightIntensity({ 1.0f });
-	BaseScene::GetLight()->SetDirectionalLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	//BaseScene::GetLight()->SetDirectionalLightDirection(Normalize({ 1.0f,1.0f }));
-	/*BaseScene::GetLight()->GetSpotLight();
-	BaseScene::GetLight()->SetCameraPosition({ 0.0f, 1.0f, 0.0f });
-	BaseScene::GetLight()->SetSpotLightColor({ 1.0f,1.0f,1.0f,1.0f });
-	BaseScene::GetLight()->SetSpotLightPosition({ 10.0f,2.25f,0.0f });
-	BaseScene::GetLight()->SetSpotLightIntensity({ 4.0f });*/
 
 	// 3Dオブジェクトの初期化
-	plane = std::make_unique<Object3d>(this);
+	plane = std::make_unique<Object3d>();
 	plane->Initialize();
 	//// モデル読み込み
 	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
