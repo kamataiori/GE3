@@ -211,14 +211,14 @@ void OffscreenRendering::GraphicsPipelineState()
 
 	////=========ShaderをCompileする=========////
 
-	vertexShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/CopyImage.VS.hlsl",
+	vertexShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/Fullscreen.VS.hlsl",
 		L"vs_6_0"/*, dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler()*/);
 	if (vertexShaderBlob_ == nullptr) {
 		Logger::Log("vertexShaderBlob_\n");
 		exit(1);
 	}
 	assert(vertexShaderBlob_ != nullptr);
-	pixelShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/CopyImage.PS.hlsl",
+	pixelShaderBlob_ = dxCommon_->CompileShader(L"Resources/shaders/Grayscale.PS.hlsl",
 		L"ps_6_0"/*, dxCommon->GetDxcUtils(), dxCommon->GetDxcCompiler(), dxCommon->GetIncludeHandler()*/);
 	if (pixelShaderBlob_ == nullptr) {
 		Logger::Log("pixelShaderBlob_\n");
