@@ -138,10 +138,10 @@
     <ClCompile Include="externals\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Scene\GameScene\GamePlayScene.cpp">
+    <ClCompile Include="application\Scene\GameScene\GamePlayScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Scene\TitleScene\TitleScene.cpp">
+    <ClCompile Include="application\Scene\TitleScene\TitleScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="engine\Scene\SceneManager\BaseScene\BaseScene.cpp">
@@ -183,10 +183,10 @@
     <ClCompile Include="FollowCamera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterBase.cpp">
+    <ClCompile Include="application\Character\CharacterBase\CharacterBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="application\Character\CharacterBase\Player\Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,10 +293,10 @@
     <ClInclude Include="engine\FrameWork\Framework.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Scene\GameScene\GamePlayScene.h">
+    <ClInclude Include="application\Scene\GameScene\GamePlayScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Scene\TitleScene\TitleScene.h">
+    <ClInclude Include="application\Scene\TitleScene\TitleScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="engine\Scene\SceneManager\BaseScene\BaseScene.h">
@@ -341,10 +341,10 @@
     <ClInclude Include="FollowCamera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterBase.h">
+    <ClInclude Include="application\Character\CharacterBase\CharacterBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="application\Character\CharacterBase\Player\Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
