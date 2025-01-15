@@ -180,7 +180,7 @@
     <ClCompile Include="PostEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="FollowCamera.cpp">
+    <ClCompile Include="application\Camera\FollowCamera\FollowCamera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="application\Character\CharacterBase\CharacterBase.cpp">
@@ -338,7 +338,7 @@
     <ClInclude Include="PostEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="FollowCamera.h">
+    <ClInclude Include="application\Camera\FollowCamera\FollowCamera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="application\Character\CharacterBase\CharacterBase.h">
