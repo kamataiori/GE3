@@ -63,7 +63,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\SRVManager;$(ProjectDir)externals\assimp\include;$(ProjectDir)application\Scene\TitleScene;$(ProjectDir)application\Scene\GameScene;$(ProjectDir)application\Character\CharacterBase;$(ProjectDir)application\Character\CharacterBase\Player;$(ProjectDir)application\Camera\FollowCamera;$(ProjectDir)engine\Effects\Particle;$(ProjectDir)engine\Effects\PostEffect;$(ProjectDir)engine\Effects\Particle\ParticleManager;$(ProjectDir)engine\Effects\Particle\ParticleEmitter;$(ProjectDir)engine\Framework\Audio</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\SRVManager;$(ProjectDir)externals\assimp\include;$(ProjectDir)application\Scene\TitleScene;$(ProjectDir)application\Scene\GameScene;$(ProjectDir)application\Character\CharacterBase;$(ProjectDir)application\Character\CharacterBase\Player;$(ProjectDir)application\Camera\FollowCamera;$(ProjectDir)engine\Effects\Particle;$(ProjectDir)engine\Effects\PostEffect;$(ProjectDir)engine\Effects\Particle\ParticleManager;$(ProjectDir)engine\Effects\Particle\ParticleEmitter;$(ProjectDir)engine\Framework\Audio;$(ProjectDir)application\Camera\FPSCamera</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -85,7 +85,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\SRVManager;$(ProjectDir)externals\assimp\include;$(ProjectDir)application\Scene\TitleScene;$(ProjectDir)application\Scene\GameScene;$(ProjectDir)application\Character\CharacterBase;$(ProjectDir)application\Character\CharacterBase\Player;$(ProjectDir)application\Camera\FollowCamera;$(ProjectDir)engine\Effects\Particle;$(ProjectDir)engine\Effects\PostEffect;$(ProjectDir)engine\Effects\Particle\ParticleManager;$(ProjectDir)engine\Effects\Particle\ParticleEmitter;$(ProjectDir)engine\Framework\Audio</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\check;$(ProjectDir)engine\math;$(ProjectDir)vector;$(ProjectDir)matrix;$(ProjectDir)engine\directx;$(ProjectDir)engine\FrameWork\input;$(ProjectDir)\engine\logger;$(ProjectDir)engine\string;$(ProjectDir)engine\FrameWork\WinApp;$(ProjectDir)engine\FrameWork\MyGame;$(ProjectDir)engine\FrameWork;$(ProjectDir)engine\Scene;$(ProjectDir)engine\Scene\SceneManager;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory;$(ProjectDir)engine\Scene\SceneManager\BaseScene;$(ProjectDir)engine\Scene\SceneManager\AbstractSceneFactory\SceneFactory;$(ProjectDir)engine\SRVManager;$(ProjectDir)externals\assimp\include;$(ProjectDir)application\Scene\TitleScene;$(ProjectDir)application\Scene\GameScene;$(ProjectDir)application\Character\CharacterBase;$(ProjectDir)application\Character\CharacterBase\Player;$(ProjectDir)application\Camera\FollowCamera;$(ProjectDir)engine\Effects\Particle;$(ProjectDir)engine\Effects\PostEffect;$(ProjectDir)engine\Effects\Particle\ParticleManager;$(ProjectDir)engine\Effects\Particle\ParticleEmitter;$(ProjectDir)engine\Framework\Audio;$(ProjectDir)application\Camera\FPSCamera</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -124,7 +124,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="application\Scene\GameScene\GamePlayScene.cpp" />
     <ClCompile Include="application\Camera\FollowCamera\FollowCamera.cpp" />
-    <ClCompile Include="FPSCamera.cpp" />
+    <ClCompile Include="application\Camera\FPSCamera\FPSCamera.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="engine\3d\Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -176,7 +176,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\FrameWork\Framework.h" />
     <ClInclude Include="application\Scene\GameScene\GamePlayScene.h" />
     <ClInclude Include="application\Camera\FollowCamera\FollowCamera.h" />
-    <ClInclude Include="FPSCamera.h" />
+    <ClInclude Include="application\Camera\FPSCamera\FPSCamera.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="engine\3d\Light.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />
