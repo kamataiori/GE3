@@ -9,6 +9,7 @@
 #include "Light.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include "Player.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -45,6 +46,22 @@ public:
 	/// </summary>
 	void ForeGroundDraw() override;
 
+	/// <summary>
+	/// camera1のセッター
+	/// </summary>
+	void SetCamera1(std::unique_ptr<Camera> newCamera)
+	{
+		camera1 = std::move(newCamera);
+	}
+
+	/// <summary>
+	/// camera1のゲッター
+	/// </summary>
+	Camera* GetCamera1() const
+	{
+		return camera1.get();
+	}
+
 private:
 
 	float offsetX = 100.0f;  //各スプライトのX座標をずらすオフセット値
@@ -75,5 +92,8 @@ private:
 
 	std::unique_ptr<ParticleManager> particle = std::make_unique<ParticleManager>();
 	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
+
+
+	std::unique_ptr<Player> player_;
 };
 

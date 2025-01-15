@@ -1,9 +1,17 @@
 #pragma once
 #include "Transform.h"
+#include "Object3d.h"
 
 class CharacterBase
 {
 public:
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="baseScene"></param>
+    CharacterBase(BaseScene* baseScene) : baseScene_(baseScene) { object3d_ = std::make_unique<Object3d>(baseScene_); }
+    
     /// <summary>
     /// 初期化
     /// </summary>
@@ -24,6 +32,12 @@ public:
     /// </summary>
     const Transform& GetTransform() const { return transform; }
 
+    void SetCamera(Camera* camera) { object3d_->SetCamera(camera); }
+
 protected:
     Transform transform; // キャラクターの基本Transform
+
+    BaseScene* baseScene_;
+
+    std::unique_ptr<Object3d> object3d_;
 };

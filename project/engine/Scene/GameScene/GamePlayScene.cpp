@@ -68,6 +68,13 @@ void GamePlayScene::Initialize()
 	isAudio = false;
 
 
+	player_ = std::make_unique<Player>(this);
+	player_->Initialize();
+
+	player_->SetCamera(camera1.get());
+
+
+
 	// ライト
 	// Lightクラスのデータを初期化
 	BaseScene::GetLight()->Initialize();
@@ -106,6 +113,7 @@ void GamePlayScene::Update()
 	plane->Update();
 	axis->Update();
 
+	player_->Update();
 
 	// ImGuiでオブジェクトの情報を表示
 	plane->ImGuiUpdate("plane");
@@ -228,7 +236,8 @@ void GamePlayScene::Draw()
 	// ================================================
 
 	// 各オブジェクトの描画
-	plane->Draw();
+	//plane->Draw();
+	player_->Draw();
 	axis->Draw();
 
 	// ================================================
