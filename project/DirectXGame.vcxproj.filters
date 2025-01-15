@@ -159,25 +159,25 @@
     <ClCompile Include="engine\SRVManager\SrvManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Audio.cpp">
+    <ClCompile Include="engine\FrameWork\Audio\Audio.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
+    <ClCompile Include="engine\3d\Light.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleManager.cpp">
+    <ClCompile Include="engine\Effects\Particle\ParticleManager\ParticleManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleEmitter.cpp">
+    <ClCompile Include="engine\Effects\Particle\ParticleEmitter\ParticleEmitter.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="OffscreenRendering.cpp">
+    <ClCompile Include="engine\Effects\PostEffect\OffscreenRendering.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="PostEffect.cpp">
+    <ClCompile Include="engine\Effects\PostEffect\PostEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="application\Camera\FollowCamera\FollowCamera.cpp">
@@ -314,28 +314,28 @@
     <ClInclude Include="engine\SRVManager\SrvManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Audio.h">
+    <ClInclude Include="engine\FrameWork\Audio\Audio.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
+    <ClInclude Include="engine\3d\Light.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleManager.h">
+    <ClInclude Include="engine\Effects\Particle\ParticleManager\ParticleManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleEmitter.h">
+    <ClInclude Include="engine\Effects\Particle\ParticleEmitter\ParticleEmitter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="OffscreenRendering.h">
+    <ClInclude Include="engine\Effects\PostEffect\OffscreenRendering.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PostEffect.h">
+    <ClInclude Include="engine\Effects\PostEffect\PostEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="application\Camera\FollowCamera\FollowCamera.h">
