@@ -368,6 +368,7 @@
     <FxCompile Include="Resources\shaders\Sprite.VS.hlsl" />
     <FxCompile Include="Resources\shaders\Sprite.PS.hlsl" />
     <FxCompile Include="Resources\shaders\Grayscale.PS.hlsl" />
+    <FxCompile Include="Resources\shaders\Vignette.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectXGame.rc">
