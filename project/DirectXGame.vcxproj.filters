@@ -370,6 +370,7 @@
     <FxCompile Include="Resources\shaders\Grayscale.PS.hlsl" />
     <FxCompile Include="Resources\shaders\Vignette.PS.hlsl" />
     <FxCompile Include="Resources\shaders\BoxFilter.PS.hlsl" />
+    <FxCompile Include="Resources\shaders\BoxFilter3x3.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectXGame.rc">
