@@ -8,7 +8,13 @@ enum class Color {
     RED,
     BLUE,
     GREEN,
-    YELLOW
+    YELLOW,
+    ORANGE,
+    CYAN,
+    PURPLE,
+    LIME,
+    BLACK,
+    PINK
 };
 
 // 色の名前と対応する値を取得する関数
@@ -18,7 +24,13 @@ inline DirectX::XMFLOAT4 GetColorValue(Color color) {
         {Color::RED,    {1.0f, 0.0f, 0.0f, 1.0f}},
         {Color::BLUE,   {0.0f, 0.0f, 1.0f, 1.0f}},
         {Color::GREEN,  {0.0f, 1.0f, 0.0f, 1.0f}},
-        {Color::YELLOW, {1.0f, 1.0f, 0.0f, 1.0f}}
+        {Color::YELLOW, {1.0f, 1.0f, 0.0f, 1.0f}},
+        {Color::ORANGE, {1.0f, 0.5f, 0.0f, 1.0f}}, // オレンジ
+        {Color::CYAN,   {0.0f, 1.0f, 1.0f, 1.0f}}, // 水色
+        {Color::PURPLE, {0.5f, 0.0f, 0.5f, 1.0f}}, // 紫
+        {Color::LIME,   {0.5f, 1.0f, 0.0f, 1.0f}}, // 黄緑
+        {Color::BLACK,  {0.0f, 0.0f, 0.0f, 1.0f}}, // 黒
+        {Color::PINK,   {1.0f, 0.5f, 0.5f, 1.0f}}  // ピンク
     };
 
     auto it = colorMap.find(color);

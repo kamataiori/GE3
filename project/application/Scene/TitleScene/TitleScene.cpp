@@ -53,7 +53,7 @@ void TitleScene::Initialize()
 	emitters.push_back(std::move(emitter));
 
 	drawLine_ = std::make_unique<DrawLine>();
-	drawLine_->Initialize({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f, 0.0f }, Color::WHITE, Color::WHITE);
+	drawLine_->Initialize({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f, 0.0f }, Color::LIME, Color::LIME);
 }
 
 void TitleScene::Finalize()
