@@ -20,7 +20,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     // グレースケール値を適用
     output.color.rgb = float3(value, value, value);
     // セピア調(回想シーンなどで使える)
-    //output.color.rgb = value * float3(1.0f, 74.0f / 107.0f, 43.0f / 107.0f);
+    output.color.rgb = value * float3(1.0f, 74.0f / 107.0f, 43.0f / 107.0f);
 
     return output;
 }

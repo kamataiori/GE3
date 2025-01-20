@@ -11,6 +11,7 @@
 #include "AbstractSceneFactory.h"
 #include "Audio.h"
 #include "D3DResourceLeakChecker.h"
+#include "DrawLineCommon.h"
 
 static const int kWindowWidth = 1280;
 static const int kWindowHeight = 720;
