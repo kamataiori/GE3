@@ -1,5 +1,4 @@
 #pragma once
-
 #include "DirectXCommon.h"
 #include "DrawLineCommon.h"
 #include "Color.h"
