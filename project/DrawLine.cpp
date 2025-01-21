@@ -7,32 +7,60 @@ void DrawLine::Initialize()
 
     // DrawLineCommon のインスタンスを取得
     drawLineCommon_ = DrawLineCommon::GetInstance();
-
-    // 頂点バッファとインデックスバッファを作成
-    CreateVertexData();
-    CreateIndexData();
 }
 
-void DrawLine::Update(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLOAT3& endPoint,
-    Color startColor, Color endColor)
-{
-    // 始点、終点、色を更新
-    startPoint_ = startPoint;
-    endPoint_ = endPoint;
-    startColor_ = GetColorValue(startColor);
-    endColor_ = GetColorValue(endColor);
+void DrawLine::AddLine(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLOAT3& endPoint,
+    Color startColor, Color endColor) {
+    // 現在の頂点数を基準にインデックスを設定
+    uint32_t baseIndex = static_cast<uint32_t>(vertices_.size());
 
-    // 頂点データを書き換え
+    // 色を取得してfloat配列に変換
+    DirectX::XMFLOAT4 startColorValue = GetColorValue(startColor);
+    DirectX::XMFLOAT4 endColorValue = GetColorValue(endColor);
+
+    // 頂点データを追加
+    vertices_.push_back({
+        {startPoint.x, startPoint.y, startPoint.z}, // 座標
+        {startColorValue.x, startColorValue.y, startColorValue.z, startColorValue.w} // 色
+        });
+
+    vertices_.push_back({
+        {endPoint.x, endPoint.y, endPoint.z}, // 座標
+        {endColorValue.x, endColorValue.y, endColorValue.z, endColorValue.w} // 色
+        });
+
+    // インデックスデータを追加
+    indices_.push_back(baseIndex);
+    indices_.push_back(baseIndex + 1);
+}
+
+void DrawLine::Update() {
+    const size_t vertexBufferSize = vertices_.size() * sizeof(DrawLineCommon::Vertex);
+    const size_t indexBufferSize = indices_.size() * sizeof(uint32_t);
+
+    // 頂点バッファの更新
+    vertexResource_ = dxCommon_->CreateBufferResource(vertexBufferSize);
     vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-    vertexData_[0] = { {startPoint_.x, startPoint_.y, startPoint_.z},
-                       {startColor_.x, startColor_.y, startColor_.z, startColor_.w} }; // 始点
-    vertexData_[1] = { {endPoint_.x, endPoint_.y, endPoint_.z},
-                       {endColor_.x, endColor_.y, endColor_.z, endColor_.w} }; // 終点
+    memcpy(vertexData_, vertices_.data(), vertexBufferSize);
     vertexResource_->Unmap(0, nullptr);
+
+    // インデックスバッファの更新
+    indexResource_ = dxCommon_->CreateBufferResource(indexBufferSize);
+    indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
+    memcpy(indexData_, indices_.data(), indexBufferSize);
+    indexResource_->Unmap(0, nullptr);
+
+    // バッファビューを更新
+    vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
+    vertexBufferView_.SizeInBytes = static_cast<UINT>(vertexBufferSize);
+    vertexBufferView_.StrideInBytes = sizeof(DrawLineCommon::Vertex);
+
+    indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+    indexBufferView_.SizeInBytes = static_cast<UINT>(indexBufferSize);
+    indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 }
 
-void DrawLine::Draw()
-{
+void DrawLine::Draw() {
     // トポロジの設定
     dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
@@ -43,37 +71,5 @@ void DrawLine::Draw()
     dxCommon_->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
 
     // 描画コマンドの発行
-    dxCommon_->GetCommandList()->DrawIndexedInstanced(2, 1, 0, 0, 0);
-}
-
-void DrawLine::CreateVertexData()
-{
-    const size_t vertexBufferSize = sizeof(DrawLineCommon::Vertex) * 2;
-
-    // 頂点リソースの作成
-    vertexResource_ = dxCommon_->CreateBufferResource(vertexBufferSize);
-
-    // 頂点バッファビューの設定
-    vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-    vertexBufferView_.SizeInBytes = static_cast<UINT>(vertexBufferSize);
-    vertexBufferView_.StrideInBytes = sizeof(DrawLineCommon::Vertex);
-}
-
-void DrawLine::CreateIndexData()
-{
-    const size_t indexBufferSize = sizeof(uint32_t) * 2;
-
-    // インデックスリソースの作成
-    indexResource_ = dxCommon_->CreateBufferResource(indexBufferSize);
-
-    // インデックスバッファビューの設定
-    indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
-    indexBufferView_.SizeInBytes = static_cast<UINT>(indexBufferSize);
-    indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
-
-    // インデックスデータを設定
-    indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
-    indexData_[0] = 0; // 始点
-    indexData_[1] = 1; // 終点
-    indexResource_->Unmap(0, nullptr);
+    dxCommon_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(indices_.size()), 1, 0, 0, 0);
 }

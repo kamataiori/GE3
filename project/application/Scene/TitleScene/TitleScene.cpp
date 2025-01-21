@@ -84,7 +84,14 @@ void TitleScene::Update()
 	}
 	particle->Update();
 
-	drawLine_->Update({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f, 0.0f }, Color::LIME, Color::LIME);
+	drawLine_->AddLine(
+		{ 0.0f, 0.0f, 0.0f },
+		{ 0.5f,0.5f, 0.0f },
+		Color::WHITE,
+		Color::WHITE
+	);
+
+	drawLine_->Update();
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
