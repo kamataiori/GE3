@@ -53,7 +53,7 @@ void TitleScene::Initialize()
 	emitters.push_back(std::move(emitter));
 
 	drawLine_ = std::make_unique<DrawLine>();
-	drawLine_->Initialize({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f, 0.0f }, Color::LIME, Color::LIME);
+	drawLine_->Initialize();
 }
 
 void TitleScene::Finalize()
@@ -84,7 +84,7 @@ void TitleScene::Update()
 	}
 	particle->Update();
 
-	drawLine_->Update();
+	drawLine_->Update({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f, 0.0f }, Color::LIME, Color::LIME);
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え

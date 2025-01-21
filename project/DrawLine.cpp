@@ -1,7 +1,6 @@
 #include "DrawLine.h"
 
-void DrawLine::Initialize(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLOAT3& endPoint,
-    Color startColor, Color endColor)
+void DrawLine::Initialize()
 {
     // DirectXCommon のインスタンスを取得
     dxCommon_ = DirectXCommon::GetInstance();
@@ -9,32 +8,27 @@ void DrawLine::Initialize(const DirectX::XMFLOAT3& startPoint, const DirectX::XM
     // DrawLineCommon のインスタンスを取得
     drawLineCommon_ = DrawLineCommon::GetInstance();
 
-    // 始点・終点・色を設定
+    // 頂点バッファとインデックスバッファを作成
+    CreateVertexData();
+    CreateIndexData();
+}
+
+void DrawLine::Update(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLOAT3& endPoint,
+    Color startColor, Color endColor)
+{
+    // 始点、終点、色を更新
     startPoint_ = startPoint;
     endPoint_ = endPoint;
     startColor_ = GetColorValue(startColor);
     endColor_ = GetColorValue(endColor);
 
-    // 頂点データとインデックスデータを作成
-    CreateVertexData(startPoint, endPoint, GetColorValue(startColor), GetColorValue(endColor));
-    CreateIndexData();
-}
-
-void DrawLine::Update()
-{
-    //// 始点・終点・色を更新
-    //startPoint_ = startPoint;
-    //endPoint_ = endPoint;
-    //startColor_ = GetColorValue(startColor);
-    //endColor_ = GetColorValue(endColor);
-
-    //// 頂点データを更新
-    //vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-    //vertexData_[0] = { {startPoint_.x, startPoint_.y, startPoint_.z},
-    //                   {startColor_.x, startColor_.y, startColor_.z, startColor_.w} }; // 始点
-    //vertexData_[1] = { {endPoint_.x, endPoint_.y, endPoint_.z},
-    //                   {endColor_.x, endColor_.y, endColor_.z, endColor_.w} }; // 終点
-    //vertexResource_->Unmap(0, nullptr);
+    // 頂点データを書き換え
+    vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+    vertexData_[0] = { {startPoint_.x, startPoint_.y, startPoint_.z},
+                       {startColor_.x, startColor_.y, startColor_.z, startColor_.w} }; // 始点
+    vertexData_[1] = { {endPoint_.x, endPoint_.y, endPoint_.z},
+                       {endColor_.x, endColor_.y, endColor_.z, endColor_.w} }; // 終点
+    vertexResource_->Unmap(0, nullptr);
 }
 
 void DrawLine::Draw()
@@ -52,9 +46,8 @@ void DrawLine::Draw()
     dxCommon_->GetCommandList()->DrawIndexedInstanced(2, 1, 0, 0, 0);
 }
 
-void DrawLine::CreateVertexData(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLOAT3& endPoint, const DirectX::XMFLOAT4& startColor, const DirectX::XMFLOAT4& endColor)
+void DrawLine::CreateVertexData()
 {
-    // 頂点バッファサイズの計算（2つの頂点を保持する）
     const size_t vertexBufferSize = sizeof(DrawLineCommon::Vertex) * 2;
 
     // 頂点リソースの作成
@@ -64,16 +57,6 @@ void DrawLine::CreateVertexData(const DirectX::XMFLOAT3& startPoint, const Direc
     vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
     vertexBufferView_.SizeInBytes = static_cast<UINT>(vertexBufferSize);
     vertexBufferView_.StrideInBytes = sizeof(DrawLineCommon::Vertex);
-
-    // 頂点データを初期化（Mapして直接書き込み）
-    vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-
-    vertexData_[0] = { {startPoint.x, startPoint.y, startPoint.z},
-                       {startColor.x, startColor.y, startColor.z, startColor.w} }; // 始点
-    vertexData_[1] = { {endPoint.x, endPoint.y, endPoint.z},
-                       {endColor.x, endColor.y, endColor.z, endColor.w} }; // 終点
-
-    vertexResource_->Unmap(0, nullptr);
 }
 
 void DrawLine::CreateIndexData()
@@ -83,6 +66,7 @@ void DrawLine::CreateIndexData()
     // インデックスリソースの作成
     indexResource_ = dxCommon_->CreateBufferResource(indexBufferSize);
 
+    // インデックスバッファビューの設定
     indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
     indexBufferView_.SizeInBytes = static_cast<UINT>(indexBufferSize);
     indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
