@@ -192,6 +192,15 @@
     <ClCompile Include="application\Camera\FPSCamera\FPSCamera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DrawLine.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawLineCommon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -353,6 +362,15 @@
     <ClInclude Include="application\Camera\FPSCamera\FPSCamera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="DrawLine.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawLineCommon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />
@@ -373,6 +391,8 @@
     <FxCompile Include="Resources\shaders\BoxFilter3x3.PS.hlsl" />
     <FxCompile Include="Resources\shaders\GaussianFilter.PS.hlsl" />
     <FxCompile Include="Resources\shaders\RadialBlur.PS.hlsl" />
+    <FxCompile Include="Resources\shaders\DrawLine.PS.hlsl" />
+    <FxCompile Include="Resources\shaders\DrawLine.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectXGame.rc">

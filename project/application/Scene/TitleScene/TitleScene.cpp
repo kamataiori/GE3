@@ -51,6 +51,9 @@ void TitleScene::Initialize()
 	// ParticleEmitterの初期化
 	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
 	emitters.push_back(std::move(emitter));
+
+	drawLine_ = std::make_unique<DrawLine>();
+	drawLine_->Initialize();
 }
 
 void TitleScene::Finalize()
@@ -81,6 +84,7 @@ void TitleScene::Update()
 	}
 	particle->Update();
 
+	drawLine_->Update({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f, 0.0f }, Color::LIME, Color::LIME);
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
@@ -118,6 +122,10 @@ void TitleScene::Draw()
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
 	// ================================================
+
+	DrawLineCommon::GetInstance()->CommonSetting();
+
+	drawLine_->Draw();
 }
 
 void TitleScene::ForeGroundDraw()
@@ -129,7 +137,7 @@ void TitleScene::ForeGroundDraw()
 	// ここからSprite個々の前景描画(UIなど)
 	// ================================================
 
-	//particle->Draw();
+	particle->Draw();
 
 	//offscreenRendering->Draw();
 

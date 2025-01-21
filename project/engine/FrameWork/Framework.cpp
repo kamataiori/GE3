@@ -36,6 +36,8 @@ void Framework::Initialize()
 	modelCommon = std::make_unique<ModelCommon>();
 	modelCommon->Initialize();
 
+	DrawLineCommon::GetInstance()->Initialize();
+
 }
 
 void Framework::Finalize()
@@ -55,6 +57,8 @@ void Framework::Finalize()
 	ModelManager::GetInstance()->Finalize();
 	// シーンマネージャーの終了処理
 	SceneManager::GetInstance()->Finalize();
+	// DrawLineの終了処理
+	DrawLineCommon::GetInstance()->Finalize();
 	delete sceneFactory_;
 	spriteCommon.reset();
 	spriteCommon->Finalize();
@@ -76,6 +80,7 @@ void Framework::Update()
 
 	// 入力の更新
 	Input::GetInstance()->Update();
+
 }
 
 void Framework::Run()
