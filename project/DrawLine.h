@@ -7,11 +7,33 @@
 class DrawLine
 {
 public:
-    void Initialize(); // 初期化（リソース作成のみ）
+
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    void Initialize();
+
+    /// <summary>
+    /// ラインの追加
+    /// </summary>
     void AddLine(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLOAT3& endPoint,
-        Color startColor, Color endColor); // ラインの追加
-    void Update(); // バッファの更新
-    void Draw(); // 描画
+        Color startColor, Color endColor);
+
+    /// <summary>
+    /// 更新処理
+    /// </summary>
+    void Update();
+
+    /// <summary>
+    /// 描画処理
+    /// </summary>
+    void Draw();
+
+    /// <summary>
+    /// ラインの数を取得
+    /// </summary>
+    size_t GetLineCount() const;
+
 
 private:
     DirectXCommon* dxCommon_ = nullptr;
@@ -29,4 +51,5 @@ private:
 
     DrawLineCommon::Vertex* vertexData_ = nullptr;
     uint32_t* indexData_ = nullptr;
+
 };
