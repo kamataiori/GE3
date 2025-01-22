@@ -53,5 +53,6 @@ private:
 
 	
 	std::unique_ptr<DrawLine> drawLine_ = nullptr;
+	//std::unique_ptr<DrawLine> drawLine2_ = nullptr;
 };
 
