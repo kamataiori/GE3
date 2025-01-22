@@ -73,3 +73,8 @@ void DrawLine::Draw() {
     // 描画コマンドの発行
     dxCommon_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(indices_.size()), 1, 0, 0, 0);
 }
+
+size_t DrawLine::GetLineCount() const
+{
+    return vertices_.size() / 2;
+}

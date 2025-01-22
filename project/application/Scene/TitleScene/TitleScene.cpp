@@ -123,6 +123,11 @@ void TitleScene::Update()
 
 	drawLine_->Update();
 
+	ImGui::Begin("Debug Information"); // デバッグ情報用ウィンドウ
+	ImGui::Text("Number of Lines: %zu", drawLine_->GetLineCount());
+	ImGui::End();
+
+
 	/*drawLine2_->AddLine(
 		{ 0.0f, 0.0f, 0.0f },
 		{ -0.5f,-0.5f, 0.0f },
