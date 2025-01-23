@@ -1,5 +1,22 @@
 #include "DrawLine.h"
 
+DrawLine* DrawLine::instance = nullptr;
+
+DrawLine* DrawLine::GetInstance()
+{
+    if (instance == nullptr)
+    {
+        instance = new DrawLine;
+    }
+    return instance;
+}
+
+void DrawLine::Finalize()
+{
+    delete instance;
+    instance = nullptr;
+}
+
 void DrawLine::Initialize()
 {
     // DirectXCommon のインスタンスを取得
@@ -35,46 +52,62 @@ void DrawLine::AddLine(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLO
 }
 
 void DrawLine::Update() {
-    const size_t vertexBufferSize = vertices_.size() * sizeof(DrawLineCommon::Vertex);
-    const size_t indexBufferSize = indices_.size() * sizeof(uint32_t);
-
-    // 頂点バッファの更新
-    vertexResource_ = dxCommon_->CreateBufferResource(vertexBufferSize);
-    vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-    memcpy(vertexData_, vertices_.data(), vertexBufferSize);
-    vertexResource_->Unmap(0, nullptr);
-
-    // インデックスバッファの更新
-    indexResource_ = dxCommon_->CreateBufferResource(indexBufferSize);
-    indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
-    memcpy(indexData_, indices_.data(), indexBufferSize);
-    indexResource_->Unmap(0, nullptr);
-
-    // バッファビューを更新
-    vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-    vertexBufferView_.SizeInBytes = static_cast<UINT>(vertexBufferSize);
-    vertexBufferView_.StrideInBytes = sizeof(DrawLineCommon::Vertex);
-
-    indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
-    indexBufferView_.SizeInBytes = static_cast<UINT>(indexBufferSize);
-    indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+    
 }
 
 void DrawLine::Draw() {
-    // トポロジの設定
-    dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
-    // 頂点バッファの設定
-    dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
+    if (vertices_.size() > 0)
+    {
+        const size_t vertexBufferSize = vertices_.size() * sizeof(DrawLineCommon::Vertex);
+        const size_t indexBufferSize = indices_.size() * sizeof(uint32_t);
 
-    // インデックスバッファの設定
-    dxCommon_->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
+        // 頂点バッファの更新
+        vertexResource_ = dxCommon_->CreateBufferResource(vertexBufferSize);
+        vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+        memcpy(vertexData_, vertices_.data(), vertexBufferSize);
+        vertexResource_->Unmap(0, nullptr);
 
-    // 描画コマンドの発行
-    dxCommon_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(indices_.size()), 1, 0, 0, 0);
+        // インデックスバッファの更新
+        indexResource_ = dxCommon_->CreateBufferResource(indexBufferSize);
+        indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
+        memcpy(indexData_, indices_.data(), indexBufferSize);
+        indexResource_->Unmap(0, nullptr);
+
+        // バッファビューを更新
+        vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
+        vertexBufferView_.SizeInBytes = static_cast<UINT>(vertexBufferSize);
+        vertexBufferView_.StrideInBytes = sizeof(DrawLineCommon::Vertex);
+
+        indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+        indexBufferView_.SizeInBytes = static_cast<UINT>(indexBufferSize);
+        indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+
+        // トポロジの設定
+        dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+
+        // 頂点バッファの設定
+        dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
+
+        // インデックスバッファの設定
+        dxCommon_->GetCommandList()->IASetIndexBuffer(&indexBufferView_);
+
+        // 描画コマンドの発行
+        dxCommon_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(indices_.size()), 1, 0, 0, 0);
+    }
+
 }
 
 size_t DrawLine::GetLineCount() const
 {
     return vertices_.size() / 2;
 }
+
+// 頂点データとインデックスデータをリセットする
+void DrawLine::ResetData() {
+    vertices_.clear();
+    indices_.clear();
+    vertexData_ = nullptr;
+    indexData_ = nullptr;
+}
+

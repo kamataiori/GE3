@@ -52,11 +52,7 @@ void TitleScene::Initialize()
 	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
 	emitters.push_back(std::move(emitter));
 
-	drawLine_ = std::make_unique<DrawLine>();
-	//drawLine2_ = std::make_unique<DrawLine>();
-	drawLine_->Initialize();
-	//drawLine2_->Initialize();
-
+	
 }
 
 void TitleScene::Finalize()
@@ -87,55 +83,9 @@ void TitleScene::Update()
 	}
 	particle->Update();
 
-	/*drawLine_->AddLine(
-		{ 0.0f, 0.0f, 0.0f },
-		{ 0.5f,0.5f, 0.0f },
-		Color::WHITE,
-		Color::WHITE
-	);
-
-	drawLine_->Update();*/
-
-	// ランダムラインの初期化
-	static bool initialized = false;
-	if (!initialized) {
-		srand(static_cast<unsigned>(time(0))); // ランダムシードを設定
-		initialized = true;
-	}
-
-	// 100本のラインを追加
-	for (int i = 0; i < 100; ++i) {
-		float startX = static_cast<float>(rand() % 200 - 100) / 10.0f; // -10.0 ~ 10.0
-		float startY = static_cast<float>(rand() % 200 - 100) / 10.0f; // -10.0 ~ 10.0
-		float endX = static_cast<float>(rand() % 200 - 100) / 10.0f;   // -10.0 ~ 10.0
-		float endY = static_cast<float>(rand() % 200 - 100) / 10.0f;   // -10.0 ~ 10.0
-
-		Color startColor = static_cast<Color>(rand() % 11); // 11色からランダム選択
-		Color endColor = static_cast<Color>(rand() % 11);   // 11色からランダム選択
-
-		drawLine_->AddLine(
-			{ startX, startY, 0.0f },
-			{ endX, endY, 0.0f },
-			startColor,
-			endColor
-		);
-	}
-
-	drawLine_->Update();
-
 	ImGui::Begin("Debug Information"); // デバッグ情報用ウィンドウ
-	ImGui::Text("Number of Lines: %zu", drawLine_->GetLineCount());
+	ImGui::Text("Number of Lines: %zu", DrawLine::GetInstance()->GetLineCount());
 	ImGui::End();
-
-
-	/*drawLine2_->AddLine(
-		{ 0.0f, 0.0f, 0.0f },
-		{ -0.5f,-0.5f, 0.0f },
-		Color::WHITE,
-		Color::WHITE
-	);
-
-	drawLine2_->Update();*/
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
@@ -174,15 +124,16 @@ void TitleScene::Draw()
 	// ここまで3Dオブジェクト個々の描画
 	// ================================================
 
-	// DrawLineの描画前処理。DrawLineの描画設定に共通のグラフィックスコマンドを積む
-	DrawLineCommon::GetInstance()->CommonSetting();
-
 	// ================================================
 	// ここからDrawLine個々の描画
 	// ================================================
 
-	drawLine_->Draw();
-	//drawLine2_->Draw();
+	DrawLine::GetInstance()->AddLine(
+		{ 0.0f, 0.0f, 0.0f },
+		{ 0.5f, 0.5f, 0.0f },
+		Color::WHITE,
+		Color::WHITE
+	);
 
 	// ================================================
 	// ここまでDrawLine個々の描画
