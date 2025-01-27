@@ -52,5 +52,8 @@ private:
 	std::vector<std::unique_ptr<ParticleEmitter>> emitters;
 
 	AABB aabb;
+	Sphere sphere;
+	Plane ground;
+	Capsule capsule;
 };
 

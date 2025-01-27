@@ -40,6 +40,25 @@ public:
 	void DrawAABB(const AABB& aabb);
 
 	/// <summary>
+	/// 球の描画
+	/// </summary>
+	void DrawSphere(const Sphere& sphere, int latDiv = 16, int lonDiv = 16);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="plane"></param>
+	void DrawPlane(const Plane& plane);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="capsule"></param>
+	/// <param name="segments"></param>
+	/// <param name="rings"></param>
+	void DrawCapsule(const Capsule& capsule);
+
+	/// <summary>
 	/// 更新処理
 	/// </summary>
 	void Update();

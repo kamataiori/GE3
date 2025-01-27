@@ -11,8 +11,19 @@ struct Sphere {
 };
 
 struct Plane {
-	Vector3 normal;
-	float distance;
+	Vector3 normal;  // 法線ベクトル
+	float distance;  // 原点から平面までの距離
+	float size;      // 平面のサイズ (正方形の半径)
+	int divisions;   // グリッドの分割数
+};
+
+struct Capsule {
+	Vector3 start;   // カプセルの開始点
+	Vector3 end;     // カプセルの終了点
+	float radius;    // カプセルの半径
+	int color;       // カプセルの色 (Color 型に対応)
+	int segments;    // カプセルの円周を構成する分割数
+	int rings;       // 球部分を構成する分割数
 };
 
 struct Line {

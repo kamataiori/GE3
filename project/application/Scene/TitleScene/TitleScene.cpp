@@ -52,11 +52,23 @@ void TitleScene::Initialize()
 	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
 	emitters.push_back(std::move(emitter));
 
-	aabb.min = { -0.5f, -0.5f, 0.0f }; // AABB の最小点を少し下げる
-	aabb.max = { 0.5f, 0.6f, 0.5f };  // AABB の最大点を少し上げる
-	aabb.color = static_cast<int>(Color::WHITE); // AABBの色を赤に設定
 	DrawLine::GetInstance()->SetCamera(camera1.get());
-}
+	aabb.min = { -1.8f, 2.2f, 3.0f }; // AABB の最小点を少し下げる
+	aabb.max = { 1.8f, 1.1f, 0.5f };  // AABB の最大点を少し上げる
+	aabb.color = static_cast<int>(Color::WHITE); // AABBの色を赤に設定
+	sphere = { {-4.0f, -1.2f, 0.0f}, 1.0f, static_cast<int>(Color::WHITE) };
+	ground.normal = { 0.0f, 1.0f, 0.0f }; // Y軸方向を法線とする平面
+	ground.distance = -2.0f;             // 原点を通る平面
+	ground.size = 6.0f;        // 平面のサイズ
+	ground.divisions = 10;     // グリッドの分割数
+	// カプセルの初期値
+	capsule.start = { 1.6f, 0.0f, 0.0f };
+	capsule.end = { 1.6f, -1.5f, 0.0f };
+	capsule.radius = 0.5f;
+	capsule.color = static_cast<int>(Color::WHITE);
+	capsule.segments = 16; // 円周を構成する分割数
+	capsule.rings = 8;     // 球部分を構成する分割数
+} 
 
 void TitleScene::Finalize()
 {
@@ -119,6 +131,37 @@ void TitleScene::Update()
 	}
 	ImGui::End();
 
+	// AABB の編集
+	ImGui::Begin("AABB Control");
+	ImGui::Text("Adjust AABB parameters:");
+	ImGui::DragFloat3("Min", &aabb.min.x, 0.1f); // AABB の最小点を調整
+	ImGui::DragFloat3("Max", &aabb.max.x, 0.1f); // AABB の最大点を調整
+	ImGui::End();
+
+	// Sphere の編集
+	ImGui::Begin("Sphere Control");
+	ImGui::Text("Adjust Sphere parameters:");
+	ImGui::DragFloat3("Center", &sphere.center.x, 0.1f); // Sphere の中心点を調整
+	ImGui::DragFloat("Radius", &sphere.radius, 0.1f, 0.1f, 100.0f); // Sphere の半径を調整
+	ImGui::End();
+
+	// Plane の調整
+	ImGui::Begin("Ground Control");
+	ImGui::Text("Adjust Plane parameters:");
+	ImGui::DragFloat3("Normal", &ground.normal.x, 0.1f); // 法線を調整
+	ImGui::DragFloat("Distance", &ground.distance, 0.1f); // 距離を調整
+	ImGui::DragFloat("Size", &ground.size, 0.1f, 1.0f, 20.0f); // サイズを調整
+	ImGui::DragInt("Divisions", &ground.divisions, 1, 1, 50); // グリッド分割数を調整
+	ImGui::End();
+
+	// Capsule の編集
+	ImGui::Begin("Capsule Control");
+	ImGui::DragFloat3("Start", &capsule.start.x, 0.1f); // 開始点を調整
+	ImGui::DragFloat3("End", &capsule.end.x, 0.1f);     // 終了点を調整
+	ImGui::DragFloat("Radius", &capsule.radius, 0.1f, 0.1f, 10.0f); // 半径を調整
+	ImGui::DragInt("Segments", &capsule.segments, 1, 4, 64); // 円周分割数を調整
+	ImGui::DragInt("Rings", &capsule.rings, 1, 2, 32);       // 球部分分割数を調整
+	ImGui::End();
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
@@ -169,6 +212,11 @@ void TitleScene::Draw()
 	);*/
 
 	DrawLine::GetInstance()->DrawAABB(aabb);
+	DrawLine::GetInstance()->DrawSphere(sphere);
+	// 平面の描画
+	DrawLine::GetInstance()->DrawPlane(ground);
+	// カプセルの描画
+	DrawLine::GetInstance()->DrawCapsule(capsule);
 
 	// ================================================
 	// ここまでDrawLine個々の描画

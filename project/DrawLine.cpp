@@ -1,4 +1,5 @@
 #include "DrawLine.h"
+#include <cmath>
 
 DrawLine* DrawLine::instance = nullptr;
 
@@ -88,6 +89,162 @@ void DrawLine::DrawAABB(const AABB& aabb)
     AddLine(ToXMFLOAT3(vertices[1]), ToXMFLOAT3(vertices[5]), color, color); // Edge 1-5
     AddLine(ToXMFLOAT3(vertices[2]), ToXMFLOAT3(vertices[6]), color, color); // Edge 2-6
     AddLine(ToXMFLOAT3(vertices[3]), ToXMFLOAT3(vertices[7]), color, color); // Edge 3-7
+}
+
+void DrawLine::DrawSphere(const Sphere& sphere, int latDiv, int lonDiv)
+{
+    const float PI = 3.14159265358979323846f;
+    Color color = static_cast<Color>(sphere.color);
+
+    // 緯度方向に分割
+    for (int lat = 0; lat <= latDiv; ++lat) {
+        float theta = PI * lat / latDiv; // 緯度角
+        float sinTheta = sinf(theta);
+        float cosTheta = cosf(theta);
+
+        // 経度方向に分割
+        for (int lon = 0; lon < lonDiv; ++lon) {
+            float phi = 2.0f * PI * lon / lonDiv; // 経度角
+            float sinPhi = sinf(phi);
+            float cosPhi = cosf(phi);
+
+            // 現在の点
+            Vector3 current = {
+                sphere.center.x + sphere.radius * sinTheta * cosPhi,
+                sphere.center.y + sphere.radius * cosTheta,
+                sphere.center.z + sphere.radius * sinTheta * sinPhi
+            };
+
+            // 次の経度の点
+            float nextPhi = 2.0f * PI * (lon + 1) / lonDiv;
+            Vector3 nextLon = {
+                sphere.center.x + sphere.radius * sinTheta * cosf(nextPhi),
+                sphere.center.y + sphere.radius * cosTheta,
+                sphere.center.z + sphere.radius * sinTheta * sinf(nextPhi)
+            };
+
+            // 緯度の線を描画
+            AddLine(ToXMFLOAT3(current), ToXMFLOAT3(nextLon), color, color);
+
+            // 次の緯度の点
+            if (lat < latDiv) {
+                float nextTheta = PI * (lat + 1) / latDiv;
+                float sinNextTheta = sinf(nextTheta);
+                float cosNextTheta = cosf(nextTheta);
+
+                Vector3 nextLat = {
+                    sphere.center.x + sphere.radius * sinNextTheta * cosPhi,
+                    sphere.center.y + sphere.radius * cosNextTheta,
+                    sphere.center.z + sphere.radius * sinNextTheta * sinPhi
+                };
+
+                // 経度の線を描画
+                AddLine(ToXMFLOAT3(current), ToXMFLOAT3(nextLat), color, color);
+            }
+        }
+    }
+}
+
+void DrawLine::DrawPlane(const Plane& plane)
+{
+    // 平面を描画するための四角形を生成
+    Vector3 u = { 1.0f, 0.0f, 0.0f }; // 基準軸1
+    if (fabsf(plane.normal.y) > 0.9f) {
+        u = { 0.0f, 0.0f, 1.0f }; // 法線がY軸に近い場合は別の基準軸を使用
+    }
+
+    Vector3 v = Cross(plane.normal, u); // 平面上の基準軸1
+    v = Normalize(v) * plane.size;
+    u = Cross(v, plane.normal); // 平面上の基準軸2
+    u = Normalize(u) * plane.size;
+
+    // 平面の中心点
+    Vector3 center = plane.normal * plane.distance;
+
+    // 四角形の4つの頂点
+    Vector3 corners[4] = {
+        center - u - v, // 左下
+        center + u - v, // 右下
+        center + u + v, // 右上
+        center - u + v  // 左上
+    };
+
+    // 外枠の線を描画
+    Color color = static_cast<Color>(Color::WHITE);
+    AddLine(ToXMFLOAT3(corners[0]), ToXMFLOAT3(corners[1]), color, color); // 下辺
+    AddLine(ToXMFLOAT3(corners[1]), ToXMFLOAT3(corners[2]), color, color); // 右辺
+    AddLine(ToXMFLOAT3(corners[2]), ToXMFLOAT3(corners[3]), color, color); // 上辺
+    AddLine(ToXMFLOAT3(corners[3]), ToXMFLOAT3(corners[0]), color, color); // 左辺
+
+    // グリッド線を描画
+    for (int i = 1; i < plane.divisions; ++i) {
+        float t = static_cast<float>(i) / plane.divisions;
+
+        // 縦線（V軸方向に移動）
+        Vector3 startV = Lerp(corners[0], corners[3], t);
+        Vector3 endV = Lerp(corners[1], corners[2], t);
+        AddLine(ToXMFLOAT3(startV), ToXMFLOAT3(endV), color, color);
+
+        // 横線（U軸方向に移動）
+        Vector3 startU = Lerp(corners[0], corners[1], t);
+        Vector3 endU = Lerp(corners[3], corners[2], t);
+        AddLine(ToXMFLOAT3(startU), ToXMFLOAT3(endU), color, color);
+    }
+}
+
+void DrawLine::DrawCapsule(const Capsule& capsule)
+{
+    const float PI = 3.14159265358979323846f;
+    Color color = static_cast<Color>(capsule.color);
+
+    // カプセルの軸ベクトル
+    Vector3 axis = capsule.end - capsule.start;
+    float height = Length(axis); // 軸の長さ
+    axis = Normalize(axis);
+
+    // カプセルの開始点と終了点
+    Vector3 start = capsule.start;
+    Vector3 end = capsule.end;
+
+    // 球の描画 (始点)
+    Sphere sphereStart = { start, capsule.radius, capsule.color };
+    DrawSphere(sphereStart, capsule.rings, capsule.segments);
+
+    // 球の描画 (終点)
+    Sphere sphereEnd = { end, capsule.radius, capsule.color };
+    DrawSphere(sphereEnd, capsule.rings, capsule.segments);
+
+    // 円柱部分の描画 (円周を構成する線を描画)
+    Vector3 u = { 1.0f, 0.0f, 0.0f }; // 基準軸1
+    if (fabsf(axis.y) > 0.9f) {
+        u = { 0.0f, 0.0f, 1.0f }; // 軸がY軸に近い場合、別の基準軸を使用
+    }
+
+    Vector3 v = Cross(axis, u); // 円周の基準軸1
+    v = Normalize(v) * capsule.radius;
+    u = Cross(v, axis); // 円周の基準軸2
+    u = Normalize(u) * capsule.radius;
+
+    // 円周を構成する線を描画
+    for (int i = 0; i < capsule.segments; ++i) {
+        float angle1 = 2.0f * PI * i / capsule.segments;
+        float angle2 = 2.0f * PI * (i + 1) / capsule.segments;
+
+        Vector3 p1Start = start + u * cosf(angle1) + v * sinf(angle1);
+        Vector3 p2Start = start + u * cosf(angle2) + v * sinf(angle2);
+
+        Vector3 p1End = end + u * cosf(angle1) + v * sinf(angle1);
+        Vector3 p2End = end + u * cosf(angle2) + v * sinf(angle2);
+
+        // 開始点側の円周
+        AddLine(ToXMFLOAT3(p1Start), ToXMFLOAT3(p2Start), color, color);
+
+        // 終了点側の円周
+        AddLine(ToXMFLOAT3(p1End), ToXMFLOAT3(p2End), color, color);
+
+        // 開始点と終了点を結ぶ線
+        AddLine(ToXMFLOAT3(p1Start), ToXMFLOAT3(p1End), color, color);
+    }
 }
 
 void DrawLine::Update() {

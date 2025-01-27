@@ -321,3 +321,21 @@ Vector3 Add(const Vector3& v1, const Vector3& v2)
 	return result;
 }
 
+Vector3 Cross(const Vector3& v1, const Vector3& v2)
+{
+	return Vector3{
+		v1.y * v2.z - v1.z * v2.y, // X成分
+		v1.z * v2.x - v1.x * v2.z, // Y成分
+		v1.x * v2.y - v1.y * v2.x  // Z成分
+	};
+}
+
+Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
+{
+	return {
+		a.x + (b.x - a.x) * t,
+		a.y + (b.y - a.y) * t,
+		a.z + (b.z - a.z) * t
+	};
+}
+
