@@ -1,3 +1,9 @@
+cbuffer TransformationMatrix : register(b0)
+{
+    float4x4 WVP;
+    float4x4 World;
+};
+
 struct VSInput
 {
     float3 position : POSITION;
@@ -13,7 +19,8 @@ struct PSInput
 PSInput main(VSInput input)
 {
     PSInput output;
-    output.position = float4(input.position, 1.0); // 位置を変換
+    // 位置を WVP 行列で変換
+    output.position = mul(float4(input.position, 1.0), WVP);
     output.color = input.color; // 色をそのまま渡す
     return output;
 }

@@ -43,26 +43,31 @@ void DrawLineCommon::CommonSetting()
 
 void DrawLineCommon::RootSignature()
 {
-	// DescriptorRangeの設定
-	descriptorRange_[0].BaseShaderRegister = 0;  // SRVのベースレジスタ
-	descriptorRange_[0].NumDescriptors = 1;     // 使用するSRVの数
-	descriptorRange_[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;  // SRVを使用
+	// DescriptorRange の設定（既存の設定が保持される前提）
+	descriptorRange_[0].BaseShaderRegister = 0;  // SRV のベースレジスタ
+	descriptorRange_[0].NumDescriptors = 1;     // 使用する SRV の数
+	descriptorRange_[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;  // SRV を使用
 	descriptorRange_[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	// RootParameterの設定 (DescriptorTable)
-	rootParameters_[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters_[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParameters_[0].DescriptorTable.pDescriptorRanges = descriptorRange_;
-	rootParameters_[0].DescriptorTable.NumDescriptorRanges = 1;
+	// RootParameter の設定
+	// CBV を追加
+	rootParameters_[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParameters_[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // 頂点シェーダーで使用
+	rootParameters_[0].Descriptor.ShaderRegister = 0; // b0 レジスタ
+	rootParameters_[0].Descriptor.RegisterSpace = 0; // スペース 0
 
-	// RootSignatureのフラグ
+	// 既存の DescriptorTable
+	rootParameters_[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParameters_[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParameters_[1].DescriptorTable.pDescriptorRanges = descriptorRange_;
+	rootParameters_[1].DescriptorTable.NumDescriptorRanges = 1;
+
+	// RootSignature の設定
 	descriptionRootSignature_.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-
-	// RootSignatureの構成
 	descriptionRootSignature_.pParameters = rootParameters_;
-	descriptionRootSignature_.NumParameters = 1;  // パラメータは1つのみ
+	descriptionRootSignature_.NumParameters = 2; // CBV と DescriptorTable
 
-	// サンプラーの設定
+	// サンプラーの設定（既存を保持）
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -79,7 +84,7 @@ void DrawLineCommon::RootSignature()
 		&descriptionRootSignature_, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
 	assert(SUCCEEDED(hr));
 
-	// RootSignatureの作成
+	// RootSignature の作成
 	hr = dxCommon_->GetDevice()->CreateRootSignature(
 		0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
 	assert(SUCCEEDED(hr));

@@ -52,7 +52,10 @@ void TitleScene::Initialize()
 	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f, true);
 	emitters.push_back(std::move(emitter));
 
-	
+	aabb.min = { -0.5f, -0.5f, 0.0f }; // AABB の最小点を少し下げる
+	aabb.max = { 0.5f, 0.6f, 0.5f };  // AABB の最大点を少し上げる
+	aabb.color = static_cast<int>(Color::WHITE); // AABBの色を赤に設定
+	DrawLine::GetInstance()->SetCamera(camera1.get());
 }
 
 void TitleScene::Finalize()
@@ -86,6 +89,36 @@ void TitleScene::Update()
 	ImGui::Begin("Debug Information"); // デバッグ情報用ウィンドウ
 	ImGui::Text("Number of Lines: %zu", DrawLine::GetInstance()->GetLineCount());
 	ImGui::End();
+
+	// ImGui を使用したカメラ制御
+	ImGui::Begin("Camera Control");
+	ImGui::Text("Use the sliders to control the camera.");
+	Vector3 cameraPosition = camera1->GetTranslate();
+	Vector3 cameraRotation = camera1->GetRotate();
+
+	// カメラの位置を個別に操作
+	if (ImGui::DragFloat("Position X", &cameraPosition.x, 0.1f)) {
+		camera1->SetTranslate(cameraPosition);
+	}
+	if (ImGui::DragFloat("Position Y", &cameraPosition.y, 0.1f)) {
+		camera1->SetTranslate(cameraPosition);
+	}
+	if (ImGui::DragFloat("Position Z", &cameraPosition.z, 0.1f)) {
+		camera1->SetTranslate(cameraPosition);
+	}
+
+	// カメラの回転を個別に操作
+	if (ImGui::DragFloat("Rotation X", &cameraRotation.x, 0.01f)) {
+		camera1->SetRotate(cameraRotation);
+	}
+	if (ImGui::DragFloat("Rotation Y", &cameraRotation.y, 0.01f)) {
+		camera1->SetRotate(cameraRotation);
+	}
+	if (ImGui::DragFloat("Rotation Z", &cameraRotation.z, 0.01f)) {
+		camera1->SetRotate(cameraRotation);
+	}
+	ImGui::End();
+
 
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
@@ -128,12 +161,14 @@ void TitleScene::Draw()
 	// ここからDrawLine個々の描画
 	// ================================================
 
-	DrawLine::GetInstance()->AddLine(
+	/*DrawLine::GetInstance()->AddLine(
 		{ 0.0f, 0.0f, 0.0f },
 		{ 0.5f, 0.5f, 0.0f },
 		Color::WHITE,
 		Color::WHITE
-	);
+	);*/
+
+	DrawLine::GetInstance()->DrawAABB(aabb);
 
 	// ================================================
 	// ここまでDrawLine個々の描画

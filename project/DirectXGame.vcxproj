@@ -164,6 +164,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DrawLineCommon.h" />
     <ClInclude Include="engine\FrameWork\Audio\Audio.h" />
     <ClInclude Include="application\Character\CharacterBase\CharacterBase.h" />
+    <ClInclude Include="engine\math\Struct.h" />
     <ClInclude Include="engine\Scene\SceneManager\AbstractSceneFactory\AbstractSceneFactory.h" />
     <ClInclude Include="engine\Scene\SceneManager\BaseScene\BaseScene.h" />
     <ClInclude Include="engine\3d\CameraManager.h" />
