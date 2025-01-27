@@ -3,10 +3,17 @@
 #include "DrawLineCommon.h"
 #include "Color.h"
 #include <vector>
+#include "Struct.h"
+#include "Camera.h"
 
 class DrawLine
 {
 public:
+
+	struct TransformationMatrix {
+		Matrix4x4 WVP;   // World-View-Projection 行列
+		Matrix4x4 World; // World 行列
+	};
 
 	/// <summary>
 	/// インスタンスを取得
@@ -26,6 +33,30 @@ public:
 	/// </summary>
 	void AddLine(const DirectX::XMFLOAT3& startPoint, const DirectX::XMFLOAT3& endPoint,
 		Color startColor, Color endColor);
+
+	/// <summary>
+	/// AABBの描画
+	/// </summary>
+	void DrawAABB(const AABB& aabb);
+
+	/// <summary>
+	/// 球の描画
+	/// </summary>
+	void DrawSphere(const Sphere& sphere, int latDiv = 16, int lonDiv = 16);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="plane"></param>
+	void DrawPlane(const Plane& plane);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="capsule"></param>
+	/// <param name="segments"></param>
+	/// <param name="rings"></param>
+	void DrawCapsule(const Capsule& capsule);
 
 	/// <summary>
 	/// 更新処理
@@ -48,6 +79,14 @@ public:
     /// </summary>
 	void ResetData();
 
+	// カメラを設定する
+	void SetCamera(Camera* camera) { camera_ = camera; }
+
+private:
+
+	inline DirectX::XMFLOAT3 ToXMFLOAT3(const Vector3& vec) {
+		return DirectX::XMFLOAT3(vec.x, vec.y, vec.z);
+	}
 
 public:
 	// コンストラクタをプライベートに
@@ -79,4 +118,9 @@ private:
 	DrawLineCommon::Vertex* vertexData_ = nullptr;
 	uint32_t* indexData_ = nullptr;
 
+	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource_; // GPUリソース
+	TransformationMatrix* transformationMatrixData_ = nullptr;           // CPU側データポインタ
+
+
+	Camera* camera_ = nullptr;
 };
