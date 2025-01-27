@@ -20,7 +20,9 @@ public:
 	/// </summary>
 	static DrawLine* GetInstance();
 
-
+	/// <summary>
+	/// 終了処理
+	/// </summary>
 	void Finalize();
 
 	/// <summary>
@@ -45,17 +47,14 @@ public:
 	void DrawSphere(const Sphere& sphere, int latDiv = 16, int lonDiv = 16);
 
 	/// <summary>
-	/// 
+	/// グリッドの描画
 	/// </summary>
 	/// <param name="plane"></param>
 	void DrawPlane(const Plane& plane);
 
 	/// <summary>
-	/// 
+	/// カプセルの描画
 	/// </summary>
-	/// <param name="capsule"></param>
-	/// <param name="segments"></param>
-	/// <param name="rings"></param>
 	void DrawCapsule(const Capsule& capsule);
 
 	/// <summary>
