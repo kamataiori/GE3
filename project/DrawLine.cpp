@@ -91,6 +91,49 @@ void DrawLine::DrawAABB(const AABB& aabb)
     AddLine(ToXMFLOAT3(vertices[3]), ToXMFLOAT3(vertices[7]), color, color); // Edge 3-7
 }
 
+void DrawLine::DrawOBB(const OBB& obb)
+{
+    // 色設定
+    Color lineColor = static_cast<Color>(obb.color);
+
+    // 8つの頂点を計算
+    Vector3 corners[8];
+
+    // サイズベクトル
+    Vector3 halfX = obb.orientations[0] * obb.size.x;
+    Vector3 halfY = obb.orientations[1] * obb.size.y;
+    Vector3 halfZ = obb.orientations[2] * obb.size.z;
+
+    // 各頂点を計算
+    corners[0] = obb.center - halfX - halfY - halfZ; // 左下手前
+    corners[1] = obb.center + halfX - halfY - halfZ; // 右下手前
+    corners[2] = obb.center + halfX + halfY - halfZ; // 右上手前
+    corners[3] = obb.center - halfX + halfY - halfZ; // 左上手前
+    corners[4] = obb.center - halfX - halfY + halfZ; // 左下奥
+    corners[5] = obb.center + halfX - halfY + halfZ; // 右下奥
+    corners[6] = obb.center + halfX + halfY + halfZ; // 右上奥
+    corners[7] = obb.center - halfX + halfY + halfZ; // 左上奥
+
+    // 12本のエッジを描画
+    // 手前面
+    AddLine(ToXMFLOAT3(corners[0]), ToXMFLOAT3(corners[1]), lineColor, lineColor); // 0-1
+    AddLine(ToXMFLOAT3(corners[1]), ToXMFLOAT3(corners[2]), lineColor, lineColor); // 1-2
+    AddLine(ToXMFLOAT3(corners[2]), ToXMFLOAT3(corners[3]), lineColor, lineColor); // 2-3
+    AddLine(ToXMFLOAT3(corners[3]), ToXMFLOAT3(corners[0]), lineColor, lineColor); // 3-0
+
+    // 奥面
+    AddLine(ToXMFLOAT3(corners[4]), ToXMFLOAT3(corners[5]), lineColor, lineColor); // 4-5
+    AddLine(ToXMFLOAT3(corners[5]), ToXMFLOAT3(corners[6]), lineColor, lineColor); // 5-6
+    AddLine(ToXMFLOAT3(corners[6]), ToXMFLOAT3(corners[7]), lineColor, lineColor); // 6-7
+    AddLine(ToXMFLOAT3(corners[7]), ToXMFLOAT3(corners[4]), lineColor, lineColor); // 7-4
+
+    // 側面
+    AddLine(ToXMFLOAT3(corners[0]), ToXMFLOAT3(corners[4]), lineColor, lineColor); // 0-4
+    AddLine(ToXMFLOAT3(corners[1]), ToXMFLOAT3(corners[5]), lineColor, lineColor); // 1-5
+    AddLine(ToXMFLOAT3(corners[2]), ToXMFLOAT3(corners[6]), lineColor, lineColor); // 2-6
+    AddLine(ToXMFLOAT3(corners[3]), ToXMFLOAT3(corners[7]), lineColor, lineColor); // 3-7
+}
+
 void DrawLine::DrawSphere(const Sphere& sphere, int latDiv, int lonDiv)
 {
     const float PI = 3.14159265358979323846f;

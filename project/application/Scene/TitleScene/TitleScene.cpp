@@ -68,6 +68,13 @@ void TitleScene::Initialize()
 	capsule.color = static_cast<int>(Color::WHITE);
 	capsule.segments = 16; // 円周を構成する分割数
 	capsule.rings = 8;     // 球部分を構成する分割数
+	// OBB の初期化
+	obb.center = { -1.9f, -0.3f, 0.0f };
+	obb.orientations[0] = { 1.0f, 0.0f, 0.0f }; // X軸
+	obb.orientations[1] = { 0.0f, 1.0f, 0.0f }; // Y軸
+	obb.orientations[2] = { 0.0f, 0.0f, 1.0f }; // Z軸
+	obb.size = { 1.0f, 1.0f, 0.5f }; // 各軸方向の半サイズ
+	obb.color = static_cast<int>(Color::WHITE); // 色の初期値
 } 
 
 void TitleScene::Finalize()
@@ -136,6 +143,15 @@ void TitleScene::Update()
 	ImGui::Text("Adjust AABB parameters:");
 	ImGui::DragFloat3("Min", &aabb.min.x, 0.1f); // AABB の最小点を調整
 	ImGui::DragFloat3("Max", &aabb.max.x, 0.1f); // AABB の最大点を調整
+	ImGui::End();
+
+	// OBB の調整
+	ImGui::Begin("OBB Control");
+	ImGui::DragFloat3("Center", &obb.center.x, 0.1f); // 中心点
+	ImGui::DragFloat3("Size", &obb.size.x, 0.1f, 0.1f, 10.0f); // 各軸方向の半サイズ
+	ImGui::DragFloat3("Orientation X", &obb.orientations[0].x, 0.1f); // X軸方向
+	ImGui::DragFloat3("Orientation Y", &obb.orientations[1].x, 0.1f); // Y軸方向
+	ImGui::DragFloat3("Orientation Z", &obb.orientations[2].x, 0.1f); // Z軸方向
 	ImGui::End();
 
 	// Sphere の編集
@@ -217,6 +233,8 @@ void TitleScene::Draw()
 	DrawLine::GetInstance()->DrawPlane(ground);
 	// カプセルの描画
 	DrawLine::GetInstance()->DrawCapsule(capsule);
+	// OBB を描画
+	DrawLine::GetInstance()->DrawOBB(obb);
 
 	// ================================================
 	// ここまでDrawLine個々の描画

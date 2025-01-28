@@ -55,5 +55,6 @@ private:
 	Sphere sphere;
 	Plane ground;
 	Capsule capsule;
+	OBB obb;
 };
 
