@@ -42,6 +42,11 @@ public:
 	void DrawAABB(const AABB& aabb);
 
 	/// <summary>
+	/// OBBの描画
+	/// </summary>
+	void DrawOBB(const OBB& obb);
+
+	/// <summary>
 	/// 球の描画
 	/// </summary>
 	void DrawSphere(const Sphere& sphere, int latDiv = 16, int lonDiv = 16);
