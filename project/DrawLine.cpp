@@ -290,6 +290,44 @@ void DrawLine::DrawCapsule(const Capsule& capsule)
     }
 }
 
+void DrawLine::DrawCone(const Cone& cone)
+{
+    const float PI = 3.14159265358979323846f;
+    Color lineColor = static_cast<Color>(cone.color);
+
+    // 円錐の軸ベクトル
+    Vector3 axis = cone.tip - cone.baseCenter;
+    Vector3 axisNorm = Normalize(axis);
+
+    // 基準軸の計算
+    Vector3 u = { 1.0f, 0.0f, 0.0f }; // 基準軸1
+    if (fabsf(axisNorm.y) > 0.9f) {
+        u = { 0.0f, 0.0f, 1.0f }; // 軸がY軸に近い場合、別の基準軸を使用
+    }
+    Vector3 v = Cross(axisNorm, u); // 円周の基準軸1
+    v = Normalize(v) * cone.radius;
+    u = Cross(v, axisNorm);         // 円周の基準軸2
+    u = Normalize(u) * cone.radius;
+
+    // 底面の頂点を計算
+    std::vector<Vector3> baseVertices(cone.segments);
+    for (int i = 0; i < cone.segments; ++i) {
+        float angle = 2.0f * PI * i / cone.segments;
+        baseVertices[i] = cone.baseCenter + u * cosf(angle) + v * sinf(angle);
+    }
+
+    // 底面の線を描画
+    for (int i = 0; i < cone.segments; ++i) {
+        int next = (i + 1) % cone.segments;
+        AddLine(ToXMFLOAT3(baseVertices[i]), ToXMFLOAT3(baseVertices[next]), lineColor, lineColor);
+    }
+
+    // 頂点から底面への線を描画
+    for (int i = 0; i < cone.segments; ++i) {
+        AddLine(ToXMFLOAT3(cone.tip), ToXMFLOAT3(baseVertices[i]), lineColor, lineColor);
+    }
+}
+
 void DrawLine::Update() {
     if (!camera_) return;
 

@@ -73,7 +73,13 @@ void GamePlayScene::Initialize()
 
 	player_->SetCamera(camera1.get());
 
-
+	DrawLine::GetInstance()->SetCamera(camera1.get());
+	// 円錐の初期化
+	cone.baseCenter = { 0.0f, -3.5f, 0.0f }; // 底面の中心
+	cone.tip = { 0.0f, -1.0f, 0.0f };        // 頂点（先端）
+	cone.radius = 1.0f;                   // 底面半径
+	cone.color = static_cast<int>(Color::WHITE); // 色
+	cone.segments = 16;                   // 円周の分割数
 
 	// ライト
 	// Lightクラスのデータを初期化
@@ -114,10 +120,6 @@ void GamePlayScene::Update()
 	axis->Update();
 
 	player_->Update();
-
-	// ImGuiでオブジェクトの情報を表示
-	plane->ImGuiUpdate("plane");
-	axis->ImGuiUpdate("axis");
 
 	// カメラの更新
 	camera1->Update();
@@ -203,6 +205,16 @@ void GamePlayScene::Update()
 		emitter->Update();
 	}
 	particle->Update();
+
+	DrawLine::GetInstance()->Update();
+
+	// 円錐の調整
+	ImGui::Begin("Cone Control");
+	ImGui::DragFloat3("Base Center", &cone.baseCenter.x, 0.1f); // 底面中心
+	ImGui::DragFloat3("Tip", &cone.tip.x, 0.1f);               // 頂点（先端）
+	ImGui::DragFloat("Radius", &cone.radius, 0.1f, 0.1f, 10.0f); // 半径
+	ImGui::DragInt("Segments", &cone.segments, 1, 3, 64);       // 円周分割数
+	ImGui::End();
 }
 
 void GamePlayScene::BackGroundDraw()
@@ -242,6 +254,24 @@ void GamePlayScene::Draw()
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
+	// ================================================
+
+	// ================================================
+	// ここからDrawLine個々の描画
+	// ================================================
+
+	/*DrawLine::GetInstance()->AddLine(
+		{ 0.0f, 0.0f, 0.0f },
+		{ 0.5f, 0.5f, 0.0f },
+		Color::WHITE,
+		Color::WHITE
+	);*/
+
+	// 円錐を描画
+	DrawLine::GetInstance()->DrawCone(cone);
+
+	// ================================================
+	// ここまでDrawLine個々の描画
 	// ================================================
 }
 

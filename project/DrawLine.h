@@ -63,6 +63,11 @@ public:
 	void DrawCapsule(const Capsule& capsule);
 
 	/// <summary>
+	/// 円錐の描画
+	/// </summary>
+	void DrawCone(const Cone& cone);
+
+	/// <summary>
 	/// 更新処理
 	/// </summary>
 	void Update();

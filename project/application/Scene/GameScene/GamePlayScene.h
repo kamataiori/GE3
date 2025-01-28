@@ -10,6 +10,7 @@
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
 #include "Player.h"
+#include "DrawLine.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -95,5 +96,7 @@ private:
 
 
 	std::unique_ptr<Player> player_;
+
+	Cone cone;
 };
 
