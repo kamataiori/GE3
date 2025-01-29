@@ -7,6 +7,7 @@
 #include "math.h"
 #include <fstream>
 #include <sstream>
+#include <Struct.h>
 
 //単位行列の作成
 Matrix4x4 MakeIdentity4x4();
@@ -51,3 +52,17 @@ Vector3 Add(const Vector3& v1, const Vector3& v2);
 Vector3 Cross(const Vector3& v1, const Vector3& v2);
 
 Vector3 Lerp(const Vector3& a, const Vector3& b, float t);
+
+float LengthSq(const Vector3& v);
+
+Vector3 Clamp(const Vector3& v, const Vector3& min, const Vector3& max);
+
+float Dot(const Vector3& a, const Vector3& b);
+
+float Clamp(float v, float min, float max);
+
+// ヘルパー関数: 2点間の最小距離を計算
+float DistanceSq(const Vector3& a, const Vector3& b);
+
+// OBBの投影
+float ProjectOBBOnAxis(const OBB& obb, const Vector3& axis);

@@ -104,7 +104,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABBCollider.cpp" />
+    <ClCompile Include="CapsuleCollider.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ConeCollider.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DrawLine.cpp" />
     <ClCompile Include="DrawLineCommon.cpp" />
@@ -156,9 +161,17 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\Effects\Particle\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="application\Character\CharacterBase\Player\Player.cpp" />
     <ClCompile Include="engine\Effects\PostEffect\PostEffect.cpp" />
+    <ClCompile Include="OBBCollider.cpp" />
+    <ClCompile Include="PlaneCollider.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBCollider.h" />
+    <ClInclude Include="CapsuleCollider.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="ConeCollider.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DrawLine.h" />
     <ClInclude Include="DrawLineCommon.h" />
@@ -211,7 +224,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Effects\Particle\ParticleManager\ParticleManager.h" />
     <ClInclude Include="application\Character\CharacterBase\Player\Player.h" />
     <ClInclude Include="engine\Effects\PostEffect\PostEffect.h" />
+    <ClInclude Include="OBBCollider.h" />
+    <ClInclude Include="PlaneCollider.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="vector\Vector2.h" />
     <ClInclude Include="vector\Vector3.h" />
     <ClInclude Include="vector\Vector4.h" />
