@@ -1,42 +1,21 @@
 #pragma once
-#include "CollisionManager.h"
+#include "CollisionFunctions.h"
 
-enum class ColliderType {
-    Sphere,
-    AABB,
-    OBB,
-    Capsule,
-    Cone,
-    Plane
-};
+class SphereCollider;
+class AABBCollider;
+class OBBCollider;
+class CapsuleCollider;
 
-class Collider
-{
+class Collider {
 public:
-    // コンストラクタ
-    Collider(CollisionManager& manager) : collisionManager(manager) {}
-    // デストラクタ
-    virtual ~Collider() = default;
+    
+    virtual void Dispatch(Collider* other) = 0;
 
-    /// <summary>
-    /// 衝突時に呼ばれる
-    /// </summary>
-    /// <param name="other"></param>
-    virtual void OnCollision(Collider* other) = 0;
+    virtual void Draw() = 0;
 
-    /// <summary>
-    /// 衝突形状を取得
-    /// </summary>
-    virtual bool CheckCollision(Collider* other) = 0;
-
-    /// <summary>
-    /// コライダーの種類を取得
-    /// </summary>
-    virtual ColliderType GetColliderType() const = 0;
-
-protected:
-
-    CollisionManager& collisionManager; // 衝突判定を呼び出すための参照
-
+public:
+    virtual void Action(SphereCollider* other) = 0;
+    virtual void Action(AABBCollider* other) = 0;
+    virtual void Action(OBBCollider* other) = 0;
+    virtual void Action(CapsuleCollider* other) = 0;
 };
-

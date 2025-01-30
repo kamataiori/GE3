@@ -1,20 +1,17 @@
 #pragma once
 #include "Collider.h"
-#include "Struct.h"
 
-class AABBCollider : public Collider
-{
+class AABBCollider : public Collider {
 public:
-    AABBCollider(CollisionManager& manager, const Vector3& min, const Vector3& max);
-    ~AABBCollider() override = default;
-
-    bool CheckCollision(Collider* other) override;
-    void OnCollision(Collider* other) override;
-    ColliderType GetColliderType() const override { return ColliderType::AABB; }
-
-    AABB GetCollisionShape() const { return aabb; }
-
-private:
     AABB aabb;
-};
 
+    AABBCollider(const AABB& box);
+
+    void Dispatch(Collider* other) override;
+
+protected:
+    void Action(SphereCollider* other) override;
+    void Action(AABBCollider* other) override;
+    void Action(OBBCollider* other) override;
+    void Action(CapsuleCollider* other) override;
+};

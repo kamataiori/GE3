@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "Object3d.h"
+#include "Collider.h"
 
 class CharacterBase
 {
@@ -10,7 +11,7 @@ public:
     /// コンストラクタ
     /// </summary>
     /// <param name="baseScene"></param>
-    CharacterBase(BaseScene* baseScene) : baseScene_(baseScene) { object3d_ = std::make_unique<Object3d>(baseScene_); }
+    CharacterBase(BaseScene* baseScene) : baseScene_(baseScene), collider_(nullptr) { object3d_ = std::make_unique<Object3d>(baseScene_); }
     
     /// <summary>
     /// 初期化
@@ -34,10 +35,19 @@ public:
 
     void SetCamera(Camera* camera) { object3d_->SetCamera(camera); }
 
+    // `SetCollider()` を追加
+    void SetCollider(Collider* collider) { collider_ = collider; }
+
+    // `GetCollider()` も追加（必要に応じてアクセス可能）
+    Collider* GetCollider() const { return collider_; }
+
 protected:
     Transform transform; // キャラクターの基本Transform
 
     BaseScene* baseScene_;
 
     std::unique_ptr<Object3d> object3d_;
+
+    Collider* collider_; // コライダーを管理
+
 };
