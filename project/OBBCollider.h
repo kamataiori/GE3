@@ -9,6 +9,8 @@ public:
 
     void Dispatch(Collider* other) override;
 
+    void Draw() override;
+
 protected:
     void Action(SphereCollider* other) override;
     void Action(AABBCollider* other) override;

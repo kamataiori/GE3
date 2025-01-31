@@ -1,5 +1,6 @@
 #pragma once
 #include "CollisionFunctions.h"
+#include "DrawLine.h"
 
 class SphereCollider;
 class AABBCollider;

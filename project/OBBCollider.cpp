@@ -4,10 +4,22 @@
 #include "AABBCollider.h"
 #include "CapsuleCollider.h"
 
-OBBCollider::OBBCollider(const OBB& box) : obb(box) {}
+OBBCollider::OBBCollider(const OBB& box) : obb(box) {
+    obb.center = { -1.9f, -0.3f, 0.0f };
+    obb.orientations[0] = { 1.0f, 0.0f, 0.0f }; // X軸
+    obb.orientations[1] = { 0.0f, 1.0f, 0.0f }; // Y軸
+    obb.orientations[2] = { 0.0f, 0.0f, 1.0f }; // Z軸
+    obb.size = { 1.0f, 1.0f, 0.5f }; // 各軸方向の半サイズ
+    obb.color = static_cast<int>(Color::WHITE); // 色の初期値
+}
 
 void OBBCollider::Dispatch(Collider* other) {
     other->Action(this);
+}
+
+void OBBCollider::Draw()
+{
+    DrawLine::GetInstance()->DrawOBB(obb);
 }
 
 void OBBCollider::Action(SphereCollider* other) {
