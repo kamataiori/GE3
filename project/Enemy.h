@@ -2,6 +2,7 @@
 #include "CharacterBase.h"
 #include "Collider.h"
 #include "SphereCollider.h"
+#include "OBBCollider.h"
 
 class Enemy : public CharacterBase, public SphereCollider
 {

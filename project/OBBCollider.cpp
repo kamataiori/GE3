@@ -22,6 +22,16 @@ void OBBCollider::Draw()
     DrawLine::GetInstance()->DrawOBB(obb);
 }
 
+Vector3 OBBCollider::GetCenter() const
+{
+    return obb.center;
+}
+
+void OBBCollider::SetPosition(const Vector3& position)
+{
+    obb.center = position;
+}
+
 void OBBCollider::Action(SphereCollider* other) {
     CheckSphereVsOBB(other->sphere, obb);
 }

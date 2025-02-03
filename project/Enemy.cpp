@@ -17,7 +17,9 @@ void Enemy::Initialize()
 	// コライダーの初期化
 	SetCollider(this);
 	SetPosition(object3d_->GetTranslate());  // 3Dモデルの位置にコライダーをセット
-	sphere.radius = 1.0f;
+	//SetRotation(object3d_->GetRotate());
+	//SetScale(object3d_->GetScale());
+	sphere.radius = 1.5f;
 }
 
 void Enemy::Update()
@@ -46,6 +48,7 @@ void Enemy::Update()
 
 	object3d_->Update();
 	SetPosition(object3d_->GetTranslate());
+	//SetScale(object3d_->GetScale());
 }
 
 void Enemy::Draw()
