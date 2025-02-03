@@ -11,6 +11,8 @@
 #include "ParticleEmitter.h"
 #include "Player.h"
 #include "DrawLine.h"
+#include "CollisionManager.h"
+#include <Enemy.h>
 
 class GamePlayScene : public BaseScene
 {
@@ -63,6 +65,11 @@ public:
 		return camera1.get();
 	}
 
+	/// <summary>
+	/// 衝突判定と応答
+	/// </summary>
+	void CheckAllColisions();
+
 private:
 
 	float offsetX = 100.0f;  //各スプライトのX座標をずらすオフセット値
@@ -96,6 +103,9 @@ private:
 
 
 	std::unique_ptr<Player> player_;
+	std::unique_ptr<Enemy> enemy_;
+
+	std::unique_ptr<CollisionManager> collisionMAnager_;
 
 	Cone cone;
 };

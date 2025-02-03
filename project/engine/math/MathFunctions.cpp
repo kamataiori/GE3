@@ -339,3 +339,36 @@ Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 	};
 }
 
+float LengthSq(const Vector3& v) {
+	return v.x * v.x + v.y * v.y + v.z * v.z;
+}
+
+Vector3 Clamp(const Vector3& v, const Vector3& min, const Vector3& max)
+{
+	return Vector3{
+	   std::fmax(min.x, std::fmin(v.x, max.x)),
+	   std::fmax(min.y, std::fmin(v.y, max.y)),
+	   std::fmax(min.z, std::fmin(v.z, max.z))
+	};
+}
+
+float Dot(const Vector3& a, const Vector3& b) {
+	return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+float Clamp(float v, float min, float max) {
+	return std::fmax(min, std::fmin(v, max));
+}
+
+float DistanceSq(const Vector3& a, const Vector3& b)
+{
+	return LengthSq(a - b);
+}
+
+// OBBの投影
+float ProjectOBBOnAxis(const OBB& obb, const Vector3& axis) {
+	return fabs(Dot(obb.orientations[0] * obb.size.x, axis)) +
+		fabs(Dot(obb.orientations[1] * obb.size.y, axis)) +
+		fabs(Dot(obb.orientations[2] * obb.size.z, axis));
+}
+

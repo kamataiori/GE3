@@ -1,6 +1,6 @@
-#include "Player.h"
+#include "Enemy.h"
 
-void Player::Initialize()
+void Enemy::Initialize()
 {
 	object3d_->Initialize();
 
@@ -12,17 +12,19 @@ void Player::Initialize()
 	// モデルにSRTを設定
 	object3d_->SetScale({ 1.0f, 1.0f, 1.0f });
 	object3d_->SetRotate({ 0.0f, 3.14f, 0.0f });
-	object3d_->SetTranslate({ -2.0f, 0.0f, 0.0f });
+	object3d_->SetTranslate({ 2.0f, 0.0f, 0.0f });
 
 	// コライダーの初期化
 	SetCollider(this);
 	SetPosition(object3d_->GetTranslate());  // 3Dモデルの位置にコライダーをセット
-	sphere.radius = 2.0f;
+	//SetRotation(object3d_->GetRotate());
+	//SetScale(object3d_->GetScale());
+	sphere.radius = 1.5f;
 }
 
-void Player::Update()
+void Enemy::Update()
 {
-	ImGui::Begin("Player Transform");
+	ImGui::Begin("Enemy Transform");
 
 	// ✅ Translate (位置)
 	Vector3 position = object3d_->GetTranslate();
@@ -46,9 +48,10 @@ void Player::Update()
 
 	object3d_->Update();
 	SetPosition(object3d_->GetTranslate());
+	//SetScale(object3d_->GetScale());
 }
 
-void Player::Draw()
+void Enemy::Draw()
 {
 	object3d_->Draw();
 	// SphereCollider の描画

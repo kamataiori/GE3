@@ -73,6 +73,11 @@ void GamePlayScene::Initialize()
 
 	player_->SetCamera(camera1.get());
 
+	enemy_ = std::make_unique<Enemy>(this);
+	enemy_->Initialize();
+
+	enemy_->SetCamera(camera1.get());
+
 	DrawLine::GetInstance()->SetCamera(camera1.get());
 	// 円錐の初期化
 	cone.baseCenter = { 0.0f, -3.5f, 0.0f }; // 底面の中心
@@ -102,6 +107,10 @@ void GamePlayScene::Initialize()
 	// ParticleEmitterの初期化
 	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f,true);
 	emitters.push_back(std::move(emitter));
+
+	collisionMAnager_ = std::make_unique<CollisionManager>();
+	collisionMAnager_->RegisterCollider(player_.get());
+	collisionMAnager_->RegisterCollider(enemy_.get());
 }
 
 void GamePlayScene::Finalize()
@@ -120,6 +129,7 @@ void GamePlayScene::Update()
 	axis->Update();
 
 	player_->Update();
+	enemy_->Update();
 
 	// カメラの更新
 	camera1->Update();
@@ -181,6 +191,9 @@ void GamePlayScene::Update()
 		// 各スプライトを更新
 		sprite->Update();
 	}
+
+	// 衝突判定と応答
+	CheckAllColisions();
 
 	/*ImGui::Begin("light");
 	ImGui::DragFloat3("transform", &BaseScene::GetLight()->cameraLightData->worldPosition.x, 0.01f);
@@ -250,6 +263,7 @@ void GamePlayScene::Draw()
 	// 各オブジェクトの描画
 	//plane->Draw();
 	player_->Draw();
+	enemy_->Draw();
 	axis->Draw();
 
 	// ================================================
@@ -289,4 +303,9 @@ void GamePlayScene::ForeGroundDraw()
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)
 	// ================================================
+}
+
+void GamePlayScene::CheckAllColisions()
+{
+	collisionMAnager_->CheckAllCollisions();
 }
