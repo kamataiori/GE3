@@ -135,6 +135,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Scene\GameScene\GamePlayScene.cpp" />
     <ClCompile Include="application\Camera\FollowCamera\FollowCamera.cpp" />
     <ClCompile Include="application\Camera\FPSCamera\FPSCamera.cpp" />
+    <ClCompile Include="ground.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="engine\3d\Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -163,6 +164,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Character\CharacterBase\Player\Player.cpp" />
     <ClCompile Include="engine\Effects\PostEffect\PostEffect.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
+    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +202,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Scene\GameScene\GamePlayScene.h" />
     <ClInclude Include="application\Camera\FollowCamera\FollowCamera.h" />
     <ClInclude Include="application\Camera\FPSCamera\FPSCamera.h" />
+    <ClInclude Include="ground.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="engine\3d\Light.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />
@@ -227,6 +230,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Effects\PostEffect\PostEffect.h" />
     <ClInclude Include="OBBCollider.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Sky.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="vector\Vector2.h" />
     <ClInclude Include="vector\Vector3.h" />
