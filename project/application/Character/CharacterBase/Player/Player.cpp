@@ -41,6 +41,12 @@ void Player::Update()
         Input::GetInstance()->PushKey(DIK_D);
 
     bool isJumpingNow = Input::GetInstance()->TriggerKey(DIK_C);
+    bool isAttackingNow = Input::GetInstance()->TriggerKey(DIK_V);
+
+    // 攻撃開始
+    if (isAttackingNow) {
+        behavior_ = Behavior::kAttack;
+    }
 
     // ジャンプ開始
     if (isJumpingNow && !isJumping) {
@@ -62,8 +68,11 @@ void Player::Update()
         }
     }
 
-    // 移動・ジャンプ処理
-    if (isJumping) {
+    // 状態ごとの処理
+    if (behavior_ == Behavior::kAttack) {
+        UpdateAttack();
+    }
+    else if (isJumping) {
         UpdateJump();
     }
     else if (isMoving) {
@@ -75,6 +84,7 @@ void Player::Update()
         UpdateFloatingGimmick();
     }
 
+
     object3d_->SetTranslate(transform.translate);
     object3d_->Update();
     SetPosition(transform.translate);
@@ -85,6 +95,20 @@ void Player::Update()
     hammerTransform.translate = transform.translate + hammerOffset;
     hammer_->SetTransform(hammerTransform);
     hammer_->Update();
+
+    // ImGui で Hammer の Transform を編集可能にする
+    ImGui::Begin("Hammer Transform");
+    Vector3 hammerPos = hammerTransform.translate;
+    if (ImGui::DragFloat3("Position", &hammerPos.x, 0.1f)) {
+        hammerTransform.translate = hammerPos;
+        hammer_->SetTransform(hammerTransform);
+    }
+    Vector3 hammerRot = hammerTransform.rotate;
+    if (ImGui::DragFloat3("Rotation", &hammerRot.x, 0.1f)) {
+        hammerTransform.rotate = hammerRot;
+        hammer_->SetTransform(hammerTransform);
+    }
+    ImGui::End();
 }
 
 
@@ -185,5 +209,34 @@ void Player::UpdateJump()
             behavior_ = Behavior::kRoot;
         }
     }
+}
+
+void Player::UpdateAttack()
+{
+    // Hammer の Transform を取得
+    hammerTransform = hammer_->GetTransform();
+
+    static bool increasing = true; // 回転を増やしているかどうかのフラグ
+
+    if (increasing) {
+        // 2.0f まで増やす
+        hammerTransform.rotate.x += 0.2f;
+        if (hammerTransform.rotate.x >= 2.0f) {
+            hammerTransform.rotate.x = 2.0f;
+            increasing = false; // 戻す方向に変更
+        }
+    }
+    else {
+        // 0.0f まで戻す（-= 0.1f で徐々に戻す）
+        hammerTransform.rotate.x -= 0.2f;
+        if (hammerTransform.rotate.x <= 0.0f) {
+            hammerTransform.rotate.x = 0.0f;
+            increasing = true; // 次回の攻撃時に再び増やす
+            behavior_ = Behavior::kRoot; // 通常状態に戻る
+        }
+    }
+
+    // Hammer に適用
+    hammer_->SetTransform(hammerTransform);
 }
 
