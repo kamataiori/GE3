@@ -136,6 +136,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Camera\FollowCamera\FollowCamera.cpp" />
     <ClCompile Include="application\Camera\FPSCamera\FPSCamera.cpp" />
     <ClCompile Include="ground.cpp" />
+    <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="engine\3d\Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -203,6 +204,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Camera\FollowCamera\FollowCamera.h" />
     <ClInclude Include="application\Camera\FPSCamera\FPSCamera.h" />
     <ClInclude Include="ground.h" />
+    <ClInclude Include="Hammer.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="engine\3d\Light.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />

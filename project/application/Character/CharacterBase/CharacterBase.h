@@ -2,6 +2,7 @@
 #include "Transform.h"
 #include "Object3d.h"
 #include "Collider.h"
+#include "MathFunctions.h"
 
 class CharacterBase
 {

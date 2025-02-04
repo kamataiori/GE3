@@ -6,7 +6,7 @@ void GamePlayScene::Initialize()
 {
 	
 	// 3Dカメラの初期化
-	camera1->SetTranslate({ 0.0f, 0.0f, -20.0f });
+	camera1->SetTranslate({ 0.0f, 3.5f, -20.0f });
 
 	camera2->SetTranslate({ 5.0f, 1.0f, -40.0f });
 
