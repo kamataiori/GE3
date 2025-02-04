@@ -42,10 +42,14 @@ void Player::Update()
 
     bool isJumpingNow = Input::GetInstance()->TriggerKey(DIK_C);
     bool isAttackingNow = Input::GetInstance()->TriggerKey(DIK_V);
+    bool isAttackingNow2 = Input::GetInstance()->TriggerKey(DIK_B);
 
     // 攻撃開始
     if (isAttackingNow) {
         behavior_ = Behavior::kAttack;
+    }
+    else if (isAttackingNow2) {
+        behavior_ = Behavior::kattack2;
     }
 
     // ジャンプ開始
@@ -71,6 +75,9 @@ void Player::Update()
     // 状態ごとの処理
     if (behavior_ == Behavior::kAttack) {
         UpdateAttack();
+    }
+    else if (behavior_ == Behavior::kattack2) {
+        UpdateAttack2();
     }
     else if (isJumping) {
         UpdateJump();
@@ -231,6 +238,35 @@ void Player::UpdateAttack()
         hammerTransform.rotate.x -= 0.2f;
         if (hammerTransform.rotate.x <= 0.0f) {
             hammerTransform.rotate.x = 0.0f;
+            increasing = true; // 次回の攻撃時に再び増やす
+            behavior_ = Behavior::kRoot; // 通常状態に戻る
+        }
+    }
+
+    // Hammer に適用
+    hammer_->SetTransform(hammerTransform);
+}
+
+void Player::UpdateAttack2()
+{
+    // Hammer の Transform を取得
+    hammerTransform = hammer_->GetTransform();
+
+    static bool increasing = true; // 回転を増やしているかどうかのフラグ
+
+    if (increasing) {
+        // 2.0f まで増やす
+        hammerTransform.rotate.z += 0.4f;
+        if (hammerTransform.rotate.z >= 6.3f) {
+            hammerTransform.rotate.z = 6.3f;
+            increasing = false; // 戻す方向に変更
+        }
+    }
+    else {
+        // 0.0f まで戻す（-= 0.1f で徐々に戻す）
+        hammerTransform.rotate.z -= 0.4f;
+        if (hammerTransform.rotate.z <= 0.0f) {
+            hammerTransform.rotate.z = 0.0f;
             increasing = true; // 次回の攻撃時に再び増やす
             behavior_ = Behavior::kRoot; // 通常状態に戻る
         }

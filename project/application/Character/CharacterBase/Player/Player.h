@@ -10,6 +10,7 @@ enum class Behavior {
 	kJump,   // ジャンプ中
 	kFloat,   // 何もしていない（浮遊ギミック）
 	kAttack,  // 攻撃中
+	kattack2,
 };
 
 class Player : public CharacterBase, public SphereCollider
@@ -60,6 +61,8 @@ private:
 	/// 攻撃処理
 	/// </summary>
 	void UpdateAttack();
+
+	void UpdateAttack2();
 
 	Behavior behavior_ = Behavior::kRoot; // 現在の状態
 
