@@ -9,8 +9,8 @@ SphereCollider::SphereCollider(const Sphere& s) : sphere(s) {
     sphere = { {-4.0f, -1.2f, 0.0f}, 1.0f, static_cast<int>(Color::WHITE) };
 }
 
-void SphereCollider::Dispatch(Collider* other) {
-    other->Action(this);
+bool SphereCollider::Dispatch(Collider* other) {
+    return other->Action(this);
 }
 
 void SphereCollider::Draw()
@@ -48,18 +48,18 @@ void SphereCollider::SetColor(int color)
     sphere.color = color;
 }
 
-void SphereCollider::Action(SphereCollider* other) {
-    CheckSphereVsSphere(sphere, other->sphere);
+bool SphereCollider::Action(SphereCollider* other) {
+    return CheckSphereVsSphere(sphere, other->sphere);
 }
 
-void SphereCollider::Action(AABBCollider* other) {
-    CheckSphereVsAABB(sphere, other->aabb);
+bool SphereCollider::Action(AABBCollider* other) {
+    return CheckSphereVsAABB(sphere, other->aabb);
 }
 
-void SphereCollider::Action(OBBCollider* other) {
-    CheckSphereVsOBB(sphere, other->obb);
+bool SphereCollider::Action(OBBCollider* other) {
+    return CheckSphereVsOBB(sphere, other->obb);
 }
 
-void SphereCollider::Action(CapsuleCollider* other) {
-    CheckSphereVsCapsule(sphere, other->capsule);
+bool SphereCollider::Action(CapsuleCollider* other) {
+    return CheckSphereVsCapsule(sphere, other->capsule);
 }

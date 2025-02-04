@@ -13,8 +13,8 @@ CapsuleCollider::CapsuleCollider(const Capsule& cap) : capsule(cap) {
     capsule.rings = 8;     // 球部分を構成する分割数
 }
 
-void CapsuleCollider::Dispatch(Collider* other) {
-    other->Action(this);
+bool CapsuleCollider::Dispatch(Collider* other) {
+    return other->Action(this);
 }
 
 void CapsuleCollider::Draw()
@@ -22,18 +22,18 @@ void CapsuleCollider::Draw()
     DrawLine::GetInstance()->DrawCapsule(capsule);
 }
 
-void CapsuleCollider::Action(SphereCollider* other) {
-    CheckSphereVsCapsule(other->sphere, capsule);
+bool CapsuleCollider::Action(SphereCollider* other) {
+    return CheckSphereVsCapsule(other->sphere, capsule);
 }
 
-void CapsuleCollider::Action(AABBCollider* other) {
-    CheckAABBVsCapsule(other->aabb, capsule);
+bool CapsuleCollider::Action(AABBCollider* other) {
+    return CheckAABBVsCapsule(other->aabb, capsule);
 }
 
-void CapsuleCollider::Action(OBBCollider* other) {
-    CheckOBBVsCapsule(other->obb, capsule);
+bool CapsuleCollider::Action(OBBCollider* other) {
+    return CheckOBBVsCapsule(other->obb, capsule);
 }
 
-void CapsuleCollider::Action(CapsuleCollider* other) {
-    CheckCapsuleVsCapsule(capsule, other->capsule);
+bool CapsuleCollider::Action(CapsuleCollider* other) {
+    return CheckCapsuleVsCapsule(capsule, other->capsule);
 }

@@ -10,8 +10,8 @@ AABBCollider::AABBCollider(const AABB& box) : aabb(box) {
     aabb.color = static_cast<int>(Color::WHITE); // AABBの色を赤に設定
 }
 
-void AABBCollider::Dispatch(Collider* other) {
-    other->Action(this);
+bool AABBCollider::Dispatch(Collider* other) {
+    return other->Action(this);
 }
 
 void AABBCollider::Draw()
@@ -19,18 +19,18 @@ void AABBCollider::Draw()
     DrawLine::GetInstance()->DrawAABB(aabb);
 }
 
-void AABBCollider::Action(SphereCollider* other) {
-    CheckSphereVsAABB(other->sphere, aabb);
+bool AABBCollider::Action(SphereCollider* other) {
+    return CheckSphereVsAABB(other->sphere, aabb);
 }
 
-void AABBCollider::Action(AABBCollider* other) {
-    CheckAABBVsAABB(aabb, other->aabb);
+bool AABBCollider::Action(AABBCollider* other) {
+    return CheckAABBVsAABB(aabb, other->aabb);
 }
 
-void AABBCollider::Action(OBBCollider* other) {
-    CheckAABBVsOBB(aabb, other->obb);
+bool AABBCollider::Action(OBBCollider* other) {
+    return CheckAABBVsOBB(aabb, other->obb);
 }
 
-void AABBCollider::Action(CapsuleCollider* other) {
-    CheckAABBVsCapsule(aabb, other->capsule);
+bool AABBCollider::Action(CapsuleCollider* other) {
+    return CheckAABBVsCapsule(aabb, other->capsule);
 }

@@ -42,54 +42,48 @@ void Player::Update()
 
     bool isJumpingNow = Input::GetInstance()->TriggerKey(DIK_C);
 
-    // ジャンプ開始時に移動方向を保存
-    if (isJumpingNow && behavior_ != Behavior::kJump) {
-        behavior_ = Behavior::kJump;
+    // ジャンプ開始
+    if (isJumpingNow && !isJumping) {
+        isJumping = true;
+        jumpVelocity = jumpPower;
 
-        // 直前の移動方向を保存（押されたキーを基準に）
+        // 直前の移動方向を保存
         jumpDirection_ = { 0.0f, 0.0f, 0.0f };
-        if (Input::GetInstance()->PushKey(DIK_W)) jumpDirection_.z += velocity;
-        if (Input::GetInstance()->PushKey(DIK_S)) jumpDirection_.z -= velocity;
-        if (Input::GetInstance()->PushKey(DIK_A)) jumpDirection_.x -= velocity;
-        if (Input::GetInstance()->PushKey(DIK_D)) jumpDirection_.x += velocity;
-    }
-    else if (isMoving && behavior_ != Behavior::kJump) {
-        behavior_ = Behavior::kRoot;
-    }
-    else if (behavior_ != Behavior::kJump) {
-        behavior_ = Behavior::kFloat;
+        if (Input::GetInstance()->PushKey(DIK_W)) jumpDirection_.z += 1.0f;
+        if (Input::GetInstance()->PushKey(DIK_S)) jumpDirection_.z -= 1.0f;
+        if (Input::GetInstance()->PushKey(DIK_A)) jumpDirection_.x -= 1.0f;
+        if (Input::GetInstance()->PushKey(DIK_D)) jumpDirection_.x += 1.0f;
+
+        // 正規化
+        float length = sqrt(jumpDirection_.x * jumpDirection_.x + jumpDirection_.z * jumpDirection_.z);
+        if (length > 0.0f) {
+            jumpDirection_.x = (jumpDirection_.x / length) * 0.5f;
+            jumpDirection_.z = (jumpDirection_.z / length) * 0.5f;
+        }
     }
 
-    switch (behavior_)
-    {
-    case Behavior::kRoot:
-        UpdateMovement();
-        break;
-    case Behavior::kJump:
+    // 移動・ジャンプ処理
+    if (isJumping) {
         UpdateJump();
-        break;
-    case Behavior::kFloat:
+    }
+    else if (isMoving) {
+        behavior_ = Behavior::kRoot;
+        UpdateMovement();
+    }
+    else {
+        behavior_ = Behavior::kFloat;
         UpdateFloatingGimmick();
-        break;
     }
 
-    // Transform を Object3D に適用
     object3d_->SetTranslate(transform.translate);
-
     object3d_->Update();
     SetPosition(transform.translate);
 
-    // Hammer の Transform を取得
+    // Hammer の Transform を取得し、プレイヤーの位置に追従
     hammerTransform = hammer_->GetTransform();
-
-    // Player の移動分をそのまま Hammer に適用
-    Vector3 hammerOffset = { 1.5f, 0.5f, 0.0f }; // Hammer の相対位置（調整可能）
+    Vector3 hammerOffset = { 0.0f, 2.0f, 0.0f };
     hammerTransform.translate = transform.translate + hammerOffset;
-
-    // Hammer に Transform を設定
     hammer_->SetTransform(hammerTransform);
-
-    // Hammer の更新
     hammer_->Update();
 }
 
@@ -108,6 +102,11 @@ void Player::SetCamera(Camera* camera)
 {
     object3d_->SetCamera(camera);
     hammer_->SetCamera(camera);
+}
+
+void Player::OnCollision()
+{
+    sphere.color = static_cast<int>(Color::RED);
 }
 
 void Player::UpdateMovement()
@@ -169,24 +168,22 @@ void Player::UpdateFloatingGimmick()
 
 void Player::UpdateJump()
 {
-    if (!isJumping) {
-        isJumping = true;
-        jumpVelocity = jumpPower;
-    }
-
     if (isJumping) {
-        transform.translate.y += jumpVelocity;
-        jumpVelocity += gravity;
-
-        // ジャンプ中に移動方向に沿って進む
+        // 進行方向に沿ってジャンプ中も移動
         transform.translate.x += jumpDirection_.x;
         transform.translate.z += jumpDirection_.z;
 
+        // 重力の影響を適用
+        transform.translate.y += jumpVelocity;
+        jumpVelocity += gravity;
+
+        // 着地処理
         if (transform.translate.y <= 0.0f) {
             transform.translate.y = 0.0f;
             isJumping = false;
             jumpVelocity = 0.0f;
-            behavior_ = Behavior::kRoot; // 通常状態に戻す
+            behavior_ = Behavior::kRoot;
         }
     }
 }
+

@@ -14,6 +14,8 @@ public:
 
 	void Draw();
 
+	void OnCollision() override;
+
 	void SetCamera(Camera* camera) { object3d_->SetCamera(camera); }
 
 	// Transform のセッター
@@ -31,5 +33,7 @@ private:
 	std::unique_ptr<Object3d> object3d_;
 
 	Transform transform_;
+
+	Transform CollisionTransform_;
 };
 

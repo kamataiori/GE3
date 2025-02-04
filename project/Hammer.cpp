@@ -8,9 +8,20 @@ void Hammer::Initialize()
 
 	// 3Dオブジェクトの初期化
 	object3d_->Initialize();
-	/*object3d_->SetScale(transform_.scale);
+	transform_.scale = { 1.0f,1.0f,1.0f };
+	transform_.rotate = { 0.0f,0.0f,0.0f };
+	transform_.translate = { 0.0f,0.5f,0.0f };
+	object3d_->SetScale(transform_.scale);
 	object3d_->SetRotate(transform_.rotate);
-	object3d_->SetTranslate(transform_.translate);*/
+	object3d_->SetTranslate(transform_.translate);
+
+	// コライダーの初期化
+	CollisionTransform_.translate = object3d_->GetTranslate();
+	//SetCollider(this);
+	SetPosition(object3d_->GetTranslate());  // 3Dモデルの位置にコライダーをセット
+	//SetRotation(object3d_->GetRotate());
+	//SetScale(object3d_->GetScale());
+	sphere.radius = 1.0f;
 }
 
 void Hammer::Update()
@@ -19,9 +30,25 @@ void Hammer::Update()
 	object3d_->SetRotate(transform_.rotate);
 	object3d_->SetTranslate(transform_.translate);
 	object3d_->Update();
+
+	// コライダーの位置を transform_ より 1.0f 上げる
+	CollisionTransform_.translate = transform_.translate;
+	CollisionTransform_.translate.y += 4.5f;
+
+	// コライダーの位置を適用
+	SetPosition(CollisionTransform_.translate);
+	sphere.color = static_cast<int>(Color::WHITE);
 }
 
 void Hammer::Draw()
 {
 	object3d_->Draw();
+	// SphereCollider の描画
+	SphereCollider::Draw();
+
+}
+
+void Hammer::OnCollision()
+{
+	sphere.color = static_cast<int>(Color::RED);
 }

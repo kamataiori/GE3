@@ -57,6 +57,7 @@ void GamePlayScene::Initialize()
 	collisionMAnager_ = std::make_unique<CollisionManager>();
 	collisionMAnager_->RegisterCollider(player_.get());
 	collisionMAnager_->RegisterCollider(enemy_.get());
+	collisionMAnager_->RegisterCollider(player_->GetHammer());
 }
 
 void GamePlayScene::Finalize()

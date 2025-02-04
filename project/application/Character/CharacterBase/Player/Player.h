@@ -8,7 +8,8 @@
 enum class Behavior {
 	kRoot,   // 通常（キー入力時に移動）
 	kJump,   // ジャンプ中
-	kFloat   // 何もしていない（浮遊ギミック）
+	kFloat,   // 何もしていない（浮遊ギミック）
+	kAttack,  // 攻撃中
 };
 
 class Player : public CharacterBase, public SphereCollider
@@ -24,6 +25,15 @@ public:
 	void Draw() override;
 
 	void SetCamera(Camera* camera);
+
+	void OnCollision() override;
+
+public:
+	// Hammer のゲッター
+	Hammer* GetHammer() const { return hammer_.get(); }
+
+	// Hammer のセッター
+	void SetHammerTransform(const Transform& transform) { hammer_->SetTransform(transform); }
 
 private:
 	/// <summary>
@@ -46,7 +56,17 @@ private:
 	/// </summary>
 	void UpdateJump();
 
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
+	void UpdateAttack();
+
 	Behavior behavior_ = Behavior::kRoot; // 現在の状態
+
+	float Lerp(float a, float b, float t) {
+		return a + (b - a) * t;
+	}
+
 
 private:
 

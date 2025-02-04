@@ -16,6 +16,8 @@ public:
 
 	void Draw() override;
 
+	void OnCollision() override;
+
 private:
 };
 
