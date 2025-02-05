@@ -7,13 +7,13 @@ public:
 
     CapsuleCollider(const Capsule& cap);
 
-    void Dispatch(Collider* other) override;
+    bool Dispatch(Collider* other) override;
 
     void Draw() override;
 
 protected:
-    void Action(SphereCollider* other) override;
-    void Action(AABBCollider* other) override;
-    void Action(OBBCollider* other) override;
-    void Action(CapsuleCollider* other) override;
+    bool Action(SphereCollider* other) override;
+    bool Action(AABBCollider* other) override;
+    bool Action(OBBCollider* other) override;
+    bool Action(CapsuleCollider* other) override;
 };

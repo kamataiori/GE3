@@ -15,7 +15,10 @@ void CollisionManager::Reset() {
 void CollisionManager::CheckAllCollisions() {
     for (size_t i = 0; i < colliders.size(); ++i) {
         for (size_t j = i + 1; j < colliders.size(); ++j) {
-            colliders[i]->Dispatch(colliders[j]);
+            if (colliders[i]->Dispatch(colliders[j])) {
+                colliders[i]->OnCollision();
+                colliders[j]->OnCollision();
+            }
         }
     }
 }

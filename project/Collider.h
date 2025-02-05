@@ -10,13 +10,15 @@ class CapsuleCollider;
 class Collider {
 public:
     
-    virtual void Dispatch(Collider* other) = 0;
+    virtual bool Dispatch(Collider* other) = 0;
 
     virtual void Draw() = 0;
 
+    virtual void OnCollision();
+
 public:
-    virtual void Action(SphereCollider* other) = 0;
-    virtual void Action(AABBCollider* other) = 0;
-    virtual void Action(OBBCollider* other) = 0;
-    virtual void Action(CapsuleCollider* other) = 0;
+    virtual bool Action(SphereCollider* other) = 0;
+    virtual bool Action(AABBCollider* other) = 0;
+    virtual bool Action(OBBCollider* other) = 0;
+    virtual bool Action(CapsuleCollider* other) = 0;
 };
