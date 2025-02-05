@@ -4,6 +4,7 @@
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
 #include "DrawLine.h"
+#include "DrawTriangle.h"
 
 class TitleScene : public BaseScene
 {
@@ -56,5 +57,15 @@ private:
 	Plane ground;
 	Capsule capsule;
 	OBB obb;
+
+	DrawTriangle* drawTriangle_ = nullptr;
+	// 追加するメンバ変数
+	Vector3 triangleP1 = { -1.0f, 0.0f, 0.0f };
+	Vector3 triangleP2 = { 1.0f, 0.0f, 0.0f };
+	Vector3 triangleP3 = { 0.0f, 1.0f, 0.0f };
+	Color triangleColor = Color::BLUE;
+	// 透過度（0.0f = 完全透明, 1.0f = 不透明）
+	float triangleAlpha = 0.3f;
+
 };
 

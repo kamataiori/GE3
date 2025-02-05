@@ -13,6 +13,8 @@
 #include "D3DResourceLeakChecker.h"
 #include "DrawLineCommon.h"
 #include <Debug.h>
+#include "DrawTriangleCommon.h"
+#include <DrawTriangle.h>
 
 static const int kWindowWidth = 1280;
 static const int kWindowHeight = 720;

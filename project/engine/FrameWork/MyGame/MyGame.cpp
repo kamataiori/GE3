@@ -45,6 +45,9 @@ void MyGame::Draw()
 	// Lineのデータをリセット
 	DrawLine::GetInstance()->ResetData();
 
+	// Lineのデータをリセット
+	DrawTriangle::GetInstance()->ResetData();
+
 	// RenderTextureへの描画前処理
 	dxCommon->PreDrawForRenderTexture();
 
@@ -57,6 +60,10 @@ void MyGame::Draw()
 	// DrawLineの描画
 	DrawLineCommon::GetInstance()->CommonSetting();
 	DrawLine::GetInstance()->Draw();
+
+	// DrawTriangleの描画
+	DrawTriangleCommon::GetInstance()->CommonSetting();
+	DrawTriangle::GetInstance()->Draw();
 
 	// スワップチェーンへの描画前処理
 	dxCommon->PreDraw();
