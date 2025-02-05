@@ -25,6 +25,11 @@ public:
 
 	Object3d* GetObject3d() { return object3d_.get(); }
 
+	// コライダーサイズを変更
+	void SetColliderSize(float radius) { sphere.radius = radius; }
+
+	void SetColliderCenter(Vector3 center) { sphere.center = center; }
+
 
 private:
 

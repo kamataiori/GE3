@@ -91,6 +91,10 @@ private:
 
 	std::unique_ptr<CollisionManager> collisionMAnager_;
 
+	float deathTimer_ = 0.0f; // HP が 0 になった後のカウント用
 
+	std::unique_ptr<Sprite> title;
+
+	std::unique_ptr<Sprite> hp;
 };
 

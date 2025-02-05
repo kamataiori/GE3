@@ -4,7 +4,7 @@
 
 void GamePlayScene::Initialize()
 {
-	
+
 	// 3Dカメラの初期化
 	camera1->SetTranslate({ 0.0f, 3.5f, -20.0f });
 
@@ -30,7 +30,7 @@ void GamePlayScene::Initialize()
 	sky_->SetCamera(camera1.get());
 
 	DrawLine::GetInstance()->SetCamera(camera1.get());
-	
+
 
 	// ライト
 	// Lightクラスのデータを初期化
@@ -48,21 +48,29 @@ void GamePlayScene::Initialize()
 
 
 	particle->Initialize();
-	particle->CreateParticleGroup("particle", "Resources/particleTest.png",ParticleManager::BlendMode::kBlendModeAdd);
+	particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
 	//particle->CreateParticleGroup("particle2", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{32.0f,32.0f});
 	// ParticleEmitterの初期化
-	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ {0.0f, 0.0f, -4.0f} }, 10, 0.5f,true);
+	auto emitter = std::make_unique<ParticleEmitter>(particle.get(), "particle", Transform{ enemy_->GetPosition() }, 10, 0.5f, true);
 	emitters.push_back(std::move(emitter));
 
 	collisionMAnager_ = std::make_unique<CollisionManager>();
-	collisionMAnager_->RegisterCollider(player_.get());
 	collisionMAnager_->RegisterCollider(enemy_.get());
 	collisionMAnager_->RegisterCollider(player_->GetHammer());
+
+	title = std::make_unique<Sprite>();
+	title->Initialize("Resources/ex.png");
+	title->SetPosition(Vector2(10.0f, 50.0f));
+
+	hp = std::make_unique<Sprite>();
+	hp->Initialize("Resources/hp.png");
+	// HP スプライトの位置を設定
+	hp->SetPosition(Vector2(150.0f, 50.0f));
 }
 
 void GamePlayScene::Finalize()
 {
-	
+
 }
 
 void GamePlayScene::Update()
@@ -81,16 +89,25 @@ void GamePlayScene::Update()
 	camera2->SetRotate(cameraRotate);
 	camera2->Update();
 
-	
-	
+	// HP のスケールを敵の HP に合わせる
+	float hpScaleX = static_cast<float>(enemy_->GetHP()); // HP 100 で 1.0, HP 50 で 0.5
+	hp->SetSize(Vector2(hpScaleX, 10.0f)); // X スケールを HP に応じて変更
+	title->Update();
+	hp->Update();
+
 	// 衝突判定と応答
 	CheckAllColisions();
 
-	
 
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
-		// シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+
+	// 敵の HP が 0 ならカウント開始
+	if (enemy_->GetHP() <= 0) {
+		deathTimer_ += 1.0f / 30.0f; // 1フレームごとに 1/60 秒加算
+
+		// 5秒経過したらシーン切り替え
+		if (deathTimer_ >= 5.0f) {
+			SceneManager::GetInstance()->ChangeScene("TITLE");
+		}
 	}
 
 	//particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);
@@ -102,7 +119,7 @@ void GamePlayScene::Update()
 
 	DrawLine::GetInstance()->Update();
 
-	
+
 }
 
 void GamePlayScene::BackGroundDraw()
@@ -114,7 +131,8 @@ void GamePlayScene::BackGroundDraw()
 	// ここからSprite個々の背景描画
 	// ================================================
 
-	
+	/*title->Draw();
+	hp->Draw();*/
 
 	// ================================================
 	// ここまでSprite個々の背景描画
@@ -135,8 +153,10 @@ void GamePlayScene::Draw()
 	sky_->Draw();
 	ground_->Draw();
 	player_->Draw();
-	enemy_->Draw();
-	
+	if (enemy_->GetHP() > 0) {
+		enemy_->Draw();
+	}
+
 
 	// ================================================
 	// ここまで3Dオブジェクト個々の描画
@@ -146,7 +166,7 @@ void GamePlayScene::Draw()
 	// ここからDrawLine個々の描画
 	// ================================================
 
-	
+
 
 	// ================================================
 	// ここまでDrawLine個々の描画
@@ -161,8 +181,13 @@ void GamePlayScene::ForeGroundDraw()
 	// ================================================
 	// ここからSprite個々の前景描画(UIなど)
 	// ================================================
+	title->Draw();
+	hp->Draw();
 
-	particle->Draw();
+	if (enemy_->GetHP() <= 0) {
+		particle->Draw();
+	}
+
 
 	// ================================================
 	// ここまでSprite個々の前景描画(UIなど)

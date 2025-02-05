@@ -20,44 +20,34 @@ void Enemy::Initialize()
 	//SetRotation(object3d_->GetRotate());
 	//SetScale(object3d_->GetScale());
 	sphere.radius = 1.5f;
+
+	hp_ = 1000; // HP 初期化
 }
 
 void Enemy::Update()
 {
-	ImGui::Begin("Enemy Transform");
-
-	// ✅ Translate (位置)
-	Vector3 position = object3d_->GetTranslate();
-	if (ImGui::DragFloat3("Position", &position.x, 0.1f)) {
-		object3d_->SetTranslate(position);
-	}
-
-	// ✅ Rotate (回転)
-	Vector3 rotation = object3d_->GetRotate();
-	if (ImGui::DragFloat3("Rotation", &rotation.x, 0.1f)) {
-		object3d_->SetRotate(rotation);
-	}
-
-	// ✅ Scale (スケール)
-	Vector3 scale = object3d_->GetScale();
-	if (ImGui::DragFloat3("Scale", &scale.x, 0.1f, 0.1f, 10.0f)) {
-		object3d_->SetScale(scale);
-	}
-
-	ImGui::End();
+	
 
 	object3d_->Update();
 	SetPosition(object3d_->GetTranslate());
 	//SetScale(object3d_->GetScale());
+
+	// HP が 0 以下なら消滅処理（ここでは非表示にする）
+	if (hp_ <= 0) {
+		object3d_->SetScale({ 0.0f, 0.0f, 0.0f }); // スケールを 0 にして見えなくする
+	}
 }
 
 void Enemy::Draw()
 {
 	object3d_->Draw();
-	// SphereCollider の描画
-	SphereCollider::Draw();
+	//// SphereCollider の描画
+	//SphereCollider::Draw();
 }
 
 void Enemy::OnCollision()
 {
+	// HP を -10 する
+	hp_ -= 10;
+	if (hp_ < 0) hp_ = 0; // HP が 0 以下にならないようにする
 }

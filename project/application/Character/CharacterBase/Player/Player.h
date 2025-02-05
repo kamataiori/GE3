@@ -13,11 +13,11 @@ enum class Behavior {
 	kattack2,
 };
 
-class Player : public CharacterBase, public SphereCollider
+class Player : public CharacterBase
 {
 public:
 
-	Player(BaseScene* baseScene_) : CharacterBase(baseScene_),SphereCollider(sphere){ hammer_ = std::make_unique<Hammer>(baseScene_); }
+	Player(BaseScene* baseScene_) : CharacterBase(baseScene_){ hammer_ = std::make_unique<Hammer>(baseScene_); }
 
 	void Initialize() override;
 
@@ -26,8 +26,6 @@ public:
 	void Draw() override;
 
 	void SetCamera(Camera* camera);
-
-	void OnCollision() override;
 
 public:
 	// Hammer のゲッター

@@ -31,20 +31,23 @@ void Hammer::Update()
 	object3d_->SetTranslate(transform_.translate);
 	object3d_->Update();
 
-	// コライダーの位置を transform_ より 1.0f 上げる
+	// コライダーの位置を transform_ に連動
 	CollisionTransform_.translate = transform_.translate;
-	CollisionTransform_.translate.y += 4.5f;
+
+	// 追加: コライダーの高さ調整 (必要なら変更)
+	CollisionTransform_.translate.y += 4.0f; // 例: 1.0f 上にオフセット
 
 	// コライダーの位置を適用
 	SetPosition(CollisionTransform_.translate);
 	sphere.color = static_cast<int>(Color::WHITE);
 }
 
+
 void Hammer::Draw()
 {
 	object3d_->Draw();
-	// SphereCollider の描画
-	SphereCollider::Draw();
+	//// SphereCollider の描画
+	//SphereCollider::Draw();
 
 }
 

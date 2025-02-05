@@ -16,11 +16,6 @@ void Player::Initialize()
 	object3d_->SetRotate({ 0.0f, 3.14f, 0.0f });
 	object3d_->SetTranslate({ -2.0f, 0.0f, 0.0f });
 
-	// コライダーの初期化
-	SetCollider(this);
-	SetPosition(object3d_->GetTranslate());  // 3Dモデルの位置にコライダーをセット
-	sphere.radius = 2.0f;
-
     InitializeFloatingGimmick();
 
     // Hammer の初期化
@@ -57,14 +52,12 @@ void Player::Update()
         isJumping = true;
         jumpVelocity = jumpPower;
 
-        // 直前の移動方向を保存
         jumpDirection_ = { 0.0f, 0.0f, 0.0f };
         if (Input::GetInstance()->PushKey(DIK_W)) jumpDirection_.z += 1.0f;
         if (Input::GetInstance()->PushKey(DIK_S)) jumpDirection_.z -= 1.0f;
         if (Input::GetInstance()->PushKey(DIK_A)) jumpDirection_.x -= 1.0f;
         if (Input::GetInstance()->PushKey(DIK_D)) jumpDirection_.x += 1.0f;
 
-        // 正規化
         float length = sqrt(jumpDirection_.x * jumpDirection_.x + jumpDirection_.z * jumpDirection_.z);
         if (length > 0.0f) {
             jumpDirection_.x = (jumpDirection_.x / length) * 0.5f;
@@ -91,40 +84,23 @@ void Player::Update()
         UpdateFloatingGimmick();
     }
 
-
     object3d_->SetTranslate(transform.translate);
     object3d_->Update();
-    SetPosition(transform.translate);
-
+    
     // Hammer の Transform を取得し、プレイヤーの位置に追従
     hammerTransform = hammer_->GetTransform();
-    Vector3 hammerOffset = { 0.0f, 2.0f, 0.0f };
+    Vector3 hammerOffset = { 1.0f, 2.0f, 0.0f }; // Hammerの位置調整
     hammerTransform.translate = transform.translate + hammerOffset;
     hammer_->SetTransform(hammerTransform);
     hammer_->Update();
-
-    // ImGui で Hammer の Transform を編集可能にする
-    ImGui::Begin("Hammer Transform");
-    Vector3 hammerPos = hammerTransform.translate;
-    if (ImGui::DragFloat3("Position", &hammerPos.x, 0.1f)) {
-        hammerTransform.translate = hammerPos;
-        hammer_->SetTransform(hammerTransform);
-    }
-    Vector3 hammerRot = hammerTransform.rotate;
-    if (ImGui::DragFloat3("Rotation", &hammerRot.x, 0.1f)) {
-        hammerTransform.rotate = hammerRot;
-        hammer_->SetTransform(hammerTransform);
-    }
-    ImGui::End();
 }
+
 
 
 void Player::Draw()
 {
 	object3d_->Draw();
-	// SphereCollider の描画
-	SphereCollider::Draw();
-
+	
     // Hammer の描画
     hammer_->Draw();
 }
@@ -135,31 +111,9 @@ void Player::SetCamera(Camera* camera)
     hammer_->SetCamera(camera);
 }
 
-void Player::OnCollision()
-{
-    sphere.color = static_cast<int>(Color::RED);
-}
-
 void Player::UpdateMovement()
 {
-    ImGui::Begin("Player Transform");
-
-    Vector3 position = transform.translate;
-    if (ImGui::DragFloat3("Position", &position.x, 0.1f)) {
-        transform.translate = position;
-    }
-
-    Vector3 rotation = object3d_->GetRotate();
-    if (ImGui::DragFloat3("Rotation", &rotation.x, 0.1f)) {
-        object3d_->SetRotate(rotation);
-    }
-
-    Vector3 scale = object3d_->GetScale();
-    if (ImGui::DragFloat3("Scale", &scale.x, 0.1f, 0.1f, 10.0f)) {
-        object3d_->SetScale(scale);
-    }
-
-    ImGui::End();
+    
 
     // キー入力による移動処理
     if (Input::GetInstance()->PushKey(DIK_W)) {
@@ -223,56 +177,67 @@ void Player::UpdateAttack()
     // Hammer の Transform を取得
     hammerTransform = hammer_->GetTransform();
 
-    static bool increasing = true; // 回転を増やしているかどうかのフラグ
+    static bool increasing = true;
+
+    // 攻撃中はコライダーサイズを拡大
+    hammer_->SetColliderSize(15.0f);
 
     if (increasing) {
-        // 2.0f まで増やす
         hammerTransform.rotate.x += 0.2f;
+        hammerTransform.translate.y -= 0.1f;
         if (hammerTransform.rotate.x >= 2.0f) {
             hammerTransform.rotate.x = 2.0f;
-            increasing = false; // 戻す方向に変更
+            increasing = false;
         }
     }
     else {
-        // 0.0f まで戻す（-= 0.1f で徐々に戻す）
         hammerTransform.rotate.x -= 0.2f;
+        hammerTransform.translate.y += 0.1f;
         if (hammerTransform.rotate.x <= 0.0f) {
             hammerTransform.rotate.x = 0.0f;
-            increasing = true; // 次回の攻撃時に再び増やす
-            behavior_ = Behavior::kRoot; // 通常状態に戻る
+            increasing = true;
+            behavior_ = Behavior::kRoot;
+            hammer_->SetColliderSize(1.0f); // 通常サイズに戻す
         }
     }
 
-    // Hammer に適用
     hammer_->SetTransform(hammerTransform);
+    hammer_->SetPosition(hammerTransform.translate);
 }
+
 
 void Player::UpdateAttack2()
 {
     // Hammer の Transform を取得
     hammerTransform = hammer_->GetTransform();
 
-    static bool increasing = true; // 回転を増やしているかどうかのフラグ
+    static bool increasing = true;
+
+    // 攻撃中はコライダーサイズを拡大
+    hammer_->SetColliderSize(10.0f);
 
     if (increasing) {
-        // 2.0f まで増やす
         hammerTransform.rotate.z += 0.4f;
+        hammerTransform.translate.y -= 0.2f;
         if (hammerTransform.rotate.z >= 6.3f) {
             hammerTransform.rotate.z = 6.3f;
-            increasing = false; // 戻す方向に変更
+            increasing = false;
         }
     }
     else {
-        // 0.0f まで戻す（-= 0.1f で徐々に戻す）
         hammerTransform.rotate.z -= 0.4f;
+        hammerTransform.translate.y += 0.2f;
         if (hammerTransform.rotate.z <= 0.0f) {
             hammerTransform.rotate.z = 0.0f;
-            increasing = true; // 次回の攻撃時に再び増やす
-            behavior_ = Behavior::kRoot; // 通常状態に戻る
+            increasing = true;
+            behavior_ = Behavior::kRoot;
+            hammer_->SetColliderSize(1.0f); // 通常サイズに戻す
         }
     }
 
-    // Hammer に適用
     hammer_->SetTransform(hammerTransform);
+    hammer_->SetPosition(hammerTransform.translate);
 }
+
+
 
