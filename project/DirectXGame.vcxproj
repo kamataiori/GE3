@@ -171,6 +171,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionFunctions.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="CollisionTypeIdDef.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DrawLine.h" />

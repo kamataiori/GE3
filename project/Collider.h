@@ -21,4 +21,14 @@ public:
     virtual bool Action(AABBCollider* other) = 0;
     virtual bool Action(OBBCollider* other) = 0;
     virtual bool Action(CapsuleCollider* other) = 0;
+
+    // 種別IDを取得
+    uint32_t GetTypeID() const { return typeID_; }
+    // 種別IDを設定
+    void SetTypeID(uint32_t typeID) { typeID_ = typeID; }
+
+private:
+
+    // 種別ID
+    uint32_t typeID_ = 0u;
 };
