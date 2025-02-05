@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <CollisionTypeIdDef.h>
 
 void Player::Initialize()
 {
@@ -18,6 +19,7 @@ void Player::Initialize()
 	SetCollider(this);
 	SetPosition(object3d_->GetTranslate());  // 3Dモデルの位置にコライダーをセット
 	sphere.radius = 2.0f;
+	//SphereCollider::SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kPlayer));
 }
 
 void Player::Update()

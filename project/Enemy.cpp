@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include <CollisionTypeIdDef.h>
 
 void Enemy::Initialize()
 {
@@ -20,6 +21,8 @@ void Enemy::Initialize()
 	//SetRotation(object3d_->GetRotate());
 	//SetScale(object3d_->GetScale());
 	sphere.radius = 1.5f;
+
+	//SphereCollider::SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kEnemy));
 }
 
 void Enemy::Update()
