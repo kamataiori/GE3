@@ -1,4 +1,5 @@
 #include "CollisionManager.h"
+#include "Collider.h"
 
 void CollisionManager::RegisterCollider(Collider* collider) {
     colliders.push_back(collider);
@@ -13,11 +14,13 @@ void CollisionManager::Reset() {
 }
 
 void CollisionManager::CheckAllCollisions() {
-    for (size_t i = 0; i < colliders.size(); ++i) {
-        for (size_t j = i + 1; j < colliders.size(); ++j) {
-            if (colliders[i]->Dispatch(colliders[j])) {
-                colliders[i]->OnCollision();
-                colliders[j]->OnCollision();
+    for (auto it1 = colliders.begin(); it1 != colliders.end(); ++it1) {
+        auto it2 = it1;
+        ++it2;
+        for (; it2 != colliders.end(); ++it2) {
+            if ((*it1)->Dispatch(*it2)) {
+                (*it1)->OnCollision();
+                (*it2)->OnCollision();
             }
         }
     }
