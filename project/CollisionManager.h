@@ -1,13 +1,9 @@
 #pragma once
 #include "Struct.h"
-#include <vector>
+#include <list>
 #include <algorithm>
 
 class Collider;
-
-#pragma once
-#include "Collider.h"
-#include <vector>
 
 class CollisionManager {
 public:
@@ -16,7 +12,7 @@ public:
     void Reset();
     void CheckAllCollisions();
 private:
-    std::vector<Collider*> colliders;
+    std::list<Collider*> colliders;
 };
 
 

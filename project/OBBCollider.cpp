@@ -13,8 +13,8 @@ OBBCollider::OBBCollider(const OBB& box) : obb(box) {
     obb.color = static_cast<int>(Color::WHITE); // 色の初期値
 }
 
-void OBBCollider::Dispatch(Collider* other) {
-    other->Action(this);
+bool OBBCollider::Dispatch(Collider* other) {
+    return other->Action(this);
 }
 
 void OBBCollider::Draw()
@@ -32,18 +32,18 @@ void OBBCollider::SetPosition(const Vector3& position)
     obb.center = position;
 }
 
-void OBBCollider::Action(SphereCollider* other) {
-    CheckSphereVsOBB(other->sphere, obb);
+bool OBBCollider::Action(SphereCollider* other) {
+    return CheckSphereVsOBB(other->sphere, obb);
 }
 
-void OBBCollider::Action(AABBCollider* other) {
-    CheckAABBVsOBB(other->aabb, obb);
+bool OBBCollider::Action(AABBCollider* other) {
+    return CheckAABBVsOBB(other->aabb, obb);
 }
 
-void OBBCollider::Action(OBBCollider* other) {
-    CheckOBBVsOBB(obb, other->obb);
+bool OBBCollider::Action(OBBCollider* other) {
+    return CheckOBBVsOBB(obb, other->obb);
 }
 
-void OBBCollider::Action(CapsuleCollider* other) {
-    CheckOBBVsCapsule(obb, other->capsule);
+bool OBBCollider::Action(CapsuleCollider* other) {
+    return CheckOBBVsCapsule(obb, other->capsule);
 }

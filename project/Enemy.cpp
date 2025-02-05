@@ -49,6 +49,7 @@ void Enemy::Update()
 	object3d_->Update();
 	SetPosition(object3d_->GetTranslate());
 	//SetScale(object3d_->GetScale());
+	sphere.color = static_cast<int>(Color::WHITE);
 }
 
 void Enemy::Draw()
@@ -56,4 +57,9 @@ void Enemy::Draw()
 	object3d_->Draw();
 	// SphereCollider の描画
 	SphereCollider::Draw();
+}
+
+void Enemy::OnCollision()
+{
+	sphere.color = static_cast<int>(Color::RED);
 }
