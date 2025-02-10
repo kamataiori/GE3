@@ -46,10 +46,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)..\generated\obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\generated\outputs\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(SolutionDir)externals\nlohmann;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(SolutionDir)externals\nlohmann;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\generated\obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\generated\outputs\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -137,6 +137,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Scene\GameScene\GamePlayScene.cpp" />
     <ClCompile Include="application\Camera\FollowCamera\FollowCamera.cpp" />
     <ClCompile Include="application\Camera\FPSCamera\FPSCamera.cpp" />
+    <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="engine\3d\Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -205,6 +206,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Scene\GameScene\GamePlayScene.h" />
     <ClInclude Include="application\Camera\FollowCamera\FollowCamera.h" />
     <ClInclude Include="application\Camera\FPSCamera\FPSCamera.h" />
+    <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="engine\3d\Light.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />

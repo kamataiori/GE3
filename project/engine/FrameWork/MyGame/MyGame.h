@@ -2,6 +2,7 @@
 #include "SceneFactory.h"
 #include "ImGuiManager.h"
 #include "OffscreenRendering.h"
+#include "GlobalVariables.h"
 
 class MyGame : public Framework
 {

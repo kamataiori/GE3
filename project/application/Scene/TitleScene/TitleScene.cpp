@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "ImGuiManager.h"
+#include "GlobalVariables.h"
 
 void TitleScene::Initialize()
 {
@@ -81,8 +82,7 @@ void TitleScene::Initialize()
 	//drawTriangle_->Initialize();
 	drawTriangle_->SetCamera(camera1.get());
 
-	//// 初期三角形を追加
-	//drawTriangle_->AddTriangle(triangleP1, triangleP2, triangleP3, triangleColor);
+	GlobalVariables::GetInstance()->AddValue<Vector3>("TEST", "position", camera1->GetTranslate());
 } 
 
 void TitleScene::Finalize()
@@ -105,6 +105,7 @@ void TitleScene::Update()
 	// 各3Dオブジェクトの更新
 	plane->Update();
 	// カメラの更新
+	camera1->SetTranslate(GlobalVariables::GetInstance()->GetValue<Vector3>("TEST", "position"));
 	camera1->Update();
 
 	for (auto& emitter : emitters)
