@@ -75,6 +75,14 @@ void TitleScene::Initialize()
 	obb.orientations[2] = { 0.0f, 0.0f, 1.0f }; // Z軸
 	obb.size = { 1.0f, 1.0f, 0.5f }; // 各軸方向の半サイズ
 	obb.color = static_cast<int>(Color::WHITE); // 色の初期値
+
+	// DrawTriangleの初期化
+	drawTriangle_ = DrawTriangle::GetInstance();
+	//drawTriangle_->Initialize();
+	drawTriangle_->SetCamera(camera1.get());
+
+	//// 初期三角形を追加
+	//drawTriangle_->AddTriangle(triangleP1, triangleP2, triangleP3, triangleColor);
 } 
 
 void TitleScene::Finalize()
@@ -179,6 +187,25 @@ void TitleScene::Update()
 	ImGui::DragInt("Rings", &capsule.rings, 1, 2, 32);       // 球部分分割数を調整
 	ImGui::End();
 
+	// DrawTriangleの更新
+	//drawTriangle_->Update();
+
+	// ImGui ウィンドウ
+	ImGui::Begin("Triangle Control");
+
+	// 頂点座標の変更
+	ImGui::DragFloat3("Vertex 1", &triangleP1.x, 0.1f);
+	ImGui::DragFloat3("Vertex 2", &triangleP2.x, 0.1f);
+	ImGui::DragFloat3("Vertex 3", &triangleP3.x, 0.1f);
+
+	// 変更を適用
+	if (ImGui::Button("Apply Changes")) {
+		drawTriangle_->ResetData(); // データをクリア
+		drawTriangle_->AddTriangle(triangleP1, triangleP2, triangleP3, triangleColor, triangleAlpha);
+	}
+
+	ImGui::End();
+
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		// シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAMEPLAY");
@@ -226,6 +253,9 @@ void TitleScene::Draw()
 		Color::WHITE,
 		Color::WHITE
 	);*/
+	// DrawTriangleの描画
+	// 初期三角形を追加
+	drawTriangle_->AddTriangle(triangleP1, triangleP2, triangleP3, triangleColor, triangleAlpha);
 
 	DrawLine::GetInstance()->DrawAABB(aabb);
 	DrawLine::GetInstance()->DrawSphere(sphere);
@@ -239,6 +269,8 @@ void TitleScene::Draw()
 	// ================================================
 	// ここまでDrawLine個々の描画
 	// ================================================
+
+
 }
 
 void TitleScene::ForeGroundDraw()

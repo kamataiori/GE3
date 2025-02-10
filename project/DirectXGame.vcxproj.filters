@@ -228,6 +228,12 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DrawTriangleCommon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawTriangle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -431,6 +437,12 @@
     <ClInclude Include="CollisionTypeIdDef.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="DrawTriangleCommon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawTriangle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />
@@ -453,6 +465,8 @@
     <FxCompile Include="Resources\shaders\RadialBlur.PS.hlsl" />
     <FxCompile Include="Resources\shaders\DrawLine.PS.hlsl" />
     <FxCompile Include="Resources\shaders\DrawLine.VS.hlsl" />
+    <FxCompile Include="Resources\shaders\DrawTriangle.VS.hlsl" />
+    <FxCompile Include="Resources\shaders\DrawTriangle.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectXGame.rc">

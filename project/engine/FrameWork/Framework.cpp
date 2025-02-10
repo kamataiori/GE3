@@ -40,6 +40,10 @@ void Framework::Initialize()
 	DrawLineCommon::GetInstance()->Initialize();
 	DrawLine::GetInstance()->Initialize();
 
+	// DrawTriangleの初期化
+	DrawTriangleCommon::GetInstance()->Initialize();
+	DrawTriangle::GetInstance()->Initialize();
+
 }
 
 void Framework::Finalize()
@@ -63,6 +67,10 @@ void Framework::Finalize()
 	DrawLineCommon::GetInstance()->Finalize();
 	// DrawLineの終了処理
 	DrawLine::GetInstance()->Finalize();
+	// DrawTriangleの終了処理
+	DrawTriangleCommon::GetInstance()->Finalize();
+	// DrawTriangleの終了処理
+	DrawTriangle::GetInstance()->Finalize();
 	delete sceneFactory_;
 	spriteCommon.reset();
 	spriteCommon->Finalize();
@@ -87,6 +95,9 @@ void Framework::Update()
 
 	// DrawLineの更新
 	DrawLine::GetInstance()->Update();
+
+	// DrawTriangleの更新
+	DrawTriangle::GetInstance()->Update();
 }
 
 void Framework::Run()

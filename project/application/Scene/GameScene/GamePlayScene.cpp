@@ -205,7 +205,7 @@ void GamePlayScene::Update()
 
 	// 音声再生を無限ループで呼び出す
 	//audio->SoundPlayLoopWave(audio->GetXAudio2().Get(), sound);
-   /* audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);*/
+    //audio->SoundPlayWave(audio->GetXAudio2().Get(), sound);
 
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		// シーン切り替え
