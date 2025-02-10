@@ -78,7 +78,7 @@ void TitleScene::Initialize()
 
 	// DrawTriangleの初期化
 	drawTriangle_ = DrawTriangle::GetInstance();
-	drawTriangle_->Initialize();
+	//drawTriangle_->Initialize();
 	drawTriangle_->SetCamera(camera1.get());
 
 	//// 初期三角形を追加
@@ -188,7 +188,7 @@ void TitleScene::Update()
 	ImGui::End();
 
 	// DrawTriangleの更新
-	drawTriangle_->Update();
+	//drawTriangle_->Update();
 
 	// ImGui ウィンドウ
 	ImGui::Begin("Triangle Control");
@@ -253,6 +253,9 @@ void TitleScene::Draw()
 		Color::WHITE,
 		Color::WHITE
 	);*/
+	// DrawTriangleの描画
+	// 初期三角形を追加
+	drawTriangle_->AddTriangle(triangleP1, triangleP2, triangleP3, triangleColor, triangleAlpha);
 
 	DrawLine::GetInstance()->DrawAABB(aabb);
 	DrawLine::GetInstance()->DrawSphere(sphere);
@@ -267,9 +270,6 @@ void TitleScene::Draw()
 	// ここまでDrawLine個々の描画
 	// ================================================
 
-	// DrawTriangleの描画
-	// 初期三角形を追加
-	drawTriangle_->AddTriangle(triangleP1, triangleP2, triangleP3, triangleColor, triangleAlpha);
 
 }
 
