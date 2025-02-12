@@ -16,6 +16,8 @@ void MyGame::Initialize()
 	imGuiManager_->Initialize(winApp.get(), DirectXCommon::GetInstance());
 
 	offscreenRendering->Initialize();
+
+	GlobalVariables::GetInstance()->LoadFiles();
 }
 
 
@@ -36,8 +38,11 @@ void MyGame::Update()
 	// 基底クラスの更新処理
 	Framework::Update();
 
+	GlobalVariables::GetInstance()->Update();
+
 	// ImGuiの内部コマンドを生成する
 	ImGui::Render();
+
 }
 
 void MyGame::Draw()
