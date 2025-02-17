@@ -58,6 +58,11 @@ public:
     void Draw();
 
     /// <summary>
+    /// スケルトンの描画
+    /// </summary>
+    void DrawSkeleton();
+
+    /// <summary>
     /// 座標変換行列データの初期化
     /// </summary>
     void CreateTransformationMatrixData();
@@ -87,6 +92,13 @@ public:
 
     // Material colorのゲッター
     const Vector4& GetMaterialColor() const;
+
+private:
+
+    /// <summary>
+    /// デフォルトのカメラを設定
+    /// </summary>
+    void SetDefaultCamera();
 
 private:
     // Object3dCommonの初期化

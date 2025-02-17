@@ -10,6 +10,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "StructAnimation.h"
+#include "DrawLine.h"
+
 
 //---前方宣言---//
 class ModelCommon;
@@ -43,6 +45,7 @@ public:
 
 	// Node構造体
 	struct Node {
+		QuaternionTransform transform;
 		Matrix4x4 localMatrix;  // NodeのTransform
 		std::string name;  // Nodeの名前
 		std::vector<Node> children;  // 子供のNode
@@ -68,9 +71,20 @@ public:
 	void Update();
 
 	/// <summary>
+	/// Skeltonの更新処理
+	/// </summary>
+	/// <param name="skeleton"></param>
+	void Update(Skeleton& skeleton);
+
+	/// <summary>
 	/// 描画処理
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+    /// 骨を描画
+    /// </summary>
+	void DrawSkeleton();
 
 	/// <summary>
 	/// 頂点データを作成
@@ -99,9 +113,33 @@ public:
 
 
 	/// <summary>
-    /// Animation解析の関数
-    /// </summary>
+	/// Animation解析の関数
+	/// </summary>
 	AnimationData LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);
+
+	/// <summary>
+	/// NodeからJointを作る関数
+	/// </summary>
+	/// <param name="node"></param>
+	/// <param name="parent"></param>
+	/// <param name="joints"></param>
+	/// <returns></returns>
+	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
+
+	/// <summary>
+	/// Nodeの階層からSkeletonを作る関数
+	/// </summary>
+	/// <param name="rootNode"></param>
+	/// <returns></returns>
+	Skeleton CretaeSkeleton(const Node& rootNode);
+
+	/// <summary>
+	/// Animationの適用
+	/// </summary>
+	/// <param name="skeleton"></param>
+	/// <param name="animation"></param>
+	/// <param name="animationTime"></param>
+	void AppAnimation(Skeleton& skeleton, const AnimationData& animation, float animationTime);
 
 	/// <summary>
 	/// ModelDataのGetter
@@ -173,6 +211,7 @@ private:
 	float animationTime = 0.0f;
 
 	AnimationData animation;
+	Skeleton skeleton;
 
 };
 

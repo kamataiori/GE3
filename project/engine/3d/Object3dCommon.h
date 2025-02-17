@@ -46,6 +46,11 @@ public:
 	/// </summary>
 	void Finalize();
 
+	/// <summary>
+    /// デフォルトのカメラを取得
+    /// </summary>
+	Camera* GetDefaultCamera();
+
 private:
 
 	/// <summary>
