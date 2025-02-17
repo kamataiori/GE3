@@ -54,6 +54,7 @@ public:
 	// ModelData構造体
 	struct ModelData {
 		std::vector<VertexData>vertices;
+		std::vector<uint32_t> indices;
 		MaterialData material;
 		Node rootNode;
 		bool isAnimation;
@@ -90,6 +91,11 @@ public:
 	/// 頂点データを作成
 	/// </summary>
 	void CreateVertexData();
+
+	/// <summary>
+	/// 解析したデータを使って作成
+	/// </summary>
+	void CreateIndexResource();
 
 	/// <summary>
 	/// マテリアルデータの初期化
@@ -212,6 +218,11 @@ private:
 
 	AnimationData animation;
 	Skeleton skeleton;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> indexResource;
+	//Viewを作成する
+	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite{};
+	uint32_t* mappedIndex = nullptr;
 
 };
 
