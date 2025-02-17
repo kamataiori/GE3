@@ -289,6 +289,12 @@ void Object3dCommon::Finalize()
 	instance = nullptr;
 }
 
+Camera* Object3dCommon::GetDefaultCamera()
+{
+	return defaultCamera;
+}
+
+
 void Object3dCommon::CommonSetting()
 {
 	//ルートシグネチャをセットするコマンド

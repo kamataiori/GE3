@@ -32,11 +32,11 @@ void TitleScene::Initialize()
 	animationCube->Initialize();
 
 	//// モデル読み込み
-	ModelManager::GetInstance()->LoadModel("AnimatedCube/AnimatedCube.gltf");
+	ModelManager::GetInstance()->LoadModel("human/walk.gltf");
 	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
 	plane->SetModel("uvChecker.gltf");
-	animationCube->SetModel("AnimatedCube/AnimatedCube.gltf");
+	animationCube->SetModel("human/walk.gltf");
 
 	// モデルにSRTを設定
 	plane->SetScale({ 1.0f, 1.0f, 1.0f });

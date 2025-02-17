@@ -46,7 +46,8 @@ void Object3d::Update()
         worldviewProjectionMatrix = worldMatrix;
     }
 
-    transformationMatrixData->WVP = Multiply(modelData.rootNode.localMatrix, worldviewProjectionMatrix);
+    /*transformationMatrixData->WVP = Multiply(modelData.rootNode.localMatrix, worldviewProjectionMatrix);*/
+    transformationMatrixData->WVP = worldviewProjectionMatrix;
     transformationMatrixData->World = Multiply(modelData.rootNode.localMatrix, worldMatrix);
 }
 
@@ -79,6 +80,16 @@ void Object3d::Draw()
     // 3Dモデルが割り当てられていたら描画する
     if (model_) {
         model_->Draw();
+    }
+
+    // 骨（スケルトン）を描画
+    DrawSkeleton();
+}
+
+void Object3d::DrawSkeleton()
+{
+    if (model_) {
+        model_->DrawSkeleton();
     }
 }
 
@@ -117,6 +128,14 @@ void Object3d::SetEnableLighting(bool enable)
     }
     else {
         assert(false && "Material data is null");
+    }
+}
+
+void Object3d::SetDefaultCamera()
+{
+    // `Object3dCommon` からデフォルトカメラを取得
+    if (object3dCommon_) {
+        this->camera_ = object3dCommon_->GetDefaultCamera();
     }
 }
 
