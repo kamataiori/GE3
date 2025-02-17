@@ -29,6 +29,10 @@ void Object3d::Update()
     // model_ から modelData を取得
     const Model::ModelData& modelData = model_->GetModelData();
 
+    if (modelData.isAnimation) {
+        model_->Update();
+    }
+
     // TransformからworldMatrixを作る
     Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 

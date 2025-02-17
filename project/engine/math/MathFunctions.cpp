@@ -212,6 +212,53 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	return result;
 }
 
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rot, const Vector3& translate)
+{
+	Matrix4x4 result;
+
+	// Quaternionから回転行列を生成
+	float xx = rot.x * rot.x;
+	float yy = rot.y * rot.y;
+	float zz = rot.z * rot.z;
+	float xy = rot.x * rot.y;
+	float xz = rot.x * rot.z;
+	float yz = rot.y * rot.z;
+	float wx = rot.w * rot.x;
+	float wy = rot.w * rot.y;
+	float wz = rot.w * rot.z;
+
+	Matrix4x4 rotationMatrix = {
+		1.0f - 2.0f * (yy + zz), 2.0f * (xy + wz),       2.0f * (xz - wy),       0.0f,
+		2.0f * (xy - wz),       1.0f - 2.0f * (xx + zz), 2.0f * (yz + wx),       0.0f,
+		2.0f * (xz + wy),       2.0f * (yz - wx),       1.0f - 2.0f * (xx + yy), 0.0f,
+		0.0f,                   0.0f,                   0.0f,                   1.0f
+	};
+
+	// スケールと回転を合成
+	result.m[0][0] = scale.x * rotationMatrix.m[0][0];
+	result.m[0][1] = scale.x * rotationMatrix.m[0][1];
+	result.m[0][2] = scale.x * rotationMatrix.m[0][2];
+	result.m[0][3] = 0.0f;
+
+	result.m[1][0] = scale.y * rotationMatrix.m[1][0];
+	result.m[1][1] = scale.y * rotationMatrix.m[1][1];
+	result.m[1][2] = scale.y * rotationMatrix.m[1][2];
+	result.m[1][3] = 0.0f;
+
+	result.m[2][0] = scale.z * rotationMatrix.m[2][0];
+	result.m[2][1] = scale.z * rotationMatrix.m[2][1];
+	result.m[2][2] = scale.z * rotationMatrix.m[2][2];
+	result.m[2][3] = 0.0f;
+
+	// 平行移動を設定
+	result.m[3][0] = translate.x;
+	result.m[3][1] = translate.y;
+	result.m[3][2] = translate.z;
+	result.m[3][3] = 1.0f;
+
+	return result;
+}
+
 //逆行列
 Matrix4x4 Inverse(const Matrix4x4& matrix)
 {
@@ -370,5 +417,46 @@ float ProjectOBBOnAxis(const OBB& obb, const Vector3& axis) {
 	return fabs(Dot(obb.orientations[0] * obb.size.x, axis)) +
 		fabs(Dot(obb.orientations[1] * obb.size.y, axis)) +
 		fabs(Dot(obb.orientations[2] * obb.size.z, axis));
+}
+
+Quaternion Slerp(const Quaternion& start, const Quaternion& end, float t)
+{
+	// 内積を計算
+	float dot = start.x * end.x + start.y * end.y + start.z * end.z + start.w * end.w;
+
+	// もし内積が負の値なら、endを反転させることで最短経路をとるようにする
+	Quaternion endCorrected = end;
+	if (dot < 0.0f) {
+		endCorrected.x = -end.x;
+		endCorrected.y = -end.y;
+		endCorrected.z = -end.z;
+		endCorrected.w = -end.w;
+		dot = -dot;
+	}
+
+	// 補間ファクターが小さいときは線形補間にフォールバック
+	const float threshold = 0.9995f;
+	if (dot > threshold) {
+		return {
+			start.x + t * (endCorrected.x - start.x),
+			start.y + t * (endCorrected.y - start.y),
+			start.z + t * (endCorrected.z - start.z),
+			start.w + t * (endCorrected.w - start.w)
+		};
+	}
+
+	// Slerp計算
+	float theta = acos(dot);
+	float sinTheta = sqrt(1.0f - dot * dot);
+
+	float factorStart = sin((1 - t) * theta) / sinTheta;
+	float factorEnd = sin(t * theta) / sinTheta;
+
+	return {
+		factorStart * start.x + factorEnd * endCorrected.x,
+		factorStart * start.y + factorEnd * endCorrected.y,
+		factorStart * start.z + factorEnd * endCorrected.z,
+		factorStart * start.w + factorEnd * endCorrected.w
+	};
 }
 

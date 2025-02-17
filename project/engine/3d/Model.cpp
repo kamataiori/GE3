@@ -2,6 +2,7 @@
 #include "MathFunctions.h"
 #include "TextureManager.h"
 #include <Object3d.h>
+#include <iostream>
 
 void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypath, const std::string& filename)
 {
@@ -10,6 +11,10 @@ void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypat
 
 	//モデル読み込み
 	modelData = LoadModelFile(directorypath, filename);
+	// アニメーション読み込み
+	if (modelData.isAnimation) {
+		animation = LoadAnimationFile(directorypath, filename);
+	}
 
 	// 頂点データを作成
 	CreateVertexData();
@@ -22,6 +27,21 @@ void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypat
 	//読み込んだテクスチャの番号を取得
 	modelData.material.textureIndex =
 		TextureManager::GetInstance()->GetTextureIndexByFilePath(modelData.material.textureFilePath);
+}
+
+void Model::Update()
+{
+	animationTime += 1.0f / 60.0f;  // 時間を進める
+	animationTime = std::fmod(animationTime, animation.duration);  // 繰り返し再生
+
+	NodeAnimation& rootNodeAnimation = animation.NodeAnimations[modelData.rootNode.name];
+	Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
+	Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+	Vector3 scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
+
+	Matrix4x4 localMatrix = MakeAffineMatrix(scale, rotate, translate);
+
+	modelData.rootNode.localMatrix = localMatrix;
 }
 
 void Model::Draw()
@@ -156,6 +176,14 @@ Model::ModelData Model::LoadModelFile(const std::string& directoryPath, const st
 
 	ModelData modelData;
 
+	if (scene->mNumAnimations) {
+		modelData.isAnimation = true;
+	}
+	else {
+		modelData.isAnimation = false;
+	}
+
+
 	// Meshを解析する
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
 		aiMesh* mesh = scene->mMeshes[meshIndex];
@@ -204,6 +232,76 @@ Model::ModelData Model::LoadModelFile(const std::string& directoryPath, const st
 	modelData.rootNode = ReadNode(scene->mRootNode);
 
 	return modelData;
+}
+
+AnimationData Model::LoadAnimationFile(const std::string& directoryPath, const std::string& fileName)
+{
+	AnimationData animation; // 今回作るアニメーション
+
+	Assimp::Importer importer;
+	std::string filePath = directoryPath + "/" + fileName;
+	const aiScene* scene = importer.ReadFile(filePath.c_str(), 0);
+
+	// ファイルの読み込みが成功したか確認
+	if (!scene) {
+		std::cerr << "Error loading animation file: " << importer.GetErrorString() << std::endl;
+		assert(scene && "Failed to load animation file.");
+		return animation; // もしくは適切なエラー処理を行う
+	}
+
+	// アニメーションが含まれているか確認
+	assert(scene->mNumAnimations != 0 && "No animations found in the file.");
+
+	aiAnimation* animationAssimp = scene->mAnimations[0]; // 最初のアニメーションだけ採用。もちろん複数対応するに越したことはない
+
+	// 時間の単位を秒に変換
+	animation.duration = float(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
+
+	// assimpでは個々のNodeのAnimationをchannelと呼んでいるのでchannelを回してNodeAnimationの情報をとってくる
+	for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; ++channelIndex) {
+		aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
+		NodeAnimation& nodeAnimation = animation.NodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
+
+		// 各PositionKeysをKeyframeVector3としてNodeAnimationに追加
+		for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; ++keyIndex) {
+			aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
+			KeyframeVector3 keyframe;
+			keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond); // ここでも秒に変換
+			keyframe.value = { -keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z }; // 右手→左手
+			nodeAnimation.translate.keyframes.push_back(keyframe);
+		}
+
+		// 各RotationKeysをKeyframeQuaternionとしてNodeAnimationに追加
+		if (nodeAnimationAssimp->mNumRotationKeys > 0)
+		{
+			// RotationKeysが存在するかチェック
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
+				aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
+				KeyframeQuaternion keyframe;
+				keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w }; // 右手→左手
+				nodeAnimation.rotate.keyframes.push_back(keyframe);
+			}
+		}
+
+		// 各ScalingKeysをKeyframeVector3としてNodeAnimationに追加
+		if (nodeAnimationAssimp->mNumScalingKeys > 0)
+		{
+			// ScalingKeysが存在するかチェック
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
+				aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
+				KeyframeVector3 keyframe;
+				keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				keyframe.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+				nodeAnimation.scale.keyframes.push_back(keyframe);
+			}
+		}
+
+	}
+
+	// 解析完了
+	return animation;
+
 }
 
 bool Model::GetEnableLighting() const
