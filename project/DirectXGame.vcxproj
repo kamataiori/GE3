@@ -165,6 +165,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\Effects\Particle\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="application\Character\CharacterBase\Player\Player.cpp" />
     <ClCompile Include="engine\Effects\PostEffect\PostEffect.cpp" />
+    <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="MapScene.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
   </ItemGroup>
@@ -209,6 +211,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="engine\3d\Light.h" />
+    <ClInclude Include="MapEditor.h" />
+    <ClInclude Include="MapScene.h" />
     <ClInclude Include="matrix\Matrix3x3.h" />
     <ClInclude Include="matrix\Matrix4x4.h" />
     <ClInclude Include="engine\3d\Model.h" />

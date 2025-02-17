@@ -3,6 +3,7 @@
 #include <string>
 #include "TitleScene.h"
 #include "GamePlayScene.h"
+#include "MapScene.h"
 
 class AbstractSceneFactory
 {

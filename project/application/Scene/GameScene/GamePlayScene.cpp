@@ -209,7 +209,7 @@ void GamePlayScene::Update()
 
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		// シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		SceneManager::GetInstance()->ChangeScene("MAP");
 	}
 
 	//particle->Emit("particle",/*plane->GetTranslate()*/ { 0.0f,0.0f,-4.0f }, 10);

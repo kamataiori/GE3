@@ -1,4 +1,5 @@
 #pragma once
+
 #include <variant>
 #include <map>
 #include <string>
@@ -38,6 +39,8 @@ public:
 	// 項目の追加
 	template <typename T>
 	void AddValue(const std::string& groupName, const std::string& key, T value);
+	// 保存されていないキーの削除
+	void RemoveKey(const std::string& groupName, const std::string& key);
 	// グループの保存
 	void SaveFile(const std::string& groupName);
 	// ディレクトリの全ファイルの読み込み
@@ -51,7 +54,7 @@ private:
 	// 全データ
 	std::vector<std::pair<std::string, Group>> datas_;
 	// 保存先ファイルパス
-	const std::string kDirectoryPath = "Resources/globalVariables/";
+	const std::string kDirectoryPath = "resources/globalVariables/";
 	// ファイル書き出し
 	void OutputToFile(const std::string& groupName, json root);
 };

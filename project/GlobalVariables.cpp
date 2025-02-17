@@ -8,6 +8,29 @@
 
 GlobalVariables* GlobalVariables::instance_ = nullptr;
 
+void GlobalVariables::RemoveKey(const std::string& groupName, const std::string& key)
+{
+    // グループを検索
+    auto groupIt = std::find_if(datas_.begin(), datas_.end(), [&groupName](const auto& pair) {
+        return pair.first == groupName;
+        });
+
+    // グループが見つからない場合、何もしない
+    if (groupIt == datas_.end()) {
+        return;
+    }
+
+    // グループ内のキーを検索して削除
+    Group& group = groupIt->second;
+    auto itemIt = std::find_if(group.begin(), group.end(), [&key](const auto& pair) {
+        return pair.first == key;
+        });
+
+    if (itemIt != group.end()) {
+        group.erase(itemIt); // キーを削除
+    }
+}
+
 void GlobalVariables::SaveFile(const std::string& groupName)
 {
     // グループを検索
@@ -117,7 +140,6 @@ void GlobalVariables::LoadFile(const std::string& groupName)
     }
 
     nlohmann::json root;
-    //nlohmann::ordered_json root;
     ifs >> root;
     ifs.close();
 
