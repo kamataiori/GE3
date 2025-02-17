@@ -53,13 +53,14 @@ public:
 		std::vector<VertexData>vertices;
 		MaterialData material;
 		Node rootNode;
+		bool isAnimation;
 	};
 
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(ModelCommon* modelCommon,const std::string& directorypath,const std::string& filename);
+	void Initialize(ModelCommon* modelCommon, const std::string& directorypath, const std::string& filename);
 
 	/// <summary>
 	/// 描画
@@ -92,7 +93,10 @@ public:
 	static ModelData LoadModelFile(const std::string& directoryPath, const std::string& filename);
 
 
-
+	/// <summary>
+    /// Animation解析の関数
+    /// </summary>
+	AnimationData LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);
 
 	/// <summary>
 	/// ModelDataのGetter
@@ -107,7 +111,7 @@ public:
 	void SetMaterialColor(const Vector4& color) { materialData->color = color; }
 
 	// materialData->enableLightingのゲッター
-		bool GetEnableLighting() const;
+	bool GetEnableLighting() const;
 
 	// materialDataのゲッター
 	Model::Material* GetMaterial() const { return materialData; }
