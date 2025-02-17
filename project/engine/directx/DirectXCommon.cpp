@@ -26,7 +26,7 @@ void DirectXCommon::Initialize(WinApp* winApp)
 	this->winApp = winApp;
 
 	//FPS固定初期化
-	InitializeFixFPS();
+	//InitializeFixFPS();
 
 	// デバイスの初期化
 	Device();
@@ -527,7 +527,7 @@ void DirectXCommon::PostDraw()
 	}
 
 	//FPS固定化
-	UpdateFixFPS();
+	//UpdateFixFPS();
 
 	//次のフレーム用のコマンドリストを準備
 	hr = commandAllocator->Reset();

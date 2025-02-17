@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <Struct.h>
+#include <Quaternion.h>
 
 //単位行列の作成
 Matrix4x4 MakeIdentity4x4();
@@ -33,6 +34,8 @@ Vector3 Multiply(float scalar, Vector3& vec);
 
 // アフィン変換行列計算関数
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
+
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rot, const Vector3& translate);
 
 //逆行列
 Matrix4x4 Inverse(const Matrix4x4& matrix);
@@ -66,3 +69,5 @@ float DistanceSq(const Vector3& a, const Vector3& b);
 
 // OBBの投影
 float ProjectOBBOnAxis(const OBB& obb, const Vector3& axis);
+
+Quaternion Slerp(const Quaternion& start, const Quaternion& end, float t);

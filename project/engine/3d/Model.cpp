@@ -13,7 +13,7 @@ void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypat
 	modelData = LoadModelFile(directorypath, filename);
 	// アニメーション読み込み
 	if (modelData.isAnimation) {
-		LoadAnimationFile(directorypath, filename);
+		animation = LoadAnimationFile(directorypath, filename);
 	}
 
 	// 頂点データを作成
@@ -27,6 +27,21 @@ void Model::Initialize(ModelCommon* modelCommon, const std::string& directorypat
 	//読み込んだテクスチャの番号を取得
 	modelData.material.textureIndex =
 		TextureManager::GetInstance()->GetTextureIndexByFilePath(modelData.material.textureFilePath);
+}
+
+void Model::Update()
+{
+	animationTime += 1.0f / 60.0f;  // 時間を進める
+	animationTime = std::fmod(animationTime, animation.duration);  // 繰り返し再生
+
+	NodeAnimation& rootNodeAnimation = animation.NodeAnimations[modelData.rootNode.name];
+	Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
+	Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+	Vector3 scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
+
+	Matrix4x4 localMatrix = MakeAffineMatrix(scale, rotate, translate);
+
+	modelData.rootNode.localMatrix = localMatrix;
 }
 
 void Model::Draw()
