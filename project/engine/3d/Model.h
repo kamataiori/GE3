@@ -9,6 +9,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "StructAnimation.h"
 
 //---前方宣言---//
 class ModelCommon;
@@ -89,6 +90,9 @@ public:
 	/// .objファイルの読み取り
 	/// </summary>
 	static ModelData LoadModelFile(const std::string& directoryPath, const std::string& filename);
+
+
+
 
 	/// <summary>
 	/// ModelDataのGetter
