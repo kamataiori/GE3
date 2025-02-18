@@ -89,8 +89,8 @@ void TitleScene::Initialize()
 	//drawTriangle_->Initialize();
 	drawTriangle_->SetCamera(camera1.get());
 
-	GlobalVariables::GetInstance()->AddValue<Vector3>("TEST", "position", camera1->GetTranslate());
-	GlobalVariables::GetInstance()->AddValue<Vector3>("TEST", "rotate", camera1->GetRotate());
+	GlobalVariables::GetInstance()->AddValue<Vector3>("Camera", "position", camera1->GetTranslate());
+	GlobalVariables::GetInstance()->AddValue<Vector3>("Camera", "rotate", camera1->GetRotate());
 
 	GlobalVariables::GetInstance()->AddValue<Vector3>("Animation", "position", animationCube->GetTranslate());
 	GlobalVariables::GetInstance()->AddValue<Vector3>("Animation", "rotate", animationCube->GetRotate());
@@ -120,8 +120,8 @@ void TitleScene::Update()
 	animationCube->SetRotate(GlobalVariables::GetInstance()->GetValue<Vector3>("Animation", "rotate"));
 	animationCube->Update();
 	// カメラの更新
-	camera1->SetTranslate(GlobalVariables::GetInstance()->GetValue<Vector3>("TEST", "position"));
-	camera1->SetRotate(GlobalVariables::GetInstance()->GetValue<Vector3>("TEST", "rotate"));
+	camera1->SetTranslate(GlobalVariables::GetInstance()->GetValue<Vector3>("Camera", "position"));
+	camera1->SetRotate(GlobalVariables::GetInstance()->GetValue<Vector3>("Camera", "rotate"));
 	camera1->Update();
 
 	for (auto& emitter : emitters)
