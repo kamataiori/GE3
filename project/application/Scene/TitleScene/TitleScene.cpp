@@ -256,6 +256,8 @@ void TitleScene::Draw()
 	// 各オブジェクトの描画
 	plane->Draw();
 
+	Object3dCommon::GetInstance()->AnimationCommonSetting();
+
 	animationCube->Draw();
 
 	// ================================================
