@@ -68,6 +68,11 @@ public:
 	void DrawCone(const Cone& cone);
 
 	/// <summary>
+	/// ボーンの描画
+	/// </summary>
+	void DrawBone(const std::vector<Vector3>& jointPositions, const std::vector<int>& parentIndices, int color = static_cast<int>(Color::WHITE));
+
+	/// <summary>
 	/// 更新処理
 	/// </summary>
 	void Update();

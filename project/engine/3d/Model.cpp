@@ -90,6 +90,19 @@ void Model::Draw()
 
 void Model::DrawSkeleton()
 {
+	if (!modelData.isAnimation) return;  // アニメーションなしのモデルはスキップ
+
+	std::vector<Vector3> jointPositions;
+	std::vector<int> parentIndices;
+
+	for (const Joint& joint : skeleton.joints) {
+		// `Translation()` を使ってジョイント位置を取得
+		jointPositions.push_back(joint.skeletonSpaceMatrix.Translation());
+		parentIndices.push_back(joint.parent.value_or(-1));
+	}
+
+	// ボーン描画
+	DrawLine::GetInstance()->DrawBone(jointPositions, parentIndices, static_cast<int>(Color::WHITE));
 }
 
 void Model::CreateVertexData()
