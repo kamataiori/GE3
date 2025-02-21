@@ -114,21 +114,21 @@ void Model::Draw()
 	modelCommon_->GetDxCommon()->GetCommandList()->DrawIndexedInstanced(UINT(modelData.indices.size()), 1, 0, 0, 0);
 }
 
-void Model::DrawSkeleton()
+void Model::DrawSkeleton(const Matrix4x4& worldMatrix)
 {
-	if (!modelData.isAnimation) return;  // アニメーションなしのモデルはスキップ
+	if (!modelData.isAnimation) return;
 
 	std::vector<Vector3> jointPositions;
 	std::vector<int> parentIndices;
 
 	for (const Joint& joint : skeleton.joints) {
-		// `Translation()` を使ってジョイント位置を取得
-		jointPositions.push_back(joint.skeletonSpaceMatrix.Translation());
+		// ジョイントの空間座標をワールド行列で変換
+		Vector3 worldPosition = TransformCoord(joint.skeletonSpaceMatrix.Translation(), worldMatrix);
+		jointPositions.push_back(worldPosition);
 		parentIndices.push_back(joint.parent.value_or(-1));
 	}
 
-	// ボーン描画
-	DrawLine::GetInstance()->DrawBone(jointPositions, parentIndices, static_cast<int>(Color::WHITE));
+	DrawLine::GetInstance()->DrawBone(jointPositions, parentIndices);
 }
 
 void Model::CreateVertexData()

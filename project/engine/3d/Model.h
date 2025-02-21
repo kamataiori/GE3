@@ -91,7 +91,7 @@ public:
 	/// <summary>
     /// 骨を描画
     /// </summary>
-	void DrawSkeleton();
+	void DrawSkeleton(const Matrix4x4& worldMatrix);
 
 	/// <summary>
 	/// 頂点データを作成
