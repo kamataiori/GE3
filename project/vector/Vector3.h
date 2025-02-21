@@ -1,4 +1,5 @@
 #pragma once
+#include <DirectXMath.h>
 
 /// <summary>
 /// 3次元ベクトル
@@ -7,6 +8,11 @@ struct Vector3 final {
 	float x;
 	float y;
 	float z;
+
+	// DirectX::XMFLOAT3 への変換演算子を追加
+	operator DirectX::XMFLOAT3() const {
+		return { x, y, z };
+	}
 
 	Vector3 operator+(const Vector3& other) const { return { x + other.x, y + other.y, z + other.z }; }
 

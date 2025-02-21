@@ -34,21 +34,21 @@ void Object3d::Update()
     }
 
     // TransformからworldMatrixを作る
-    Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
+    worldMatrix_ = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 
     // カメラTransformからカメラ行列を作る
     if (camera_) { 
         // Cameraが存在する場合
         Matrix4x4 viewProjectionMatrix = camera_->GetViewProjectionMatrix();
-        worldviewProjectionMatrix = Multiply(worldMatrix, viewProjectionMatrix);
+        worldviewProjectionMatrix = Multiply(worldMatrix_, viewProjectionMatrix);
     }
     else {
-        worldviewProjectionMatrix = worldMatrix;
+        worldviewProjectionMatrix = worldMatrix_;
     }
 
     /*transformationMatrixData->WVP = Multiply(modelData.rootNode.localMatrix, worldviewProjectionMatrix);*/
     transformationMatrixData->WVP = worldviewProjectionMatrix;
-    transformationMatrixData->World = Multiply(modelData.rootNode.localMatrix, worldMatrix);
+    transformationMatrixData->World = Multiply(modelData.rootNode.localMatrix, worldMatrix_);
 }
 
 void Object3d::ImGuiUpdate(const std::string& Name)
@@ -89,7 +89,7 @@ void Object3d::Draw()
 void Object3d::DrawSkeleton()
 {
     if (model_) {
-        model_->DrawSkeleton();
+        model_->DrawSkeleton(worldMatrix_);
     }
 }
 

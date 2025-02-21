@@ -134,35 +134,6 @@ void TitleScene::Update()
 	ImGui::Text("Number of Lines: %zu", DrawLine::GetInstance()->GetLineCount());
 	ImGui::End();
 
-	// ImGui を使用したカメラ制御
-	ImGui::Begin("Camera Control");
-	ImGui::Text("Use the sliders to control the camera.");
-	Vector3 cameraPosition = camera1->GetTranslate();
-	Vector3 cameraRotation = camera1->GetRotate();
-
-	// カメラの位置を個別に操作
-	if (ImGui::DragFloat("Position X", &cameraPosition.x, 0.1f)) {
-		camera1->SetTranslate(cameraPosition);
-	}
-	if (ImGui::DragFloat("Position Y", &cameraPosition.y, 0.1f)) {
-		camera1->SetTranslate(cameraPosition);
-	}
-	if (ImGui::DragFloat("Position Z", &cameraPosition.z, 0.1f)) {
-		camera1->SetTranslate(cameraPosition);
-	}
-
-	// カメラの回転を個別に操作
-	if (ImGui::DragFloat("Rotation X", &cameraRotation.x, 0.01f)) {
-		camera1->SetRotate(cameraRotation);
-	}
-	if (ImGui::DragFloat("Rotation Y", &cameraRotation.y, 0.01f)) {
-		camera1->SetRotate(cameraRotation);
-	}
-	if (ImGui::DragFloat("Rotation Z", &cameraRotation.z, 0.01f)) {
-		camera1->SetRotate(cameraRotation);
-	}
-	ImGui::End();
-
 	// AABB の編集
 	ImGui::Begin("AABB Control");
 	ImGui::Text("Adjust AABB parameters:");
@@ -256,10 +227,22 @@ void TitleScene::Draw()
 	// 各オブジェクトの描画
 	plane->Draw();
 
+	// ================================================
+	// ここまで3Dオブジェクト個々の描画
+	// ================================================
+
+	//	アニメーションオブジェクトの描画前処理。3Dオブジェクトの描画設定に共通のグラフィックスコマンドを積む
+	Object3dCommon::GetInstance()->AnimationCommonSetting();
+
+	// ================================================
+	// ここからアニメーションオブジェクトの個々の描画
+	// ================================================
+
+	// 各オブジェクトの描画
 	animationCube->Draw();
 
 	// ================================================
-	// ここまで3Dオブジェクト個々の描画
+	// ここまでアニメーションオブジェクトの個々の描画
 	// ================================================
 
 	// ================================================
@@ -288,8 +271,6 @@ void TitleScene::Draw()
 	// ================================================
 	// ここまでDrawLine個々の描画
 	// ================================================
-
-
 }
 
 void TitleScene::ForeGroundDraw()

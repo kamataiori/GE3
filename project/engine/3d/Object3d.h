@@ -93,6 +93,9 @@ public:
     // Material colorのゲッター
     const Vector4& GetMaterialColor() const;
 
+    const Matrix4x4& GetWorldMatrix() const { return worldMatrix_; }
+
+
 private:
 
     /// <summary>
@@ -119,4 +122,6 @@ private:
 
     // Transform関連
     Transform transform;
+
+    Matrix4x4 worldMatrix_;
 };

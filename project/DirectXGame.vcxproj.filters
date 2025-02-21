@@ -463,6 +463,7 @@
     <None Include=".editorconfig" />
     <None Include="Resources\shaders\Particle.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
+    <None Include="Resources\shaders\SkinningObject3d.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\Particle.VS.hlsl" />
@@ -479,6 +480,7 @@
     <FxCompile Include="Resources\shaders\DrawLine.VS.hlsl" />
     <FxCompile Include="Resources\shaders\DrawTriangle.VS.hlsl" />
     <FxCompile Include="Resources\shaders\DrawTriangle.PS.hlsl" />
+    <FxCompile Include="Resources\shaders\SkinningObject3d.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectXGame.rc">

@@ -53,6 +53,7 @@ public:
 
 	// ModelData構造体
 	struct ModelData {
+		std::map<std::string, JointWeightData> skinClusterData;
 		std::vector<VertexData>vertices;
 		std::vector<uint32_t> indices;
 		MaterialData material;
@@ -78,6 +79,11 @@ public:
 	void Update(Skeleton& skeleton);
 
 	/// <summary>
+	/// SkinClusterの更新処理
+	/// </summary>
+	void Update(SkinCluster& skinCluster, const Skeleton& skeleton);
+
+	/// <summary>
 	/// 描画処理
 	/// </summary>
 	void Draw();
@@ -85,7 +91,7 @@ public:
 	/// <summary>
     /// 骨を描画
     /// </summary>
-	void DrawSkeleton();
+	void DrawSkeleton(const Matrix4x4& worldMatrix);
 
 	/// <summary>
 	/// 頂点データを作成
@@ -117,7 +123,6 @@ public:
 	/// </summary>
 	static ModelData LoadModelFile(const std::string& directoryPath, const std::string& filename);
 
-
 	/// <summary>
 	/// Animation解析の関数
 	/// </summary>
@@ -137,7 +142,7 @@ public:
 	/// </summary>
 	/// <param name="rootNode"></param>
 	/// <returns></returns>
-	Skeleton CretaeSkeleton(const Node& rootNode);
+	Skeleton CreateSkeleton(const Node& rootNode);
 
 	/// <summary>
 	/// Animationの適用
@@ -146,6 +151,11 @@ public:
 	/// <param name="animation"></param>
 	/// <param name="animationTime"></param>
 	void AppAnimation(Skeleton& skeleton, const AnimationData& animation, float animationTime);
+
+	/// <summary>
+	/// SkinClusterの生成
+	/// </summary>
+	SkinCluster CreateSkinCluster(const Microsoft::WRL::ComPtr<ID3D12Device>& device, const Skeleton& skeleton, const ModelData& modelData, const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t descriptorSize);
 
 	/// <summary>
 	/// ModelDataのGetter
@@ -218,6 +228,7 @@ private:
 
 	AnimationData animation;
 	Skeleton skeleton;
+	SkinCluster skinCluster;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> indexResource;
 	//Viewを作成する

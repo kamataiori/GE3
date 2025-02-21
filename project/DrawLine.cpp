@@ -332,10 +332,9 @@ void DrawLine::DrawBone(const std::vector<Vector3>& jointPositions, const std::v
 {
     for (size_t i = 0; i < jointPositions.size(); ++i) {
         if (parentIndices[i] >= 0) {
-            DirectX::XMFLOAT3 start = { jointPositions[parentIndices[i]].x, jointPositions[parentIndices[i]].y, jointPositions[parentIndices[i]].z };
-            DirectX::XMFLOAT3 end = { jointPositions[i].x, jointPositions[i].y, jointPositions[i].z };
-
-            AddLine(start, end, static_cast<Color>(color), static_cast<Color>(color));
+            Vector3 start = jointPositions[parentIndices[i]];
+            Vector3 end = jointPositions[i];
+            AddLine(start, end, Color::WHITE, Color::WHITE);
         }
     }
 }
