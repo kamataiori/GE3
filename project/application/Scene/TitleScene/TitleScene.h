@@ -46,6 +46,7 @@ private:
 	// 3Dオブジェクトの初期化
 	std::unique_ptr<Object3d> plane = nullptr;
 	std::unique_ptr<Object3d> animationCube = nullptr;
+	std::unique_ptr<Object3d> sneak = nullptr;
 
 	//3Dカメラの初期化
 	std::unique_ptr<Camera> camera1 = std::make_unique<Camera>();

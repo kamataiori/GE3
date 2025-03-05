@@ -6,6 +6,7 @@
 #include <string>
 #include <span>
 #include <array>
+#include <Matrix4x4.h>
 
 // Keyframe構造体
 template <typename tValue>

@@ -1,7 +1,6 @@
 #pragma once
 #include "DirectXCommon.h"
 #include "Camera.h"
-#include "StructAnimation.h"
 
 //BlendMode
 enum BlendMode {
@@ -91,7 +90,7 @@ private:
 
 private:
 
-	/// <summary>
+	/*/// <summary>
 	/// ルートシグネチャの作成
 	/// </summary>
 	void AnimationRootSignature();
@@ -124,7 +123,7 @@ private:
 	/// <summary>
 	/// PSOの生成
 	/// </summary>
-	void AnimationPSO();
+	void AnimationPSO();*/
 
 public:
 
@@ -134,7 +133,7 @@ public:
 	void CommonSetting();
 
 
-	void AnimationCommonSetting();
+	//void AnimationCommonSetting();
 
 public:
 	//------Getter------//
@@ -209,30 +208,30 @@ private:
 
 private:
 
-	D3D12_DESCRIPTOR_RANGE animationDescriptorRange[1] = {};
+	//D3D12_DESCRIPTOR_RANGE animationDescriptorRange[1] = {};
 
-	D3D12_ROOT_SIGNATURE_DESC animationDescriptionRootSignature{};
+	//D3D12_ROOT_SIGNATURE_DESC animationDescriptionRootSignature{};
 
-	D3D12_ROOT_PARAMETER animationRootParameters[8] = {};
+	//D3D12_ROOT_PARAMETER animationRootParameters[8] = {};
 
-	std::array<D3D12_INPUT_ELEMENT_DESC, 5> animationInputElementDescs{};
+	//std::array<D3D12_INPUT_ELEMENT_DESC, 5> animationInputElementDescs{};
 
-	D3D12_BLEND_DESC animationBlendDesc{};
+	//D3D12_BLEND_DESC animationBlendDesc{};
 
-	D3D12_RASTERIZER_DESC animationRasterizerDesc{};
+	//D3D12_RASTERIZER_DESC animationRasterizerDesc{};
 
-	D3D12_DEPTH_STENCIL_DESC animationDepthStencilDesc{};
+	//D3D12_DEPTH_STENCIL_DESC animationDepthStencilDesc{};
 
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC animationGraphicsPipelineStateDesc{};
+	//D3D12_GRAPHICS_PIPELINE_STATE_DESC animationGraphicsPipelineStateDesc{};
 
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> animationRootSignature = nullptr;
+	//Microsoft::WRL::ComPtr<ID3D12RootSignature> animationRootSignature = nullptr;
 
-	D3D12_INPUT_LAYOUT_DESC animationInputLayoutDesc{};
+	//D3D12_INPUT_LAYOUT_DESC animationInputLayoutDesc{};
 
-	//Shaderをコンパイルする
-	Microsoft::WRL::ComPtr<IDxcBlob> animationVertexShaderBlob_{};
-	Microsoft::WRL::ComPtr<IDxcBlob> animationPixelShaderBlob_{};
+	////Shaderをコンパイルする
+	//Microsoft::WRL::ComPtr<IDxcBlob> animationVertexShaderBlob_{};
+	//Microsoft::WRL::ComPtr<IDxcBlob> animationPixelShaderBlob_{};
 
-	Microsoft::WRL::ComPtr<ID3D12PipelineState>animationGraphicsPipelineState = nullptr;
+	//Microsoft::WRL::ComPtr<ID3D12PipelineState>animationGraphicsPipelineState = nullptr;
 };
 

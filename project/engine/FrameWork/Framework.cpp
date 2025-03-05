@@ -29,6 +29,9 @@ void Framework::Initialize()
 	// 3Dオブジェクト共通部の初期化
 	Object3dCommon::GetInstance()->Initialize();
 
+	// スキニング共通部の初期化
+	Skinning::GetInstance()->Initialize();
+
 	// モデルマネージャーの初期化
 	ModelManager::GetInstance()->Initialize(DirectXCommon::GetInstance());
 
@@ -77,6 +80,8 @@ void Framework::Finalize()
 	object3dCommon.reset();
 	object3dCommon->Finalize();
 	modelCommon.reset();
+	skinningCommon.reset();
+	skinningCommon->Finalize();
 	dxCommon->Finalize();
 }
 

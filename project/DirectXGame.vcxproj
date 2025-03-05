@@ -166,6 +166,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Character\CharacterBase\Player\Player.cpp" />
     <ClCompile Include="engine\Effects\PostEffect\PostEffect.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
+    <ClCompile Include="Skinning.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +236,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="OBBCollider.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Skinning.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="StructAnimation.h" />
     <ClInclude Include="vector\Vector2.h" />

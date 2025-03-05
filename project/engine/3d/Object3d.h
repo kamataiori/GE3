@@ -12,6 +12,7 @@
 #include "Transform.h"
 #include <numbers>
 #include "Light.h"
+#include "Skinning.h"
 
 //---前方宣言---//
 class Object3dCommon;
