@@ -258,7 +258,7 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 	//InstancingMaxResource();
 
 	// インスタンシング用SRVを確保してSRVインデックスを記録
-	newGroup.instancingSrvIndex = srvManager_->Allocate() + 1;
+	newGroup.instancingSrvIndex = srvManager_->Allocate();
 	srvManager_->CreateSRVforStructuredBuffer(newGroup.instancingSrvIndex, newGroup.instancingResource.Get(), kNumMaxInstance, sizeof(ParticleForGPU));
 
 	// パーティクルグループをリストに追加

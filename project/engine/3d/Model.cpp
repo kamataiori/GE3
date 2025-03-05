@@ -477,8 +477,9 @@ SkinCluster Model::CreateSkinCluster(const Microsoft::WRL::ComPtr<ID3D12Device>&
 	WellForGPU* mappedPalette = nullptr;
 	skinCluster_.paletteResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
 	skinCluster_.mappedPalette = { mappedPalette,skeleton.joints.size() }; // spanを使ってアクセスするようにする
-	skinCluster_.paletteSrvHandle.first = modelCommon_->GetDxCommon()->GetCPUDescriptorHandle(descriptorHeap.Get(), descriptorSize, 30);
-	skinCluster_.paletteSrvHandle.second = modelCommon_->GetDxCommon()->GetGPUDescriptorHandle(descriptorHeap.Get(), descriptorSize, 30);
+	paletteIndex = SrvManager::GetInstance()->Allocate();
+	skinCluster_.paletteSrvHandle.first = modelCommon_->GetDxCommon()->GetCPUDescriptorHandle(descriptorHeap.Get(), descriptorSize, paletteIndex);
+	skinCluster_.paletteSrvHandle.second = modelCommon_->GetDxCommon()->GetGPUDescriptorHandle(descriptorHeap.Get(), descriptorSize, paletteIndex);
 
 	// palette用のSRVを作成。StructuredBufferでアクセスできるようにする
 	D3D12_SHADER_RESOURCE_VIEW_DESC paletteSrvDesc{};

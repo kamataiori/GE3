@@ -88,52 +88,12 @@ private:
 	/// </summary>
 	void PSO();
 
-private:
-
-	/*/// <summary>
-	/// ルートシグネチャの作成
-	/// </summary>
-	void AnimationRootSignature();
-
-	/// <summary>
-	/// グラフィックスパイプラインの生成
-	/// </summary>
-	void AnimationGraphicsPipelineState();
-
-	/// <summary>
-	/// InputLayoutの設定
-	/// </summary>
-	void AnimationInputLayout();
-
-	/// <summary>
-	/// BlendStateの設定
-	/// </summary>
-	void AnimationBlendState();
-
-	/// <summary>
-	/// RasterizerStateの設定
-	/// </summary>
-	void AnimationRasterizerState();
-
-	/// <summary>
-	/// DepthStencilStateの設定
-	/// </summary>
-	void AnimationDepthStencilState();
-
-	/// <summary>
-	/// PSOの生成
-	/// </summary>
-	void AnimationPSO();*/
-
 public:
 
 	/// <summary>
 	/// 共通描画設定
 	/// </summary>
 	void CommonSetting();
-
-
-	//void AnimationCommonSetting();
 
 public:
 	//------Getter------//
@@ -204,34 +164,5 @@ private:
 
 	//デフォルトカメラ
 	Camera* defaultCamera = nullptr;
-
-
-private:
-
-	//D3D12_DESCRIPTOR_RANGE animationDescriptorRange[1] = {};
-
-	//D3D12_ROOT_SIGNATURE_DESC animationDescriptionRootSignature{};
-
-	//D3D12_ROOT_PARAMETER animationRootParameters[8] = {};
-
-	//std::array<D3D12_INPUT_ELEMENT_DESC, 5> animationInputElementDescs{};
-
-	//D3D12_BLEND_DESC animationBlendDesc{};
-
-	//D3D12_RASTERIZER_DESC animationRasterizerDesc{};
-
-	//D3D12_DEPTH_STENCIL_DESC animationDepthStencilDesc{};
-
-	//D3D12_GRAPHICS_PIPELINE_STATE_DESC animationGraphicsPipelineStateDesc{};
-
-	//Microsoft::WRL::ComPtr<ID3D12RootSignature> animationRootSignature = nullptr;
-
-	//D3D12_INPUT_LAYOUT_DESC animationInputLayoutDesc{};
-
-	////Shaderをコンパイルする
-	//Microsoft::WRL::ComPtr<IDxcBlob> animationVertexShaderBlob_{};
-	//Microsoft::WRL::ComPtr<IDxcBlob> animationPixelShaderBlob_{};
-
-	//Microsoft::WRL::ComPtr<ID3D12PipelineState>animationGraphicsPipelineState = nullptr;
 };
 
