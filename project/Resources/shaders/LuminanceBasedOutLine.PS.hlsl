@@ -2,6 +2,7 @@
 
 Texture2D gTexture : register(t0);
 SamplerState gSampler : register(s0);
+//SamplerState gSamplerLinear : register(s1);
 
 struct PixelShaderOutput
 {
@@ -68,9 +69,11 @@ PixelShaderOutput main(VertexShaderOutput input)
 
     }
     
-    float weight = saturate(length(difference));
+    float weight = length(difference);
+    // 差が小さすぎて分かりづらいので適当に6倍にしている。CBufferで調整パラメータとして送ったりするとよい
+    weight = saturate(weight * 6.0f);
     
-    output.color.rgb = weight;
+    output.color.rgb = (1.0f - weight) * gTexture.Sample(gSampler, input.texcoord).rgb;
     output.color.a = 1.0f;
     return output;
 }
