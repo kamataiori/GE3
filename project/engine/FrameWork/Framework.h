@@ -15,6 +15,7 @@
 #include <Debug.h>
 #include "DrawTriangleCommon.h"
 #include <DrawTriangle.h>
+#include <Skinning.h>
 
 static const int kWindowWidth = 1280;
 static const int kWindowHeight = 720;
@@ -77,6 +78,8 @@ protected:
 	std::unique_ptr<Object3dCommon> object3dCommon = nullptr;
 	// モデル共通部の初期化
 	std::unique_ptr<ModelCommon> modelCommon = nullptr;
+	// スキニング共通部の初期化
+	std::unique_ptr<Skinning> skinningCommon = nullptr;
 
 	// シーンファクトリー
 	AbstractSceneFactory* sceneFactory_ = nullptr;

@@ -235,5 +235,7 @@ private:
 	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite{};
 	uint32_t* mappedIndex = nullptr;
 
+	uint32_t paletteIndex;
+
 };
 

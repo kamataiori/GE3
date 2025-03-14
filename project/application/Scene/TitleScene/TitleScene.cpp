@@ -31,17 +31,24 @@ void TitleScene::Initialize()
 	animationCube = std::make_unique<Object3d>(this);
 	animationCube->Initialize();
 
-	//// モデル読み込み
+	sneak = std::make_unique<Object3d>(this);
+	sneak->Initialize();
+
+	// モデル読み込み
+	ModelManager::GetInstance()->LoadModel("human/sneakWalk.gltf");
 	ModelManager::GetInstance()->LoadModel("human/walk.gltf");
 	ModelManager::GetInstance()->LoadModel("uvChecker.gltf");
 	ModelManager::GetInstance()->LoadModel("axis.obj");
 	plane->SetModel("uvChecker.gltf");
 	animationCube->SetModel("human/walk.gltf");
+	sneak->SetModel("human/sneakWalk.gltf");
 
 	// モデルにSRTを設定
 	plane->SetScale({ 1.0f, 1.0f, 1.0f });
 	plane->SetRotate({ 0.0f, 3.14f, 0.0f });
 	plane->SetTranslate({ 0.0f, 0.0f, 6.0f });
+
+	sneak->SetTranslate({ 1.0f,0.0f,0.0f });
 
 	// 3Dカメラの初期化
 	camera1 = std::make_unique<Camera>();
@@ -52,6 +59,7 @@ void TitleScene::Initialize()
 	plane->SetCamera(camera1.get());
 	particle->SetCamera(camera1.get());
 	animationCube->SetCamera(camera1.get());
+	sneak->SetCamera(camera1.get());
 
 	particle->Initialize();
 	particle->CreateParticleGroup("particle", "Resources/circle.png", ParticleManager::BlendMode::kBlendModeAdd,{64.0f,64.0f});
@@ -119,6 +127,7 @@ void TitleScene::Update()
 	animationCube->SetTranslate(GlobalVariables::GetInstance()->GetValue<Vector3>("Animation", "position"));
 	animationCube->SetRotate(GlobalVariables::GetInstance()->GetValue<Vector3>("Animation", "rotate"));
 	animationCube->Update();
+	sneak->Update();
 	// カメラの更新
 	camera1->SetTranslate(GlobalVariables::GetInstance()->GetValue<Vector3>("Camera", "position"));
 	camera1->SetRotate(GlobalVariables::GetInstance()->GetValue<Vector3>("Camera", "rotate"));
@@ -232,7 +241,7 @@ void TitleScene::Draw()
 	// ================================================
 
 	//	アニメーションオブジェクトの描画前処理。3Dオブジェクトの描画設定に共通のグラフィックスコマンドを積む
-	Object3dCommon::GetInstance()->AnimationCommonSetting();
+	Skinning::GetInstance()->CommonSetting();
 
 	// ================================================
 	// ここからアニメーションオブジェクトの個々の描画
@@ -240,6 +249,7 @@ void TitleScene::Draw()
 
 	// 各オブジェクトの描画
 	animationCube->Draw();
+	sneak->Draw();
 
 	// ================================================
 	// ここまでアニメーションオブジェクトの個々の描画
@@ -259,14 +269,14 @@ void TitleScene::Draw()
 	// 初期三角形を追加
 	//drawTriangle_->AddTriangle(triangleP1, triangleP2, triangleP3, triangleColor, triangleAlpha);
 
-	//DrawLine::GetInstance()->DrawAABB(aabb);
-	//DrawLine::GetInstance()->DrawSphere(sphere);
-	//// 平面の描画
-	//DrawLine::GetInstance()->DrawPlane(ground);
-	//// カプセルの描画
-	//DrawLine::GetInstance()->DrawCapsule(capsule);
-	//// OBB を描画
-	//DrawLine::GetInstance()->DrawOBB(obb);
+	DrawLine::GetInstance()->DrawAABB(aabb);
+	DrawLine::GetInstance()->DrawSphere(sphere);
+	// 平面の描画
+	DrawLine::GetInstance()->DrawPlane(ground);
+	// カプセルの描画
+	DrawLine::GetInstance()->DrawCapsule(capsule);
+	// OBB を描画
+	DrawLine::GetInstance()->DrawOBB(obb);
 
 	// ================================================
 	// ここまでDrawLine個々の描画

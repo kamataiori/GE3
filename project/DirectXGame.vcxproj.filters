@@ -237,6 +237,9 @@
     <ClCompile Include="GlobalVariables.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Skinning.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -455,6 +458,9 @@
     <ClInclude Include="Quaternion.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Skinning.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />
@@ -481,6 +487,8 @@
     <FxCompile Include="Resources\shaders\DrawTriangle.VS.hlsl" />
     <FxCompile Include="Resources\shaders\DrawTriangle.PS.hlsl" />
     <FxCompile Include="Resources\shaders\SkinningObject3d.VS.hlsl" />
+    <FxCompile Include="Resources\shaders\VignetteYellow.PS.hlsl" />
+    <FxCompile Include="Resources\shaders\VignetteRed.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectXGame.rc">

@@ -34,5 +34,6 @@ private:
 	DirectXCommon* dxCommon_ = nullptr;
 	// SRV用でスクリプタヒープ
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	uint32_t srvIndex;
 };
 
