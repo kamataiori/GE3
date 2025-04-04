@@ -314,6 +314,10 @@ public:
 	/// <returns></returns>
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCommandAllocator() const { return commandAllocator; }
 
+	Microsoft::WRL::ComPtr<ID3D12Resource> GetDepthStencilResource() { return depthStencilResource; }
+
+	uint32_t GetDepthSRVIndex() { return depthSRVIndex_; }
+
 
 	////====================セッター関数====================////
 
@@ -448,6 +452,10 @@ private:
 
 	//リソースバリアで書き込み可能に変更
 	D3D12_RESOURCE_BARRIER barrier{};
+
+	// Depth用SRVインデックス
+	uint32_t depthSRVIndex_ = 0;
+
 
 };
 

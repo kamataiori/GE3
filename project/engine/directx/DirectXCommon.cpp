@@ -254,6 +254,22 @@ void DirectXCommon::DepthBuffer()
 	);
 	assert(SUCCEEDED(hr));
 
+	// SrvManagerでインデックス確保
+	depthSRVIndex_ = SrvManager::GetInstance()->Allocate();
+
+	// Depth用SRVを作成（D24_UNORMから読み取れる形式に変換）
+	D3D12_SHADER_RESOURCE_VIEW_DESC depthSrvDesc{};
+	depthSrvDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+	depthSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	depthSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	depthSrvDesc.Texture2D.MipLevels = 1;
+
+	// SRV作成
+	device->CreateShaderResourceView(
+		depthStencilResource.Get(),
+		&depthSrvDesc,
+		SrvManager::GetInstance()->GetCPUDescriptorHandle(depthSRVIndex_));
+
 }
 
 void DirectXCommon::DescriptorHeap()
@@ -336,7 +352,7 @@ void DirectXCommon::DepthStencilView()
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;  //2dTexture
 	//DSVHeapの先頭にDSVをつくる
 	device->CreateDepthStencilView(depthStencilResource.Get(), &dsvDesc, dsvHandle);
-	
+
 }
 
 void DirectXCommon::Fence()

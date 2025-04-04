@@ -20,6 +20,18 @@ void OffscreenRendering::Update()
 
 void OffscreenRendering::Draw()
 {
+	D3D12_RESOURCE_BARRIER barrier{};
+
+	barrier.Transition.pResource = DirectXCommon::GetInstance()->GetDepthStencilResource().Get();
+
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+
+	DirectXCommon::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier);
+
 	// ルートシグネチャの設定
 	dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature_.Get());
 
@@ -38,6 +50,8 @@ void OffscreenRendering::Draw()
 	D3D12_GPU_DESCRIPTOR_HANDLE srvHandle =
 		SrvManager::GetInstance()->GetGPUDescriptorHandle(srvIndex_);
 	dxCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(0, srvHandle);
+
+	dxCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(1, SrvManager::GetInstance()->GetGPUDescriptorHandle(dxCommon_->GetDepthSRVIndex()));
 
 	// 描画
 	dxCommon_->GetCommandList()->DrawInstanced(3, 1, 0, 0);
@@ -167,13 +181,19 @@ void OffscreenRendering::RootSignature()
 	descriptionRootSignature_.NumParameters = 1;  // パラメータは1つのみ
 
 	// サンプラーの設定
-	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
+	D3D12_STATIC_SAMPLER_DESC staticSamplers[2] = {};
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	staticSamplers[0].ShaderRegister = 0;
 	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	staticSamplers[1].Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
+	staticSamplers[1].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[1].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[1].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[1].ShaderRegister = 0;
+	staticSamplers[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
 	descriptionRootSignature_.pStaticSamplers = staticSamplers;
 	descriptionRootSignature_.NumStaticSamplers = 1;
